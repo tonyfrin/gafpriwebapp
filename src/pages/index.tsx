@@ -1,12 +1,10 @@
-import { Layout } from '../Abstract/Component/Layout';
 import React from 'react';
+import { ServiceHome } from '../Abstract/Component/ServiceHome';
 
 export default function Home() {
   return (
     <>
-      <Layout>
-        <></>
-      </Layout>
+      <ServiceHome />
     </>
   );
 }
