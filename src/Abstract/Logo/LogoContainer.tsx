@@ -1,6 +1,7 @@
-import React from 'react';
-import { forwardRef, ImgHTMLAttributes, LegacyRef } from 'react';
+import React, { forwardRef } from 'react';
 import { cx, css } from '@emotion/css';
+import { StaticImageData } from 'next/image';
+import Image from 'next/image';
 
 type SectionStyle = {
   display?: string;
@@ -23,21 +24,22 @@ type ImageStyle = {
   marginTop?: string;
   marginBottom?: string;
   maxWidth?: string;
-  media600Style?: Media | undefined;
-  media300Style?: Media | undefined;
+  media600Style?: Media;
+  media300Style?: Media;
 };
 
 type Style = {
   sectionClass?: string;
   divClass?: string;
   imgClass?: string;
-  image: string;
+  image: StaticImageData; // Cambiado para usar StaticImageData de next/image
   styleSection?: SectionStyle;
   styleContainer?: ContainerStyle;
   styleImage?: ImageStyle;
 };
 
-export type LogoProps = ImgHTMLAttributes<HTMLImageElement> & Style;
+// Cambiado de ImgHTMLAttributes<HTMLImageElement> & Style a solo Style
+export type LogoProps = Style;
 
 const sectionStyles = (styles: SectionStyle) => css`
   display: ${styles.display || 'flex'};
@@ -51,7 +53,8 @@ const containerStyles = (styles: ContainerStyle) => css`
   text-align: ${styles.textAlign || 'center'};
 `;
 
-const imgStayle = (styles: ImageStyle) => css`
+const imgStyle = (styles: ImageStyle) => css`
+  height: auto;
   margin-top: ${styles.marginTop || '10px'};
   margin-bottom: ${styles.marginBottom || '10px'};
   max-width: ${styles.maxWidth || '150px'};
@@ -67,8 +70,8 @@ const imgStayle = (styles: ImageStyle) => css`
 `;
 
 export const LogoContainer = forwardRef(
-  (props: LogoProps, ref: LegacyRef<HTMLImageElement> | null): JSX.Element => {
-    const {
+  function LogoContainer(
+    {
       image,
       sectionClass = '',
       divClass = '',
@@ -77,16 +80,20 @@ export const LogoContainer = forwardRef(
       styleContainer = {},
       styleImage = {},
       ...imgProps
-    }: LogoProps = props;
+    }: LogoProps,
+    ref: React.ForwardedRef<HTMLImageElement>
+  ): JSX.Element {
     return (
       <section className={cx(sectionStyles(styleSection), sectionClass)}>
         <div className={cx(containerStyles(styleContainer), divClass)}>
-          <img
-            src={image}
+          <Image
+            src={image.src}
+            alt={'Logo'}
+            width={150}
+            height={150}
             {...imgProps}
-            className={cx(imgStayle(styleImage), imgClass)}
+            className={cx(imgStyle(styleImage), imgClass)}
             ref={ref}
-            alt="logo"
             role="logo"
           />
         </div>
@@ -94,3 +101,7 @@ export const LogoContainer = forwardRef(
     );
   }
 );
+
+// Asignar un nombre de visualización al componente
+LogoContainer.displayName = 'LogoContainer';
+

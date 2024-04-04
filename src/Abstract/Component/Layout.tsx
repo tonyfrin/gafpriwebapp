@@ -36,7 +36,7 @@ export const Layout = ({
       <div className={cx(layoutContainerStyle(containerStyles), containerClassName)} {...restContainerProps}>
         <SingleHeader
             props={{
-                image: Logo.src,
+                image: Logo,
                 styleSection: {
                     padding: '0'
                 },
