@@ -58,6 +58,10 @@ const videoSectionSubContentTitle = css`
         display: block;
         margin-right: 50px;
     }
+
+    @media (max-width: 415px) {
+        margin-right: 0;
+    }
 `
 
 const videoSectionContentTitleContainer = css`
@@ -67,6 +71,10 @@ const videoSectionContentTitleContainer = css`
 
     @media (max-width: 790px) {
         margin-left: 30px;
+    }
+
+    @media (max-width: 415px) {
+        margin-left: 0;
     }
 
 `;
@@ -79,6 +87,14 @@ const videoSectionContentTitleText = css`
     margin-bottom: 1rem;
     font-weight: 700;
     line-height: 1.2;
+
+    @media (max-width: 415px) {
+        font-size: 2.8rem;
+    }
+
+    @media (max-width: 360px) {
+        font-size: 2.5rem;
+    }
 `
 
 const videoSectionContentTitleTextSpan = css`

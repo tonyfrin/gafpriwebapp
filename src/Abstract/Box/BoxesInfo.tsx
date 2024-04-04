@@ -42,6 +42,10 @@ const boxesInfoItemContainer = css`
         width: 90%;
         margin: 10px auto;
     }
+
+    @media (max-width: 600px) {
+        padding: 1rem;
+    }
 `
 
 const boxesInfoItemIcon = css`

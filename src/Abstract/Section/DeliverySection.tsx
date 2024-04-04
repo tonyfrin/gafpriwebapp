@@ -49,6 +49,10 @@ const titleStyle = css`
     @media (max-width: 700px) {
         text-align: center;
     }
+
+    @media (max-width: 360px) {
+        font-size: 1.5rem;
+    }
 `
 
 const serviceSectionContentSmallTitle = css`

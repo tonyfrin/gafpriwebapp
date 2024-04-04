@@ -34,9 +34,20 @@ const GsNameButton3 = css`
         padding-top: 45vh;
     }
 
-    @media (max-width: 600px) {
-        padding-top: 35vh;
+    @media (max-width: 520px) {
+        padding-top: 58vh;
     }
+
+    @media (max-width: 415px) {
+        padding-top: 45vh;
+    }
+
+    @media (max-width: 360px) {
+        padding-top: 40vh;
+        font-size: 1.1rem;
+    }
+
+    
 `;
 
 const buttonCarouselStyles = css`
@@ -91,9 +102,23 @@ const containerImage = (src: string) => css`
         margin-left: 0px;
     }
 
-    @media (max-width: 500px) {
-        height: 40vh;
-        width: 27vh;
+    @media (max-width: 520px) {
+        height: 65vh;
+        width: 45vh;    
+    }
+
+    @media (max-width: 470px) {
+        width: 40vh;
+    }
+
+    @media (max-width: 415px) {
+        height: 50vh;
+        width: 35vh;
+    }
+
+    @media (max-width: 360px) {
+        height: 46vh;
+        width: 32vh;
     }
 `
 

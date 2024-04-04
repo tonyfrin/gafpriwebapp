@@ -40,6 +40,10 @@ const serviceSectionContentTitle = css`
         width: 90%;
         margin: auto;
     }
+
+    @media (max-width: 360px) {
+        font-size: 1.5rem;
+    }
 `
 
 export const ServiceSection = () => {

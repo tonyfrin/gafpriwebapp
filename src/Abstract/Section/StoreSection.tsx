@@ -32,6 +32,10 @@ const serviceSectionContentTitle = css`
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.2;
+
+    @media (max-width: 360px) {
+        font-size: 1.5rem;
+    }
 `
 
 const industrialItems = [
