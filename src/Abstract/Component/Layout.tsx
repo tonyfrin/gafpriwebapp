@@ -34,7 +34,8 @@ export const Layout = ({
   const { className: containerClassName, ...restContainerProps } = containerProps;
   return (
       <div className={cx(layoutContainerStyle(containerStyles), containerClassName)} {...restContainerProps}>
-        <SingleHeader
+      <>
+      <SingleHeader
             props={{
                 image: Logo,
                 styleSection: {
@@ -50,6 +51,7 @@ export const Layout = ({
                 position: 'relative',
             }}
         />
+        </> 
       </div>
   );
 };

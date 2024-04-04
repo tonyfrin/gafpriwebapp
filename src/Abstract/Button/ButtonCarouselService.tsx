@@ -24,6 +24,19 @@ const GsNameButton3 = css`
     position: absolute;
     padding-top: 35vh;
     left: 10px;
+
+    @media (max-width: 900px) {
+        padding-top: 50vh;
+        font-size: 1.5rem;
+    }
+
+    @media (max-width: 790px) {
+        padding-top: 45vh;
+    }
+
+    @media (max-width: 600px) {
+        padding-top: 35vh;
+    }
 `;
 
 const buttonCarouselStyles = css`
@@ -39,6 +52,14 @@ const buttonCarouselStyles = css`
     line-height: 1.5;
     color: #ffffff;
     cursor: pointer;
+
+    @media (max-width: 991px) {
+        display: contents;
+        flex: 1 0 50%; 
+        max-width: 50%;
+        box-sizing: border-box;
+    }
+
 `;
 
 const containerImage = (src: string) => css`
@@ -51,6 +72,29 @@ const containerImage = (src: string) => css`
     background-position: center;
     position: relative;
     margin-left: 45px;
+
+    @media (max-width: 991px) {
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 900px) {
+        height: 55vh;
+        width: 45vh;
+    }
+
+    @media (max-width: 790px) {
+        height: 50vh;
+        width: 35vh;
+    }
+
+    @media (max-width: 600px) {
+        margin-left: 0px;
+    }
+
+    @media (max-width: 500px) {
+        height: 40vh;
+        width: 27vh;
+    }
 `
 
 export const ButtonCarouselService: React.FC<ButtonCarouselProps> = ({ link, src, title }) => {

@@ -18,6 +18,7 @@ const videoSectionContentVideo = css`
     background-position: 50%;
     background-size: cover;
     width: 100%;
+    max-width: 100%;
     height: 100%;
     margin: auto;
     position: absolute;
@@ -25,6 +26,10 @@ const videoSectionContentVideo = css`
     bottom: -100%;
     left: -100%;
     right: -100%;
+
+    @media (max-width: 991px) {
+        width: auto;
+    }
 `;
 
 const videoSectionContentTitle = css`
@@ -48,12 +53,22 @@ const videoSectionSubContentTitle = css`
     justify-items: center;
     margin-top: 1rem;
     margin-bottom: 1rem;
+
+    @media (max-width: 600px) {
+        display: block;
+        margin-right: 50px;
+    }
 `
 
 const videoSectionContentTitleContainer = css`
     grid-area: span 1 / span 1 / span 1 / span 1;
     align-self: stretch;
     box-sizing: border-box;
+
+    @media (max-width: 790px) {
+        margin-left: 30px;
+    }
+
 `;
 
 const videoSectionContentTitleText = css`
@@ -69,6 +84,10 @@ const videoSectionContentTitleText = css`
 const videoSectionContentTitleTextSpan = css`
     color: #07b2e7;
     margin-left: 20px;
+
+    @media (max-width: 600px) {
+        margin-left: 0;
+    }
 `
 
 const videoSectionContentTitleTextP = css`

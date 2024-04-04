@@ -35,6 +35,11 @@ const serviceSectionContentTitle = css`
     font-size: 2rem;
     font-weight: 700;
     line-height: 1.2;
+
+    @media (max-width: 790px) {
+        width: 90%;
+        margin: auto;
+    }
 `
 
 export const ServiceSection = () => {

@@ -27,8 +27,6 @@ const headerContentStyle = css`
     justify-content: space-between;
     align-items: center;
     padding: 0 20px;
-    width: 100%;
-    max-width: 80rem;
     margin: auto;
 `;
 
@@ -63,7 +61,7 @@ export const SingleHeader = ({
   ]
 
   return (
-    <header className={cx(headerStyles(styles), headerClass)}>
+    <header className={cx(headerStyles(styles))}>
       <div className={cx(headerContentStyle)}>
         <LogoContainer image={image} {...imgProps}
           styleImage={{

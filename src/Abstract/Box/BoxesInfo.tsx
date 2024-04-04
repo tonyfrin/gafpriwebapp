@@ -19,6 +19,10 @@ const boxesInfoContainer = css`
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr 1fr;
     margin-top: 2rem;
+
+    @media (max-width: 790px) {
+        display: block;
+    }
 `;
 
 const boxesInfoItemContainer = css`
@@ -33,6 +37,11 @@ const boxesInfoItemContainer = css`
     opacity: 1;
     transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
     transform-style: preserve-3d;
+
+    @media (max-width: 790px) {
+        width: 90%;
+        margin: 10px auto;
+    }
 `
 
 const boxesInfoItemIcon = css`

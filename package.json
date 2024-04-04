@@ -1,6 +1,6 @@
 {
   "name": "gafpriappweb",
-  "version": "0.1.09",
+  "version": "0.1.11",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@emotion/css": "^11.11.2",
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
     "next": "14.1.4",
     "react": "^18",
     "react-dom": "^18",

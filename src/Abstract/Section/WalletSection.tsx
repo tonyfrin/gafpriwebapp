@@ -18,6 +18,10 @@ const serviceSectionContent = css`
     grid-template-columns: 1.5fr 1.5fr;
     justify-items: stretch;
     margin-top: 1rem;
+
+    @media (max-width: 700px) {
+        display: block;
+    }
 `
 
 const containerText = css`
@@ -26,6 +30,10 @@ const containerText = css`
     justify-self: start;
     padding: 1rem 4rem;
     box-sizing: border-box;
+
+    @media (max-width: 790px) {
+        padding: 0rem 1rem;
+    }
 `
 
 const titleStyle = css`
@@ -36,6 +44,10 @@ const titleStyle = css`
     font-size: 2.2rem;
     font-weight: 700;
     line-height: 1.2;
+
+    @media (max-width: 700px) {
+        text-align: center;
+    }
 `
 
 const serviceSectionContentSmallTitle = css`
@@ -44,6 +56,10 @@ const serviceSectionContentSmallTitle = css`
     color: #1f1f1f;
     font-family: Poppins, sans-serif;
     font-weight: 400;
+
+    @media (max-width: 700px) {
+        text-align: center;
+    }
 `
 
 const serviceSectionContentImage = css`

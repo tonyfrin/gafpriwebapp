@@ -21,6 +21,17 @@ width: 100%;
 display: flex;
 align-items: stretch; 
 flex-wrap: nowrap;
+
+@media (max-width: 991px) {
+    flex-wrap: wrap;
+    transition: none;
+}
+
+    @media (max-width: 900px) {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); /* Crea columnas dinámicas con un ancho mínimo del 100% del contenedor */
+        gap: 10px;
+    }
 `;
 
 const buttonArrowStyles = css`
@@ -38,6 +49,10 @@ const carouselPointsStyles = (active: boolean) => css`
     width: 12px;
     height: 12px;
     margin: 7px;
+
+    @media (max-width: 991px) {
+        display: none;
+    }
 `;
 
 const carouselArrowStyles = css`
@@ -53,6 +68,10 @@ const carouselArrowStyles = css`
     color: #07b2e7;;
     z-index: 999;
     left: 0px;
+
+    @media (max-width: 991px) {
+        display: none;
+    }
 `;
 
 const carouselArrowStylesRigth = css`
@@ -68,6 +87,10 @@ const carouselArrowStylesRigth = css`
     color: #07b2e7;;
     z-index: 999;
     right: 0px;
+
+    @media (max-width: 991px) {
+        display: none;
+    }
 `;
 
 const carouselIndicatorPointsContainerStyles = css`
@@ -89,19 +112,27 @@ const carouselIndicatorArowContainerStyles = css`
 `;
 
 const carouselItemStyles = css`
+    width: 25%;
     height: auto;
     flex-grow: 0; 
     flex-shrink: 0;
+
+    @media (max-width: 991px) {
+        width: 50%;
+    }
+
+    @media (max-width: 900px) {
+        width: 100%;
+    }
 `;
 
 interface CarouselItemProps {
     children: React.ReactNode;
-    width: string;
 }
 
-export const CarouselItem: React.FC<CarouselItemProps> = ({ children, width }) => {
+export const CarouselItem: React.FC<CarouselItemProps> = ({ children }) => {
     return (
-        <div className={cx(carouselItemStyles)} style={{ width }}>
+        <div className={cx(carouselItemStyles)}>
             {children}
         </div>
     );
@@ -167,7 +198,7 @@ export const Carousel: React.FC<{ children: React.ReactNode }> = ({ children }) 
         >
             <div className={cx(innerStyles)} style={{ transform: `translateX(-${activeIndex * 25}%)` }}>
                 {React.Children.map(children, (child, index) => {
-                    return React.cloneElement(child as React.ReactElement<CarouselItemProps>, { width: "25%" });
+                    return React.cloneElement(child as React.ReactElement<CarouselItemProps>);
                 })}
             </div>
             <div className={cx(carouselIndicatorArowContainerStyles)}>

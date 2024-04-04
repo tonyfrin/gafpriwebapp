@@ -88,7 +88,7 @@ export const StoreSection = () => {
                     {
                         industrialItems.map(( term, index ) => {
                             return(
-                            <CarouselItem key={index} width="">
+                            <CarouselItem key={index} >
                                 <ButtonCarouselService link={term.href} src={term.src} title={term.title}/>
                             </CarouselItem>
                         )})
