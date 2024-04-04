@@ -2,6 +2,7 @@ import React from "react";
 import { Layout } from '../../Abstract/Component/Layout';
 import { VideoSection } from "../../Abstract/Section/VideoSection";
 import { ServiceSection } from "../../Abstract/Section/ServiceSection";
+import { StoreSection } from "../../Abstract/Section/StoreSection";
 
 
 export const ServiceHome = (): JSX.Element => {
@@ -11,8 +12,8 @@ export const ServiceHome = (): JSX.Element => {
                 <>
                    <VideoSection/>
                    <ServiceSection/>
-                   {/* <StoreSection/>
-                   <WalletSection />
+                   <StoreSection/>
+                   {/* <WalletSection />
                    <DeliverySection/>
                    <CreditSection /> */}
                 </>
