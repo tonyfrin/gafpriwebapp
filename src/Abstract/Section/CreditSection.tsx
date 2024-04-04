@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from '@emotion/css';
 import Image from "next/image";
-import WalletBanner from '../assets/img/fondo-wallet.jpg';
+import CreditBanner from '../assets/img/fondo-credito.jpg';
 
 const serviceSectionContainer = css`
     width: 100%;
@@ -58,15 +58,15 @@ const serviceSectionContentImage = css`
     height: auto;
 `
 
-export const WalletSection = () => {
+export const CreditSection = () => {
     return (
         <section className={serviceSectionContainer}>
             <div className={serviceSectionContent}>
                 <div className={containerText}>
-                    <h3 className={titleStyle}>Recibe pagos de tus clientes de manera segura y retira tus fondos con tranquilidad.</h3>
-                    <p className={serviceSectionContentSmallTitle}>Recibe pagos en Zelle, Paypal o Transferencias y retira efectivo o compra el repuesto que necesites online o en cualquiera de nuestras tiendas asociadas</p>
+                    <h3 className={titleStyle}>Compra a credito en nuestras tiendas asociadas</h3>
+                    <p className={serviceSectionContentSmallTitle}>Obtén acceso a créditos sin intereses en todas nuestras tiendas asociadas. ¡Compra lo que necesitas hoy y paga sin preocupaciones adicionales!</p>
                 </div>
-                <Image width={WalletBanner.width} height={WalletBanner.height} className={serviceSectionContentImage} src={WalletBanner.src} alt="Wallet" />
+                <Image width={CreditBanner.width} height={CreditBanner.height} className={serviceSectionContentImage} src={CreditBanner.src} alt="Wallet" />
             </div>
         </section>
     );

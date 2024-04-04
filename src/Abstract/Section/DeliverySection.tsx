@@ -1,7 +1,7 @@
 import React from "react";
 import { css } from '@emotion/css';
 import Image from "next/image";
-import WalletBanner from '../assets/img/fondo-wallet.jpg';
+import DeliveryBanner from '../assets/img/fondo-delivery.jpg';
 
 const serviceSectionContainer = css`
     width: 100%;
@@ -23,7 +23,7 @@ const serviceSectionContent = css`
 const containerText = css`
     grid-area: span 1 / span 1 / span 1 / span 1;
     align-self: center;
-    justify-self: start;
+    justify-self: end;
     padding: 1rem 4rem;
     box-sizing: border-box;
 `
@@ -32,7 +32,7 @@ const titleStyle = css`
     opacity: 1;
     transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
     transform-style: preserve-3d;
-    text-align: left;
+    text-align: right;
     font-size: 2.2rem;
     font-weight: 700;
     line-height: 1.2;
@@ -58,15 +58,16 @@ const serviceSectionContentImage = css`
     height: auto;
 `
 
-export const WalletSection = () => {
+export const DeliverySection = () => {
     return (
         <section className={serviceSectionContainer}>
             <div className={serviceSectionContent}>
+                
+                <Image width={DeliveryBanner.width} height={DeliveryBanner.height} className={serviceSectionContentImage} src={DeliveryBanner.src} alt="Wallet" />
                 <div className={containerText}>
-                    <h3 className={titleStyle}>Recibe pagos de tus clientes de manera segura y retira tus fondos con tranquilidad.</h3>
-                    <p className={serviceSectionContentSmallTitle}>Recibe pagos en Zelle, Paypal o Transferencias y retira efectivo o compra el repuesto que necesites online o en cualquiera de nuestras tiendas asociadas</p>
+                    <h3 className={titleStyle}>No importa donde estés</h3>
+                    <p className={serviceSectionContentSmallTitle}>Te llevamos el repuestos de refrigeración que necesites completamente gratis.</p>
                 </div>
-                <Image width={WalletBanner.width} height={WalletBanner.height} className={serviceSectionContentImage} src={WalletBanner.src} alt="Wallet" />
             </div>
         </section>
     );
