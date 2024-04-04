@@ -1,6 +1,7 @@
 import React from "react";
 import { Layout } from '../../Abstract/Component/Layout';
 import { VideoSection } from "../../Abstract/Section/VideoSection";
+import { ServiceSection } from "../../Abstract/Section/ServiceSection";
 
 
 export const ServiceHome = (): JSX.Element => {
@@ -9,8 +10,8 @@ export const ServiceHome = (): JSX.Element => {
             <Layout>
                 <>
                    <VideoSection/>
-                   {/* <ServiceSection/>
-                   <StoreSection/>
+                   <ServiceSection/>
+                   {/* <StoreSection/>
                    <WalletSection />
                    <DeliverySection/>
                    <CreditSection /> */}
