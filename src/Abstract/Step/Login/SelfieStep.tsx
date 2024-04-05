@@ -58,11 +58,11 @@ export const SelfieStep = ({
   return (
     <>
         <div>
-            <h1 className={buttonAppMobileContentStyles}>Sube una Selfie de ti</h1>
+            <h1 className={buttonAppMobileContentStyles}>Tomate una Selfie</h1>
         </div>
             <div className={containerInput}>
                 <InputPhotoCamera 
-                    title='Subir foto'
+                    title='Tomar foto'
                     setPhotoData={attributes.actions.changeUserPhoto}
                 />
             </div>

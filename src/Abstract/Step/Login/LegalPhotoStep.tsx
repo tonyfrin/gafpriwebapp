@@ -65,7 +65,7 @@ export const LegalPhotoStep = ({
         </div>
             <div className={containerInput}>
                 <InputPhotoCamera 
-                    title='Subir foto'
+                    title='Tomar foto'
                     setPhotoData={attributes.actions.changeDocumentIdPhoto}
                 />
             </div>

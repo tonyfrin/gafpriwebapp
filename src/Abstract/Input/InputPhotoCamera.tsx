@@ -21,13 +21,13 @@ const buttonAppMobileConatinerStyles = (style: ButtonAppMobileConatinerStylesPro
     font-family: ${style.fontFamiliy || 'Poppins, sans-serif'};
     background-color: ${style.backgroundColor || '#314577'};
     color: ${style.color || '#fff'};
-    width: ${style.width || '80%'};
+    width: ${style.width || '78%'};
     margin: ${style.margin || '2% auto'};
-    border-radius: ${style.borderRadius || '15px'};
+    border-radius: ${style.borderRadius || '12px'};
     box-shadow: ${style.boxShadow || '0 1px 6px 0 #20212447'};
     cursor: ${style.cursor || 'pointer'};
-    font-size: ${style.fontSize || '1.3em'};
-    padding: ${style.padding || '0.9em'};
+    font-size: ${style.fontSize || '1.1em'};
+    padding: ${style.padding || '0.7em'};
     font-family: ${style.fontFamily || 'Poppins, sans-serif'};
     font-weight: 700;
     text-align: center;
