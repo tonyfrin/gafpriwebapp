@@ -1,48 +1,69 @@
 import React from 'react';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
+import { css, cx } from '@emotion/css';
 
-export const InputPhotoCamera: React.FC<{title: string, setPhotoData: (url: string) => void}> = ({title, setPhotoData}) => {
+type ButtonAppMobileConatinerStylesProps = {
+  backgroundColor?: string;
+  color?: string;
+  fontFamiliy?: string;
+  width?: string;
+  margin?: string;
+  borderRadius?: string;
+  boxShadow?: string;
+  cursor?: string;
+  fontSize?: string;
+  padding?: string;
+  custom?: string;
+  fontFamily?: string;
+}
 
-  const handleCapturePhoto = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+const buttonAppMobileConatinerStyles = (style: ButtonAppMobileConatinerStylesProps) => css`
+    font-family: ${style.fontFamiliy || 'Poppins, sans-serif'};
+    background-color: ${style.backgroundColor || '#314577'};
+    color: ${style.color || '#fff'};
+    width: ${style.width || '85%'};
+    margin: ${style.margin || '2% auto'};
+    border-radius: ${style.borderRadius || '15px'};
+    box-shadow: ${style.boxShadow || '0 1px 6px 0 #20212447'};
+    cursor: ${style.cursor || 'pointer'};
+    font-size: ${style.fontSize || '1.5em'};
+    padding: ${style.padding || '0.9em'};
+    font-family: ${style.fontFamily || 'Poppins, sans-serif'};
+    font-weight: 800;
+    text-align: center;
+    ${style.custom || ''}
+`
 
-      const video = document.createElement('video');
-      video.srcObject = stream;
+const inputStyles = css`
+  display: none;
+`;
 
-      const canvas = document.createElement('canvas');
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
+export const InputPhotoCamera: React.FC<{
+  title: string, 
+  setPhotoData: (url: string) => void, 
+  containerStyles?: ButtonAppMobileConatinerStylesProps;
+}> = ({
+  title, 
+  setPhotoData,
+  containerStyles = {}
+}) => {
 
-      const context = canvas.getContext('2d');
-      if (context) {
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-        // Esperar un breve momento para asegurarnos de que la imagen se haya dibujado completamente
-        setTimeout(() => {
-          const dataUrl = canvas.toDataURL('image/jpeg');
-          setPhotoData(dataUrl);
-        }, 100); // Ajusta el tiempo según sea necesario
-      }
-
-      if (video.srcObject) {
-        (video.srcObject as MediaStream).getTracks().forEach(track => track.stop());
-      }
-    } catch (error) {
-      console.error('Error accessing camera:', error);
+  const handleCapturePhoto = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result as string;
+        setPhotoData(dataUrl);
+      };
+      reader.readAsDataURL(file);
     }
   };
 
   return (
-      <ButtonAppMobile 
-        containerProps={{
-          onClick: handleCapturePhoto,
-        }}
-       title={title}
-       containerStyles={{
-        backgroundColor: '#314577'
-       }}
-      />
+    <>
+      <input className={inputStyles} type="file" id="upload-photo" accept="image/*" capture="environment" onChange={handleCapturePhoto} />
+      <label className={cx(buttonAppMobileConatinerStyles(containerStyles))} htmlFor="upload-photo">{title}</label>
+    </>
   );
 };
-

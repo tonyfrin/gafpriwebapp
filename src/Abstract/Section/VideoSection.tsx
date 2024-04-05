@@ -144,11 +144,7 @@ export const VideoSection = (): JSX.Element => {
                                     title="Crear cuenta" 
                                     containerStyles={{
                                         width: '40%',
-                                        custom: `
-                                            @media (max-width: 600px) {
-
-                                            }
-                                        `
+                                        borderRadius: '8px',
                                     }} 
 
                                     contentStyles={{
