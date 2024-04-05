@@ -1,5 +1,7 @@
 import React from "react";
 import { css } from '@emotion/css';
+import { ButtonAppMobile } from "../Button/ButtonAppMobile";
+import Link from "next/link";
 
 const videoSectionContainer = css`
     background-color: rgba(0, 0, 0, .75);
@@ -73,7 +75,7 @@ const videoSectionContentTitleContainer = css`
         margin-left: 30px;
     }
 
-    @media (max-width: 415px) {
+    @media (max-width: 470px) {
         margin-left: 0;
     }
 
@@ -88,7 +90,7 @@ const videoSectionContentTitleText = css`
     font-weight: 700;
     line-height: 1.2;
 
-    @media (max-width: 415px) {
+    @media (max-width: 470px) {
         font-size: 2.8rem;
     }
 
@@ -135,6 +137,34 @@ export const VideoSection = (): JSX.Element => {
                             </h1>
                             <div className={videoSectionContentTitleTextP}>
                                 GAFPRI es la solución integral diseñada para técnicos en refrigeración
+                            </div>
+                            <div>
+                            <Link href='/micuenta'>
+                                <ButtonAppMobile 
+                                    title="Crear cuenta" 
+                                    containerStyles={{
+                                        width: '40%',
+                                        custom: `
+                                            @media (max-width: 600px) {
+
+                                            }
+                                        `
+                                    }} 
+
+                                    contentStyles={{
+                                        padding: '0.7em',
+                                        custom: `
+                                            @media (max-width: 800px) {
+                                                font-size: 1.2em;
+                                            }
+
+                                            @media (max-width: 360px) {
+                                                font-size: 1em;
+                                            }
+                                        `
+                                    }}
+                                />
+                            </Link>
                             </div>
                         </div>
                     </div>

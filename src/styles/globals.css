@@ -34,8 +34,8 @@ input.gs-input-alert, div.gs-input-alert{
 }
 
 
-span.gs-disabled, .disabled a, .gs-disabled a, button.gs-disabled{
-  opacity: 0.4;
+span.gs-disabled, .disabled a, .gs-disabled a, button.gs-disabled, .gs-disabled{
+  opacity: 0.3;
   box-shadow: none;
   cursor: default;
 }

@@ -5,6 +5,7 @@ import { SingleHeader } from '../Header/SingleHeader';
 
 type LayoutContainerStyleProps = {
   display?: string;
+  backgroundImage?: string;
   flexDirection?: string;
   minHeight?: string;
   custom?: string;
@@ -13,6 +14,7 @@ type LayoutContainerStyleProps = {
 const layoutContainerStyle = (
   styles: LayoutContainerStyleProps
 ) => css`
+  ${styles.backgroundImage ? `background-image: url(${styles.backgroundImage});` : ''}
   display: ${styles.display || 'flex'};
   flex-direction: ${styles.flexDirection || 'column'};
   min-height: ${styles.minHeight || '100vh'};
