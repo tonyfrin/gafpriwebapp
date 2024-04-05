@@ -141,7 +141,7 @@ export const VideoSection = (): JSX.Element => {
                             <div>
                             <Link href='/micuenta'>
                                 <ButtonAppMobile 
-                                    title="Crear cuenta" 
+                                    title="Ingresar" 
                                     containerStyles={{
                                         width: '40%',
                                         borderRadius: '8px',

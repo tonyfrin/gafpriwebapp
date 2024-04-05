@@ -41,7 +41,9 @@ export default function Login() {
         <>
             <div className={loginContainerStyles}>
                 <div className={loginContentStyles}>
-                    <ButtonAppMobile title="Ya tengo cuenta" />
+                    <Link href="micuenta/login" className={linkStyles}>
+                        <ButtonAppMobile title="Ya tengo cuenta" />
+                    </Link>
                     <Link href="micuenta/registro" className={linkStyles}>
                         <ButtonAppMobile title="Registrarme" 
                         containerStyles={{
