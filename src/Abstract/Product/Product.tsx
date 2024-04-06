@@ -100,7 +100,6 @@ const titleProductStyles = css`
 
 const categoryStyles = css` 
     font-size: 0.6em;
-    margin: 1em;
     background-color: #ebebeb;
     width: auto;
     text-align: center;
