@@ -63,11 +63,13 @@ type Items = {
 type BoxCategoryAppProps = {
   title: string;
   items: Items[];
+  buttonProps?: boolean;
 }
 
 export function BoxCategoryApp({
   title,
   items,
+  buttonProps = true,
 }: BoxCategoryAppProps) {
   return (
         <>
@@ -96,22 +98,24 @@ export function BoxCategoryApp({
             </div>
             
             </section>
-            <div className={containerButtonAll}>
-              <ButtonAppMobile 
-                containerStyles={{
-                  width:'30%',
-                  borderRadius: '5px',
-                }}
-                contentStyles={{
-                  fontSize: '0.8em',
-                  padding: '0.3em',
-                  custom: `
-                    font-weight: 600;
-                  `
-                }}
-                title='Ver todos'
-              />
-            </div>
+            {buttonProps && 
+              <div className={containerButtonAll}>
+                <ButtonAppMobile 
+                  containerStyles={{
+                    width:'30%',
+                    borderRadius: '5px',
+                  }}
+                  contentStyles={{
+                    fontSize: '0.8em',
+                    padding: '0.3em',
+                    custom: `
+                      font-weight: 600;
+                    `
+                  }}
+                  title='Ver todos'
+                />
+              </div>
+            }
           </div>
         </>
   );

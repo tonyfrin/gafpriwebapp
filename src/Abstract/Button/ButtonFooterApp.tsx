@@ -20,12 +20,12 @@ const iconButtonStyle = css`
 
 const inconStyle = css`
     color: #848589;
-    font-size: 20px;
+    font-size: 25px;
 `
 
 const iconTitleStyle = css`
     color: #848589;
-    font-size: 7px;
+    font-size: 10px;
     font-family: 'Poppins', sans-serif;
 `
 
