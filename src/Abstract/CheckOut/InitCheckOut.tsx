@@ -134,7 +134,9 @@ export function InitCheckOut({
                 <div style={{
                   width: '20%',
                 }} className={containerColumnEndStyles}>
-                  <button>
+                  <button
+                    onClick={() => useCheckOut.pages.actions.onPaymentList()}
+                  >
                     <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
                   </button>
                 </div>
@@ -144,7 +146,7 @@ export function InitCheckOut({
                 <div style={{
                   width: '40%',
                 }}>
-                  <span className={priceTotalStyles}>Resumen de compra:</span>
+                  <span className={priceTotalStyles}>Total compra:</span>
                 </div>
                 <div style={{
                   width: '40%',
@@ -154,7 +156,9 @@ export function InitCheckOut({
                 <div style={{
                   width: '20%',
                 }} className={containerColumnEndStyles}>
-                  <button>
+                  <button
+                    onClick={() => useCheckOut.pages.actions.onSummary()}
+                  >
                     <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
                   </button>
                 </div>  

@@ -5,6 +5,8 @@ import { InitCheckOut } from '../CheckOut/InitCheckOut';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AddressList } from '../CheckOut/AddressList';
 import { AddressAdd } from '../CheckOut/AddressAdd';
+import { PaymentMethod } from '../CheckOut/PaymentMethod';
+import { Summary } from '../CheckOut/Summary';
 
 const containerModalStyle = css`
   background-color: #ececec;
@@ -24,10 +26,12 @@ const containerModalStyle = css`
 
 export type CheckOutProps = {
   setModal: (value: boolean) => void;
+  modal: boolean;
 }
 
 export function CheckOut({
     setModal,
+    modal,
 }: CheckOutProps) {
   const useCheckOut = useGafpriCheckOut();
 
@@ -45,7 +49,7 @@ export function CheckOut({
                 <AiOutlineCloseCircle style={{margin: '0.5em auto 0px auto', display: 'block', fontSize: '2em', color: '#909090'}}/> 
               </button>
               <div>
-                  {useCheckOut.pages.states.isInit && 
+                  {modal && useCheckOut.pages.states.isInit && 
                     <InitCheckOut setModal={setModal} useCheckOut={useCheckOut} />
                   }
 
@@ -55,6 +59,16 @@ export function CheckOut({
 
                   {useCheckOut.pages.states.isAddressAdd &&
                     <AddressAdd setModal={setModal} useCheckOut={useCheckOut} />
+                  }
+
+                  {
+                    useCheckOut.pages.states.isPaymentList &&
+                    <PaymentMethod setModal={setModal} useCheckOut={useCheckOut} />
+                  }
+
+                  {
+                    useCheckOut.pages.states.isSummary &&
+                    <Summary setModal={setModal} useCheckOut={useCheckOut} />
                   }
               </div>
         </div>

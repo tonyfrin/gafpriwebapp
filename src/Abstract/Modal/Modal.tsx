@@ -8,9 +8,9 @@ const paginaOpcionesStyles = (open: boolean) => css`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  opacity: ${open ? 1 : 0};
-  visibility: ${open ? 'visible' : 'hidden'};
-  transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: ${!open ? 0 : 1};
+  visibility: ${!open ? 'hidden' : 'visible'};
+  transition: ${open ? 'opacity 0.5s ease-in-out, visibility 0.5s ease-in-out, transform 0.5s ease-in-out' : ''};
   transform: translateY(${open ? 0 : '100%'});
   z-index: 998;
 `;

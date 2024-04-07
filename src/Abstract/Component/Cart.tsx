@@ -109,10 +109,6 @@ const containerColumnEndStyles = css`
 export function Cart() {
   const [modal, setModal] = React.useState(false);
 
-  const openModal = () => {
-    setModal(true);
-  }
-
   return (
     <>
       <LayoutApp>
@@ -168,18 +164,19 @@ export function Cart() {
                 title="Comprar"
 
                 containerProps={{
-                  onClick: openModal
+                  onClick: () => setModal(true),
                 }}
               />
             </div>
-            <Modal open={modal}>
-             <>
-                <CheckOut setModal={setModal}/>
-             </>
-            </Modal>
+            
           </main>
         </>
       </LayoutApp>
+    
+        <Modal open={modal}>
+          <CheckOut setModal={setModal} modal={modal}/>
+        </Modal>
+      
     </>
   );
 }
