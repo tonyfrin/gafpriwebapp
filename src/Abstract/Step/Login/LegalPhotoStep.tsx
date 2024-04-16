@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputPhotoCamera } from '../../Input/InputPhotoCamera';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
+import { useTheme } from '../../context/ThemeContext'
+import { PhotoForm } from '@/Abstract/Form/PhotoForm';
+import { Error } from '@/Abstract/Error';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -29,32 +31,25 @@ const containerInput = css`
     margin: 20px auto;
     display: flex;
 `
-    
-type LegalPhotoStepProps = {
-    nextStep: () => void;
-    attributes: UseGafpriAttributesSingUpReturn;
-}
 
 
-export const LegalPhotoStep = ({
-    nextStep,
-    attributes
-}: LegalPhotoStepProps) => {
+export const LegalPhotoStep = () => {
+    const { useSingUp, useError } = useTheme();
 
     useEffect(() => {
-        attributes.actions.validationDocumentIdPhoto(attributes.states.documentIdPhoto);
-    }, [attributes.states.documentIdPhoto]); // eslint-disable-line
+        useSingUp.attributes.actions.validationDocumentIdPhoto(useSingUp.attributes.states.documentIdPhoto);
+    }, [useSingUp.attributes.states.documentIdPhoto]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep7();
+        useSingUp.attributes.actions.validationButtonStep7();
     }, [ // eslint-disable-line
-        attributes.states.documentIdPhoto,
-        attributes.states.documentIdPhotoValid,
+        useSingUp.attributes.states.documentIdPhoto,
+        useSingUp.attributes.states.documentIdPhotoValid,
     ]);
 
     const next = () => {
-        if (attributes.actions.validationButtonStep7()) {
-            nextStep();
+        if (useSingUp.attributes.actions.validationButtonStep7()) {
+            useSingUp.pages.actions.onSelfie();
         }
     }
 
@@ -63,10 +58,17 @@ export const LegalPhotoStep = ({
         <div>
             <h1 className={buttonAppMobileContentStyles}>Sube una foto de tu documento</h1>
         </div>
+            <Error 
+                error={useError.states.error}
+            />
             <div className={containerInput}>
-                <InputPhotoCamera 
-                    title='Tomar foto'
-                    setPhotoData={attributes.actions.changeDocumentIdPhoto}
+                <PhotoForm
+                    photo = {useSingUp.attributes.states.documentIdPhoto}
+                    changePhoto = {useSingUp.attributes.actions.changeDocumentIdPhoto}
+                    changeError = {useError.actions.changeError}
+                    setSubmitting = {useSingUp.attributes.actions.setSubmittingDocumentId}
+                    submitting = {useSingUp.attributes.states.submittingDocumentId}
+                    formId='documentId'
                 />
             </div>
             

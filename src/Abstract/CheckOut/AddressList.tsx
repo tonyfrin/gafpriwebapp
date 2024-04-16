@@ -1,11 +1,11 @@
 import React from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
-import { IoLocationOutline } from 'react-icons/io5';
-import { IoBicycleOutline } from 'react-icons/io5';
 import { FiChevronLeft } from 'react-icons/fi';
-import { IoIosAddCircleOutline } from 'react-icons/io';
 import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
+import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
+import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
+import { useTheme } from '../context/ThemeContext';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -121,12 +121,64 @@ const containerButtonCheckOutStyle = css`
 export type AddressListProps = {
   setModal: (value: boolean) => void;
   useCheckOut: UseGafpriCheckOutReturn;
+  user: UserAttributesReturn;
+}
+
+type items = {
+  id: string;
+  name: string;
+  fullAddress: string;
+  address: AddressAttributesReturn;
+}
+
+type options = {
+  value: string;
+  label: string;
 }
 
 export function AddressList({
     setModal,
     useCheckOut,
+    user,
 }: AddressListProps) {
+  const { useAddress } = useTheme();
+
+  const items: items[] = [];
+
+  const entityOptions: options[] = [];
+
+  user.entity.map((entity) => {
+    entityOptions.push({value: entity.id, label: entity.lastName ? `${entity.name} ${entity.lastName}` : entity.name});
+    entity.address.map((address) => {
+      items.push({
+        id: address.id,
+        name: entity.lastName ? `${entity.name} ${entity.lastName}` : entity.name,
+        fullAddress: `${address.address1}, ${address.city}`,
+        address,
+      });
+      return null;
+    });
+    return null;
+  });
+
+  items.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+  const goAddressUpdate = (address: AddressAttributesReturn) => {
+    useAddress.attributes.actions.setId(address.id);
+    useAddress.attributes.actions.setAddress(address);
+    useCheckOut.pages.actions.onAddressUpdate();
+  }
+
+  const goAddressAdd = () => {
+    useAddress.attributes.actions.setEntityOptions(entityOptions);
+    useAddress.attributes.actions.setEntityId(entityOptions[0].value);
+    useCheckOut.pages.actions.onAddressAdd();
+  }
+
+  const selectAddress = (id: string) => {
+    useCheckOut.attributes.actions.setAddressId(id);
+    useCheckOut.pages.actions.onInit();
+  }
 
   return (
     <> 
@@ -170,20 +222,26 @@ export function AddressList({
             <div className={fila3}>
               <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Detalles de Envío</h1>
             </div>
-            <div className={fila3}>
+            {items.map((item, index) => (
+              <>
+              <div className={fila3} key={`address-${index}`}>
                 <div style={{
                   width: '10%',
                 }}>
                    <input
                       type="checkbox"
                      className={checkboxStyles}
+                     checked={item.id === useCheckOut.attributes.states.addressId}
+                     onChange={() => selectAddress(item.id)}
                     />
                 </div>
                 <div style={{
                   width: '70%',
                   display: 'flex',
+                  flexDirection: 'column',
                 }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>Av. 15 delicias con calle 74, Maracaibo, Zulia, Venezuela</span>
+                  <span className={priceStyles}>{item.name}</span>
+                  <span className={priceStyles}>{item.fullAddress}</span>
                 </div>
                 <div style={{
                   width: '10%',
@@ -195,132 +253,24 @@ export function AddressList({
                     color: '#314577',
                     cursor: 'pointer',
                     fontFamily: 'Poppins',
-                  }}>Editar</span>
+                  }}
+                  onClick={() => goAddressUpdate(item.address)}
+                  >Editar</span>
                 </div>
             </div>
-            <div className={fila3}>
-                <div style={{
-                  width: '10%',
-                }}>
-                   <input
-                      type="checkbox"
-                     className={checkboxStyles}
-                    />
-                </div>
-                <div style={{
-                  width: '70%',
-                  display: 'flex',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>Av. 15 delicias con calle 74, Maracaibo, Zulia, Venezuela</span>
-                </div>
-                <div style={{
-                  width: '10%',
-                  display: 'flex',
-                  margin: 'auto',
-                }} className={containerColumnCenterStyles}>
-                  <span style={{
-                    fontSize: '0.6em',
-                    color: '#314577',
-                    cursor: 'pointer',
-                    fontFamily: 'Poppins',
-                  }}>Editar</span>
-                </div>
-            </div>
-            <div className={fila3}>
-                <div style={{
-                  width: '10%',
-                }}>
-                   <input
-                      type="checkbox"
-                     className={checkboxStyles}
-                    />
-                </div>
-                <div style={{
-                  width: '70%',
-                  display: 'flex',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>Av. 15 delicias con calle 74, Maracaibo, Zulia, Venezuela</span>
-                </div>
-                <div style={{
-                  width: '10%',
-                  display: 'flex',
-                  margin: 'auto',
-                }} className={containerColumnCenterStyles}>
-                  <span style={{
-                    fontSize: '0.6em',
-                    color: '#314577',
-                    cursor: 'pointer',
-                    fontFamily: 'Poppins',
-                  }}>Editar</span>
-                </div>
-            </div>
-            <div className={fila3}>
-                <div style={{
-                  width: '10%',
-                }}>
-                   <input
-                      type="checkbox"
-                     className={checkboxStyles}
-                    />
-                </div>
-                <div style={{
-                  width: '70%',
-                  display: 'flex',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>Av. 15 delicias con calle 74, Maracaibo, Zulia, Venezuela</span>
-                </div>
-                <div style={{
-                  width: '10%',
-                  display: 'flex',
-                  margin: 'auto',
-                }} className={containerColumnCenterStyles}>
-                  <span style={{
-                    fontSize: '0.6em',
-                    color: '#314577',
-                    cursor: 'pointer',
-                    fontFamily: 'Poppins',
-                  }}>Editar</span>
-                </div>
-            </div>
-            <div className={fila3}>
-                <div style={{
-                  width: '10%',
-                }}>
-                   <input
-                      type="checkbox"
-                     className={checkboxStyles}
-                    />
-                </div>
-                <div style={{
-                  width: '70%',
-                  display: 'flex',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>Av. 15 delicias con calle 74, Maracaibo, Zulia, Venezuela</span>
-                </div>
-                <div style={{
-                  width: '10%',
-                  display: 'flex',
-                  margin: 'auto',
-                }} className={containerColumnCenterStyles}>
-                  <span style={{
-                    fontSize: '0.6em',
-                    color: '#314577',
-                    cursor: 'pointer',
-                    fontFamily: 'Poppins',
-                  }}>Editar</span>
-                </div>
-            </div>
+              </>
+            ))}
+            
+            
+            
             <div className={containerButtonCheckOutStyle}>
-              <ButtonAppMobile 
-                title="Continuar"
-              />
                <ButtonAppMobile 
                 title="Agregar Dirección"
                 containerStyles={{
                   backgroundColor: '#314577'
                 }}
                 containerProps={{
-                  onClick: () => useCheckOut.pages.actions.onAddressAdd()
+                  onClick: () => goAddressAdd()
                 }}
               />
             </div>

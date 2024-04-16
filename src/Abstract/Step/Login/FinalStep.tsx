@@ -2,6 +2,7 @@ import React from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import Link from 'next/link';
+import { useTheme } from '@/Abstract/context/ThemeContext';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -31,6 +32,8 @@ export type FinalStepProps = {
 
 
 export const FinalStep = () => {
+    const { useSingUp } = useTheme();
+
   return (
     <>
         <div>
@@ -42,7 +45,11 @@ export const FinalStep = () => {
             
         <div className={loginContainerStyles}>
             <Link href="/" className={loginContentStyles}>
-                <ButtonAppMobile title="Volver al Inicio" />
+                <ButtonAppMobile title="Volver al Inicio" 
+                    containerProps={{
+                        onClick: useSingUp.pages.actions.returnInit,
+                    }}
+                />
             </Link>
         </div>
      </>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {use, useEffect, useState} from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { IoLocationOutline } from 'react-icons/io5';
@@ -8,6 +8,10 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp  } from '../Select/SelectApp';
+import { useTheme } from '../context/ThemeContext';
+import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
+import { Loading } from '../Loading';
+import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -119,44 +123,53 @@ const containerButtonCheckOutStyle = css`
     padding: 1em 0px;
 `
 
-export type AddressAddProps = {
-  setModal: (value: boolean) => void;
-  useCheckOut: UseGafpriCheckOutReturn;
-}
-
 interface Location {
   latitude: number;
   longitude: number;
 }
 
-export function AddressAdd({
-    setModal,
-    useCheckOut,
-}: AddressAddProps) {
-  const [currentLocation, setCurrentLocation] = useState<Location | null>(null);
+type AddressUpdateProps = {
+  setUser: (value: UserAttributesReturn) => void;
+}
 
-  const getCurrentLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
-          setCurrentLocation({ latitude, longitude });
-          // Aquí puedes enviar la ubicación al servidor si lo deseas
-        },
-        error => {
-          console.error('Error obteniendo la ubicación:', error);
-        }
-      );
-    } else {
-      console.error('Geolocalización no soportada por el navegador.');
+export function AddressAdd({
+  setUser
+}: AddressUpdateProps) {
+  const { useAddress, useCheckOut } = useTheme();
+
+  const labelEntity = useAddress.attributes.states.entityOptions.find(option => option.value === useAddress.attributes.states.entityId)?.label || 'Selecciona una entidad';
+  console.log('labelEntity', labelEntity);
+  const add = async () => {
+    if(useAddress.attributes.actions.validationButton()){
+      useCheckOut.pages.actions.onFetching();
+      const data = await useAddress.api.actions.addAddress();
+      if(data && data.success){
+        setUser(data.item);
+        useCheckOut.pages.actions.onAddressList();
+      }
     }
-  };
+  }
+
+  const returnList = () => {
+    useAddress.attributes.actions.resetInfo();
+    useCheckOut.pages.actions.onAddressList();
+  }
+
+  useEffect(() => {
+    useAddress.attributes.actions.validationAddress1(useAddress.attributes.states.address1);
+    useAddress.attributes.actions.validationAddress2(useAddress.attributes.states.address2);
+    useAddress.attributes.actions.validationCity(useAddress.attributes.states.city);
+    useAddress.attributes.actions.validationButton();
+  }, [ useAddress.attributes.states.address1, useAddress.attributes.states.address2, useAddress.attributes.states.city, ]); // eslint-disable-line
+
+
+  
 
   return (
     <> 
           <div
             style={{
-              marginBottom: '120px'
+              marginBottom: '220px'
             }}
           >
             <div style={{
@@ -169,29 +182,49 @@ export function AddressAdd({
                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Nueva dirección</h1>
                 <FiChevronLeft 
                     className={arrowStyle}
-                    onClick={useCheckOut.pages.actions.onAddressList}
+                    onClick={returnList}
                 />
             </div>
+
+              <div style={{
+                margin: 'auto',
+                padding: '0px',
+                display: 'flex',
+              }}>
+                <SelectApp
+                  options={useAddress.attributes.states.entityOptions}
+                  value={labelEntity}
+                  onChange={(e) => useAddress.attributes.actions.setEntityId(e)}
+                />
+              </div>
            
               <InputAppContainer 
                 inputProps={{
                   placeholder: 'Dirección',
                   type: 'text',
+                  value: useAddress.attributes.states.address1,
+                  onChange: (e) => useAddress.attributes.actions.changeAddress1(e.target.value)
+                }}
+              />
+
+              <InputAppContainer 
+                inputProps={{
+                  placeholder: 'Continuar Dirección',
+                  type: 'text',
+                  value: useAddress.attributes.states.address2,
+                  onChange: (e) => useAddress.attributes.actions.changeAddress2(e.target.value)
                 }}
               />
 
               <div style={{
                 margin: 'auto',
-                padding: '1em 0px',
+                padding: '0px',
                 display: 'flex',
               }}>
                 <SelectApp
-                  options={[
-                    { value: '0', label: 'Maracaibo' },
-                    { value: '1', label: 'San Francisco' },
-                  ]}
-                  value="Maracaibo"
-                  onChange={(value) => console.log(value)}
+                  options={useAddress.attributes.states.cityOptions}
+                  value={useAddress.attributes.states.city}
+                  onChange={(e) => useAddress.attributes.actions.changeCity(e)}
                 />
               </div>
               <div
@@ -212,10 +245,13 @@ export function AddressAdd({
                   title='Agrega tu posición'
 
                   containerStyles={{
-                    backgroundColor: '#314577'
+                    backgroundColor: '#314577',
                   }}
                   containerProps={{
-                    onClick: () => getCurrentLocation()
+                    onClick: () => useAddress.attributes.actions.changeCurrentLocation()
+                  }}
+                  contentStyles={{
+                    fontSize: '1.2em',
                   }}
                 />
               </div>
@@ -223,6 +259,10 @@ export function AddressAdd({
             <div className={containerButtonCheckOutStyle}>
               <ButtonAppMobile 
                 title="Agregar"
+                containerProps={{
+                  id: 'add-update-address-button',
+                  onClick: () => add()
+                }}
               />
             </div>
           </div>

@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
+import { useTheme } from '../../context/ThemeContext';
+import { Error } from '@/Abstract/Error';
 
 
 
@@ -29,36 +30,44 @@ const loginContentStyles = css`
 
 type EmailStepProps = {
     nextStep: () => void;
-    attributes: UseGafpriAttributesSingUpReturn;
 }
 
 
 
 export const EmailStep = ({
     nextStep,
-    attributes
 }: EmailStepProps) => {
+    const { useSingUp, useError } = useTheme();
 
     useEffect(() => {
-        attributes.actions.validationEmail(attributes.states.email);
-    }, [attributes.states.email]); // eslint-disable-line
+        useSingUp.attributes.actions.validationEmail(useSingUp.attributes.states.email);
+    }, [useSingUp.attributes.states.email]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep1();
+        useSingUp.attributes.actions.validationButtonStep1();
     }, [ // eslint-disable-line
-        attributes.states.email,
-        attributes.states.emailValid,
+        useSingUp.attributes.states.email,
+        useSingUp.attributes.states.emailValid,
     ]);
 
-    const next = () => {
-        if (attributes.actions.validationButtonStep1()) {
-            nextStep();
+    const next = async () => {
+        if (useSingUp.attributes.actions.validationButtonStep1()) {
+            try{
+                await useSingUp.api.actions.requestEmailCode();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                nextStep();
+            }
         }
     }
 
 
   return (
     <>
+        <Error 
+            error={useError.states.error}
+        />
         <div>
             <h1 className={buttonAppMobileContentStyles}>Iniciemos con tu email</h1>
         </div>
@@ -66,7 +75,7 @@ export const EmailStep = ({
                 inputProps={{
                     type: 'email',
                     placeholder: 'ejemplo@ejemplo.com',
-                    onChange: (e) => attributes.actions.changeEmail(e.target.value)
+                    onChange: (e) => useSingUp.attributes.actions.changeEmail(e.target.value)
                 }}
                 description="Te enviaremos un codigo de verificación"
             />

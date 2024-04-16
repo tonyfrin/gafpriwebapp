@@ -2,6 +2,8 @@ import React from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import Image from 'next/image';
+import { CategoryAttributesReturn } from '../states/category/useGafpriApiCategory';
+import Link from 'next/link';
 
 const sectionStyles = css`
   margin-bottom: 2em;
@@ -61,39 +63,43 @@ type Items = {
 }
 
 type BoxCategoryAppProps = {
-  title: string;
-  items: Items[];
+  category: CategoryAttributesReturn;
   buttonProps?: boolean;
 }
 
 export function BoxCategoryApp({
-  title,
-  items,
+  category,
   buttonProps = true,
 }: BoxCategoryAppProps) {
   return (
         <>
         <div className={sectionStyles}>
-            <h2 className={title2AppStyles}>{title}</h2>
+            <h2 className={title2AppStyles}>{category.name}</h2>
             <section className={productos}>
             <div className={fila}>
-              {items.slice(0, 3).map((category, index) => (
-                <div className={producto} key={`product-${index}`}>
+              {category.children && category.children.slice(0, 3).map((children, index) => (
+                <Link key={`product-${index}`} href="/categoria/[id]" as={`/categoria/${children.id}`} className={producto} style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                }}>
                   <div>
-                    <Image src={category.img} alt={category.title} className={imgStyles} width={500} height={500}/>
-                    <h3 className={titleProductStyles}>{category.title}</h3>
+                    <Image src={children.photo} alt={children.name} className={imgStyles} width={500} height={500}/>
+                    <h3 className={titleProductStyles}>{children.name}</h3>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             <div className={fila}>
-              {items.slice(3).map((category, index) => (
-                <div className={producto} key={`product-${index}`}>
+              {category.children && category.children.slice(3).map((children, index) => (
+                <Link key={`product-${index}`} href="/categoria/[id]" as={`/categoria/${children.id}`} className={producto} style={{
+                  textDecoration: 'none',
+                  color: 'inherit',
+                }}>
                   <div>
-                    <Image src={category.img} alt={category.title} className={imgStyles} width={500} height={500}/>
-                    <h3 className={titleProductStyles}>{category.title}</h3>
+                    <Image src={children.photo} alt={children.name} className={imgStyles} width={500} height={500}/>
+                    <h3 className={titleProductStyles}>{children.name}</h3>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
             

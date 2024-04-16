@@ -15,6 +15,7 @@ type Actions = {
   changeUserName: (value: string) => void;
   changePassword: (value: string) => void;
   validationButton: () => boolean;
+  resetInfo: () => void;
 };
 
 
@@ -30,6 +31,13 @@ export function useGafpriAttributesLogin(): UseGafpriAttributesLoginReturn {
 
   const [password, setPassword] = useState<string>('');
   const [passwordValid, setPasswordValid] = useState<boolean>(false);
+
+  const resetInfo = (): void => {
+    setUserName('');
+    setUserNameValid(false);
+    setPassword('');
+    setPasswordValid(false);
+  }
 
   
   const validationUserName = (value: string) => {
@@ -99,6 +107,7 @@ export function useGafpriAttributesLogin(): UseGafpriAttributesLoginReturn {
     changeUserName,
     changePassword,
     validationButton,
+    resetInfo,
   };
 
   return {

@@ -1,3 +1,5 @@
+import { API_URL } from '../constants';
+
 export const addClass = (element: string, className: string): void => {
     const input = document.getElementById(element);
   
@@ -61,4 +63,165 @@ export const generalValidationButtonNext = ({
   }
 
   return isAllValid;
+};
+
+export interface InitToken {
+  token?: string | undefined;
+}
+
+interface FetchOptions<T = unknown> {
+  initMethod: 'POST' | 'GET' | 'PUT' | 'PATCH' | 'DELETE';
+  initApi?: string;
+  initRoute: string;
+  initToken?: InitToken;
+  initCredentials?: T;
+  functionFetching?: () => void;
+  functionSuccess?: (data: T) => void;
+  functionError?: (data: T) => void;
+}
+
+export async function gafpriFetch<T = unknown>({
+  initMethod,
+  initApi = API_URL,
+  initRoute,
+  initToken,
+  initCredentials,
+  functionFetching,
+  functionSuccess,
+  functionError,
+}: FetchOptions<T>): Promise<any> {
+
+  if (functionFetching !== undefined) {
+    functionFetching();
+  }
+
+  let headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+  };
+
+  if (initToken !== undefined) {
+    headers = {
+      ...headers,
+      Authorization: `Bearer ${initToken.token}`,
+    };
+  }
+
+  const options: RequestInit = {
+    method: initMethod,
+    headers: headers,
+    body: JSON.stringify(initCredentials),
+  };
+
+  const resp = await fetch(`${initApi}${initRoute}`, options)
+    .then((response) => response.json())
+    .then((data) => {
+      
+      if (data.success) {
+        if (functionSuccess !== undefined) {
+          functionSuccess(data);
+        }
+      } else if (functionError !== undefined) {
+        functionError(data);
+      }
+      return data;
+    })
+    .catch((error) => {
+      if (functionError !== undefined) {
+        functionError(error);
+      }
+      return error;
+  });
+  return resp;
+}
+
+export interface FormatOptions {
+  miles: ',' | '.';
+  decimal: ',' | '.';
+}
+
+export const decimalFormatPriceConverter = (
+  str: string | number,
+  dig: number,
+  currencySymbol: string,
+  currencyLocation: 'left' | 'right',
+  formatOptions: FormatOptions = { miles: ',', decimal: '.' }
+): string => {
+  let data = 0;
+
+  if (typeof str === 'number') {
+    data = str;
+  } else if (typeof str === 'string') {
+    const sanitizedStr = str
+      .replace(new RegExp(`\\${formatOptions.miles}`, 'g'), '')
+      .replace(formatOptions.decimal, '.');
+    const check = parseFloat(sanitizedStr);
+
+    if (!Number.isNaN(check)) {
+      data = check;
+    }
+  }
+
+  // Asegurarse de que haya siempre la cantidad deseada de decimales
+  const fixedDecimal = data.toFixed(dig);
+
+  // Formatear con separadores de miles y decimales
+  const parts = fixedDecimal.split('.');
+  const formattedNumber =
+    parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, formatOptions.miles) +
+    (parts[1] ? formatOptions.decimal + parts[1] : ''); // Agregado manejo de casos sin decimales
+
+  if (currencyLocation === 'left') {
+    return `${currencySymbol} ${formattedNumber}`;
+  }
+
+  return `${formattedNumber} ${currencySymbol}`;
+};
+
+export function formatPhoneNumber(phoneNumber: string): string {
+  // Eliminar cualquier caracter que no sea un dígito
+  const cleaned = ('' + phoneNumber).replace(/\D/g, '');
+
+  // Verificar si el número tiene un cero inicial y eliminarlo
+  let formatted = cleaned;
+  if (cleaned.length === 11 && cleaned.startsWith('0')) {
+    formatted = cleaned.substring(1);
+  }
+
+  // Aplicar el formato deseado
+  formatted = formatted.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2 $3');
+
+  return formatted;
+}
+
+export const formatDate = (date: string): string => {
+  const newDate = new Date(date);
+  // Formatear la fecha
+  const format = new Intl.DateTimeFormat('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+
+  return format.format(newDate);
+};
+
+export function getMimeTypeByExtension(filename: string): string | null {
+  const extension = filename.split('.').pop()?.toLowerCase();
+
+  switch (extension) {
+    case 'jpg':
+    case 'jpeg':
+      return 'image/jpeg';
+    case 'png':
+      return 'image/png';
+    default:
+      return null;
+  }
+}
+
+export const scrollToTop = (): void => {
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  });
 };

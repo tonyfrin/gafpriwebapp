@@ -1,17 +1,28 @@
-import { useGafpriApiLogin, UseGafpriApiLoginReturn } from "./useGafpriApiLogin";
 import { useGafpriAttributesLogin, UseGafpriAttributesLoginReturn } from "./useGafpriAttributesLogin";
+import { UseGafpriDataLoginReturn, useGafpriDataLogin } from "./useGafpriDataLogin";
+import { UseGafpriErrorReturn } from "../useGafpriError";
 
 export type UseGafpriLoginReturn = {
-    api: UseGafpriApiLoginReturn;
+    data: UseGafpriDataLoginReturn;
     attributes: UseGafpriAttributesLoginReturn;
 }
 
-export const useGafpriLogin = (): UseGafpriLoginReturn => {
+export type UseGafpriLoginProps = {
+    setIsFetchingGlobal: (value: boolean) => void;
+    globalResetInfo: () => void;
+    useError: UseGafpriErrorReturn;
+}
+
+export const useGafpriLogin = ({
+    setIsFetchingGlobal,
+    globalResetInfo,
+    useError,
+}: UseGafpriLoginProps): UseGafpriLoginReturn => {
     const attributes = useGafpriAttributesLogin();
-    const api = useGafpriApiLogin({ attributes});
+    const data = useGafpriDataLogin({ setIsFetchingGlobal, globalResetInfo, attributes, useError});
     
     return {
-        api,
+        data,
         attributes,
     }
 }

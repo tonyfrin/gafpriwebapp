@@ -3,8 +3,9 @@ import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { ButtonEditInfo } from '../../Button/ButtonEditInfo';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
-import { UseGafpriPagesSingUpReturn } from '../../states/useGafpriPagesSingUp';
+import { useTheme } from '../../context/ThemeContext';
+import { Loading } from '../../Loading';
+import { Error } from '@/Abstract/Error';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -27,67 +28,81 @@ const loginContentStyles = css`
     flex-direction: column;
 `;
 
-type EmailCheckStepProps = {
-    pages: UseGafpriPagesSingUpReturn;
-    attributes: UseGafpriAttributesSingUpReturn;
-}
 
 
 
-export const EmailCheckStep = ({
-    pages,
-    attributes
-}: EmailCheckStepProps) => {
+export const EmailCheckStep = () => {
+    const { useSingUp, useError } = useTheme();
+    const [fetching, setFetching] = React.useState(false);
 
     const returnEmail = () => {
-        attributes.actions.changeEmail('');
-        pages.actions.onEmail();
+        useSingUp.attributes.actions.changeEmail('');
+        useSingUp.pages.actions.onEmail();
     }
 
     useEffect(() => {
-        attributes.actions.validationCheckEmail(attributes.states.checkEmail, '0000');
-    }, [attributes.states.checkEmail]); // eslint-disable-line
+        useSingUp.attributes.actions.validationCheckEmail(useSingUp.attributes.states.checkEmail);
+    }, [useSingUp.attributes.states.checkEmail]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep2();
-    }, [ attributes.states.checkEmail, attributes.states.checkEmailValid ]); // eslint-disable-line
+        useSingUp.attributes.actions.validationButtonStep2();
+    }, [ useSingUp.attributes.states.checkEmail, useSingUp.attributes.states.checkEmailValid ]); // eslint-disable-line
 
-    const next = () => {
-        if (attributes.actions.validationButtonStep2()) {
-            pages.actions.onPhone();
+    const next = async () => {
+        if (useSingUp.attributes.actions.validationButtonStep2()) {
+            try{
+                setFetching(true);
+                const data = await useSingUp.api.actions.checkEmailCode();
+                if(data && data.success){
+                    useSingUp.pages.actions.onPhone();
+                } else {
+                    useError.actions.changeError(['Código incorrecto, vuelva a intentarlo.']);
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setFetching(false);
+            }
         }
     }
 
   return (
     <>
-        <div>
-            <h1 className={buttonAppMobileContentStyles}>Revisa tu bandeja de correo electrónico</h1>
-        </div>
-        <ButtonEditInfo 
-            content={attributes.states.email}
-            buttonProps={{
-                buttonTitle: 'Editar',
-                onClick: () => returnEmail()
-            }}
-        />
-        <InputAppContainer 
-            inputProps={{
-                type: 'number',
-                placeholder: 'Código de verificación',
-                onChange: (e) => attributes.actions.changeCheckEmail(e.target.value)
-            }}
-            description="Te enviamos un código de verificación"
-        />
-        <div className={loginContainerStyles}>
-            <div className={loginContentStyles}>
-                <ButtonAppMobile title="Continuar" 
-                    containerProps={{
-                        onClick: () => next(),
-                        id: 'btn-step-2',
-                    }}
-                />
+        {fetching ? <Loading /> :
+        <>
+            <Error 
+                error={useError.states.error}
+            />
+            <div>
+                <h1 className={buttonAppMobileContentStyles}>Revisa tu bandeja de correo electrónico</h1>
             </div>
-        </div>
+            <ButtonEditInfo 
+                content={useSingUp.attributes.states.email}
+                buttonProps={{
+                    buttonTitle: 'Editar',
+                    onClick: () => returnEmail()
+                }}
+            />
+            <InputAppContainer 
+                inputProps={{
+                    type: 'number',
+                    placeholder: 'Código de verificación',
+                    onChange: (e) => useSingUp.attributes.actions.changeCheckEmail(e.target.value)
+                }}
+                description="Te enviamos un código de verificación"
+            />
+            <div className={loginContainerStyles}>
+                <div className={loginContentStyles}>
+                    <ButtonAppMobile title="Continuar" 
+                        containerProps={{
+                            onClick: () => next(),
+                            id: 'btn-step-2',
+                        }}
+                    />
+                </div>
+            </div>
+            </>
+        }
      </>
   );
 }

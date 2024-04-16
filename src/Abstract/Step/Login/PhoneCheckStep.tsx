@@ -3,8 +3,8 @@ import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { ButtonEditInfo } from '../../Button/ButtonEditInfo';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
-import { UseGafpriPagesSingUpReturn } from '../../states/useGafpriPagesSingUp';
+import { UseGafpriAttributesSingUpReturn } from '../../states/singUp/useGafpriAttributesSingUp';
+import { UseGafpriPagesSingUpReturn } from '../../states/singUp/useGafpriPagesSingUp';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;

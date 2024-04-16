@@ -4,6 +4,10 @@ import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import Image from 'next/image';
 import { InputApp } from '../Input/InputApp';
 import { Select } from '../Select/Select';
+import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
+import { useTheme } from '../context/ThemeContext';
+import { decimalFormatPriceConverter } from '../helpers';
+import Link from 'next/link';
 
 const sectionStyles = css`
   margin-bottom: 150px;
@@ -104,29 +108,52 @@ type Items = {
 }
 
 type BoxCartProps = {
-  items: Items[];
+  cart: CartAttributesReturn;
   buttonProps?: boolean;
+  setFetching: (value: boolean) => void;
+  setCart: (value: CartAttributesReturn) => void;
 }
 
 export function BoxCart({
-  items,
+  cart,
   buttonProps = true,
+  setFetching,
+  setCart,
 }: BoxCartProps) {
+  const { siteOptions, useCartItems } = useTheme();
+
+  const cartItems = cart.cartItems;
+  cartItems.sort((a, b) => parseInt(a.id) - parseInt(b.id));
+
+  const updateItemCart = async (qty: string, id: string) => {
+    setFetching(true);
+    const response = await (await useCartItems.api).actions.updateItemToCart(qty, id);
+    if(response && response.success){
+      setCart(response.item);
+      setFetching(false);
+    }
+  }
+
   return (
         <>
         <div className={sectionStyles}>
           <div>
-            {items.map((item, index) => (
+            {cartItems.length > 0 && cartItems.map((item, index) => (
               <section className={productos} key={`box-cart${index}`}>
                 <div className={producto}>
-                  <div className={fila}>
+
+                    <Link href="/producto/[id]" as={`/producto/${item.products.postsId}`} className={fila} style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                    }}>
                     <div className={imgContainerStyles}>
-                        <Image src={item.img} alt={item.title} className={imgStyles} width={50} height={50}/>
+                        <Image src={item.products.image} alt={item.name} className={imgStyles} width={50} height={50}/>
                     </div>
                     <div>
-                      <h3 className={title1AppStyles}>{item.title}</h3>
+                      <h3 className={title1AppStyles}>{item.name}</h3>
                     </div>
-                  </div>
+                    </Link>
+
                   <div className={fila3}>
                     <div className={containerInfoStyles}>
                         <Select 
@@ -143,15 +170,27 @@ export function BoxCart({
                             { value: '9', label: '9' },
                             { value: '10', label: '10' },
                           ]}
-                          value="1"
-                          onChange={(value) => console.log(value)}
+                          value={parseFloat(item.qty).toFixed(0)}
+                          onChange={(value) => updateItemCart(value, item.id)}
                         />
                     </div>
                     <div className={containerInfoStyles}>
-                      <span className={priceStyles}>$ 10.00</span>
+                      <span className={priceStyles}>{decimalFormatPriceConverter(
+                        item.price || 0,
+                        siteOptions.DECIMAL_NUMBERS,
+                        siteOptions.CURRENCY_SYMBOL,
+                        siteOptions.CURRENCY_LOCATION
+                      )}</span>
                     </div>
                     <div className={containerInfoStyles}>
-                      <span className={priceTotalStyles}>$ 10.00</span>
+                      <span className={priceTotalStyles}>{
+                        decimalFormatPriceConverter(
+                          item.subTotal || 0,
+                          siteOptions.DECIMAL_NUMBERS,
+                          siteOptions.CURRENCY_SYMBOL,
+                          siteOptions.CURRENCY_LOCATION
+                        )
+                      }</span>
                     </div>
                   </div>
                 </div>
@@ -169,7 +208,13 @@ export function BoxCart({
           <div className={containerOptionsStyles}>
             <div className={contentOptionsStyles}>
               <span className={priceStyles}>Subtotal:</span>
-              <span className={priceStyles}>$ 100.00</span>
+              <span className={priceStyles}>
+                {decimalFormatPriceConverter(
+                  cart.subTotal || 0,
+                  siteOptions.DECIMAL_NUMBERS,
+                  siteOptions.CURRENCY_SYMBOL,
+                  siteOptions.CURRENCY_LOCATION
+                )}</span>
             </div>
             <div className={contentOptionsStyles}>
               <span className={priceStyles}>Envío:</span>
@@ -177,7 +222,13 @@ export function BoxCart({
             </div>
             <div className={contentOptionsStyles}>
               <span className={priceTotalStyles}>Total:</span>
-              <span className={priceTotalStyles}>$ 100.00</span>
+              <span className={priceTotalStyles}>
+                {decimalFormatPriceConverter(
+                  cart.total || 0,
+                  siteOptions.DECIMAL_NUMBERS,
+                  siteOptions.CURRENCY_SYMBOL,
+                  siteOptions.CURRENCY_LOCATION
+                )}</span>
             </div>
           </div>
         </div>

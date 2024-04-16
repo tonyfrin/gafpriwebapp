@@ -3,7 +3,9 @@ import { css } from '@emotion/css';
 import Select from 'react-select';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
+import { useTheme } from '../../context/ThemeContext';
+import { SelectApp } from '@/Abstract/Select/SelectApp';
+import { Loading } from '@/Abstract/Loading';
 
 
 const buttonAppMobileContentStyles = css`
@@ -41,88 +43,96 @@ const selectStyles = css`
         font-weight: 600;
     }
 `
-    
-
-type LegalStepProps = {
-    nextStep: () => void;
-    attributes: UseGafpriAttributesSingUpReturn;
-}
 
 
-export const LegalStep = ({
-    nextStep,
-    attributes
-}: LegalStepProps) => {
+export const LegalStep = () => {
+    const { useSingUp, useUser } = useTheme();
     const [InputTypeDocumentIdId, setInputTypeDocumentIdId] = React.useState(<></>);
     const [InputIndex, setInputIndex] = React.useState(<></>);
+
+    
+
+    const typeDocumentIdId = useUser.apiTypeDocumentId.states.typeDocumentId || [];
+    const typeDocumentIdIdOptions = typeDocumentIdId.map((item) => ({ value: item.id, label: item.name }));
+    
 
     useEffect(() => {
 
         setInputIndex(() => (
-            <Select 
-                options={attributes.states.indexOptions}
-                defaultValue={attributes.states.indexDefault}
-                className={selectStyles}
-                onChange={(e) => attributes.actions.changeIndex(e)}
+            <SelectApp 
+                
+                options={useSingUp.attributes.states.indexOptions}
+                value={useSingUp.attributes.states.index}
+                onChange={(e) => useSingUp.attributes.actions.changeIndex({ value: e, label: e })}
             />
         ))
 
-        setInputTypeDocumentIdId(() => (
-            <Select 
-                options={attributes.states.typeDocumentIdIdOptions}
-                defaultValue={attributes.states.typeDocumentIdIdDefault}
-                className={selectStyles}
-                onChange={(e) => attributes.actions.changeTypeDocumentIdId(e)}
-            />
-        ))
+        if(typeDocumentIdId.length > 0){
+            typeDocumentIdIdOptions.unshift({ value: '', label: 'Tipo de documento' });
+            setInputTypeDocumentIdId(() => (
+                    <SelectApp 
+                        options={typeDocumentIdIdOptions}
+                        value={useSingUp.attributes.states.typeDocumentIdId}
+                        onChange={(e) => useSingUp.attributes.actions.changeTypeDocumentIdId({ value: e, label: e })}
+                    />
+                ))
+            }
     }, []); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationTypeDocumentIdId(attributes.states.typeDocumentIdId);
-        attributes.actions.validationIndex(attributes.states.index);
-        attributes.actions.validationDigit(attributes.states.digit);
-    }, [ attributes.states.typeDocumentIdId, attributes.states.index, attributes.states.digit ]); // eslint-disable-line
+        useSingUp.attributes.actions.validationTypeDocumentIdId(useSingUp.attributes.states.typeDocumentIdId);
+        useSingUp.attributes.actions.validationIndex(useSingUp.attributes.states.index);
+        useSingUp.attributes.actions.validationDigit(useSingUp.attributes.states.digit);
+    }, [ useSingUp.attributes.states.typeDocumentIdId, useSingUp.attributes.states.index, useSingUp.attributes.states.digit ]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep6();
-    }, [ attributes.states.typeDocumentIdId, attributes.states.typeDocumentIdIdValid, attributes.states.index, attributes.states.indexValid, attributes.states.digit, attributes.states.digitValid ]); // eslint-disable-line
+        useSingUp.attributes.actions.validationButtonStep6();
+    }, [ useSingUp.attributes.states.typeDocumentIdId, useSingUp.attributes.states.typeDocumentIdIdValid, useSingUp.attributes.states.index, useSingUp.attributes.states.indexValid, useSingUp.attributes.states.digit, useSingUp.attributes.states.digitValid ]); // eslint-disable-line
 
     const next = () => {
-        if (attributes.actions.validationButtonStep6()) {
-            nextStep();
+        if (useSingUp.attributes.actions.validationButtonStep6()) {
+            useSingUp.pages.actions.onPhotoLegal();
         }
     }
 
   return (
     <>
-        <div>
-            <h1 className={buttonAppMobileContentStyles}>Tu documento Legal</h1>
-        </div>
-            <div className={containerInput}>
-                {InputTypeDocumentIdId}
+        {useUser.apiTypeDocumentId.states.isReadyTypeDocumentId ? 
+        <>
+            <div>
+                <h1 className={buttonAppMobileContentStyles}>Tu documento Legal</h1>
             </div>
-            <div className={containerInput}>
-                {InputIndex}
+                <div className={containerInput}style={{
+                    display: 'flex',
+                }}>
+                    {InputTypeDocumentIdId}
+                </div>
+                <div className={containerInput} style={{
+                    display: 'flex',
+                }}>
+                    {InputIndex}
+                </div>
+                    <InputAppContainer 
+                        inputProps={{
+                            type: 'number',
+                            placeholder: 'Numero de documento',
+                            onChange: (e) => useSingUp.attributes.actions.changeDigit(e.target.value),
+                            defaultValue: useSingUp.attributes.states.digit
+                        }}
+                    />
+                
+            <div className={loginContainerStyles}>
+                <div className={loginContentStyles}>
+                    <ButtonAppMobile title="Continuar" 
+                        containerProps={{
+                            onClick: () => next(),
+                            id: 'btn-step-6'
+                        }}
+                    />
+                </div>
             </div>
-                <InputAppContainer 
-                    inputProps={{
-                        type: 'number',
-                        placeholder: 'Numero de documento',
-                        onChange: (e) => attributes.actions.changeDigit(e.target.value),
-                        defaultValue: attributes.states.digit
-                    }}
-                />
-            
-        <div className={loginContainerStyles}>
-            <div className={loginContentStyles}>
-                <ButtonAppMobile title="Continuar" 
-                    containerProps={{
-                        onClick: () => next(),
-                        id: 'btn-step-6'
-                    }}
-                />
-            </div>
-        </div>
-     </>
+        </>
+        : <Loading />}
+    </>
   );
 }

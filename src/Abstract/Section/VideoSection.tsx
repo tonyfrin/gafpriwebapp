@@ -139,7 +139,7 @@ export const VideoSection = (): JSX.Element => {
                                 GAFPRI es la solución integral diseñada para técnicos en refrigeración
                             </div>
                             <div>
-                            <Link href='/micuenta'>
+                            <Link href='/login'>
                                 <ButtonAppMobile 
                                     title="Ingresar" 
                                     containerStyles={{

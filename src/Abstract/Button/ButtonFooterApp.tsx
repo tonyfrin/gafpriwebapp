@@ -7,6 +7,7 @@ type Items = {
     title: string;
     href: string;
     icon: IconType;
+    action?: () => void;
 }
 
 const linkStyle = css`
@@ -42,7 +43,9 @@ export const ButtonFooterApp = ({
         <>
              { items.length > 0 && items.map((item, index) => (
                 <Link href={item.href} className={linkStyle} key={`button-fotter-${index}`}>
-                    <button className={iconButtonStyle}>
+                    <button className={iconButtonStyle}
+                        onClick={item.action}
+                    >
                         <div>
                             {item.icon && <item.icon className={inconStyle}/>}
                         </div>

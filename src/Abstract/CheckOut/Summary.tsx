@@ -5,6 +5,9 @@ import { FiChevronLeft } from 'react-icons/fi';
 import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp  } from '../Select/SelectApp';
+import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
+import { useTheme } from '../context/ThemeContext';
+import { decimalFormatPriceConverter } from '../helpers';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -132,8 +135,7 @@ const contentOptionsStyles = css`
 
 
 export type SummaryProps = {
-  setModal: (value: boolean) => void;
-  useCheckOut: UseGafpriCheckOutReturn;
+  cart: CartAttributesReturn | null;
 }
 
 interface Location {
@@ -142,9 +144,9 @@ interface Location {
 }
 
 export function Summary({
-    setModal,
-    useCheckOut,
+    cart,
 }: SummaryProps) {
+  const { useCheckOut, siteOptions } = useTheme();
 
   return (
     <> 
@@ -163,22 +165,32 @@ export function Summary({
                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Detalle de compra</h1>
                 <FiChevronLeft 
                     className={arrowStyle}
-                    onClick={useCheckOut.pages.actions.onAddressList}
+                    onClick={useCheckOut.pages.actions.onInit}
                 />
             </div>
 
             <div className={containerOptionsStyles}>
             <div className={contentOptionsStyles}>
               <span className={priceStyles}>Subtotal:</span>
-              <span className={priceStyles}>$ 100.00</span>
+              <span className={priceStyles}>{decimalFormatPriceConverter(
+                cart?.subTotal || 0,
+                siteOptions.DECIMAL_NUMBERS,
+                siteOptions.CURRENCY_SYMBOL,
+                siteOptions.CURRENCY_LOCATION
+              )}</span>
             </div>
             <div className={contentOptionsStyles}>
-              <span className={priceStyles}>Envío:</span>
+              <span className={priceStyles}>Envío o retiro en Tienda:</span>
               <span className={priceStyles}>Gratis</span>
             </div>
             <div className={contentOptionsStyles}>
               <span className={priceTotalStyles}>Total:</span>
-              <span className={priceTotalStyles}>$ 100.00</span>
+              <span className={priceTotalStyles}>{decimalFormatPriceConverter(
+                cart?.total || 0,
+                siteOptions.DECIMAL_NUMBERS,
+                siteOptions.CURRENCY_SYMBOL,
+                siteOptions.CURRENCY_LOCATION
+              )}</span>
             </div>
           </div>
              

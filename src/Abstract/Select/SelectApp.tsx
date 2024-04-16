@@ -31,7 +31,7 @@ export const SelectApp: React.FC<SelectProps> = ({ options, value, onChange }) =
   };
 
   return (
-    <select className={selectStyles} value={value} onChange={handleChange}>
+    <select className={selectStyles} defaultValue={value} onChange={handleChange}>
       {options.map((option, index) => (
         <option key={index} value={option.value}>
           {option.label}

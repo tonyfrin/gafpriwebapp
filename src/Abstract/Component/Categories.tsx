@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { LayoutApp } from './LayoutApp';
 import { css } from '@emotion/css';
 import { ProductList } from '../List/ProductList';
+import { useTheme } from '../context/ThemeContext';
+import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';
+import { Loading } from '../Loading';
+import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -15,129 +19,76 @@ const mainStyles = css`
   margin-bottom: 100px;
 `
 
-const items = [
-  {
-    name: 'Neveras',
-    src: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector1.png',
-    price: '$ 20.87',
-    category: 'Protector'
-  },
-  {
-    name: 'Electrodomésticos',
-    src: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector2.png',
-    price: '$ 20.87',
-    category: 'Protector'
-  },
-  {
-    name: 'Aires 110 V',
-    src: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector3.png',
-    price: '$ 23.87',
-    category: 'Protector'
-  },
-  {
-    name: 'Aires 220v',
-    src: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector4.png',
-    price: '$ 3.87',
-    category: 'Protector'
-  },
-  {
-    name: 'Supervisores',
-    src: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector5.png',
-    price: '$ 5.87',
-    category: 'Protector'
-  },
-  {
-    name: 'Enchufe',
-    src: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector6.png',
-    price: '$ 9.87',
-    category: 'Protector'
-  },
-  {
-    name: 'Contactor 24v 15 amp 2 polos',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/contactores-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 10.00',
-    category: 'Contactor'
-  },
-  {
-    name: 'Antivibrador 7/8',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/antivibradores-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 12.00',
-    category: 'Antivibradores'
-  },
-  {
-    name: 'Filtro de Succión de 3/8',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/filtro-de-succion-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 12.00',
-    category: 'Filtros'
-  },
-  {
-    name: 'Termostato Analogico',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/termostato-analogo-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 11.00',
-    category: 'Termostatos'
-  },
-  {
-    name: 'Filtro de Línea 365',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/filtro-de-linea-liquido-secadores-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.png',
-    price: '$ 9.00',
-    category: 'Filtros'
-  },
-  {
-    name: 'Capacitor 10uf 440v',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/capacitore-capacitadores-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri-2.png',
-    price: '$ 87.00',
-    category: 'Capacitores'
-  },
-  {
-    name: 'Bimetal L70',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/bimetal-para-neveras-cavas-refris-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 6.00',
-    category: 'Bimetales'
-  },
-  {
-    name: 'Rele 24v',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/relay-fan-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 5.00',
-    category: 'Reles'
-  },
-  {
-    name: 'Térmico 12.000 btu 220v',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/protectores-termicos-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 3.00',
-    category: 'Térmicos'
-  },
-  {
-    name: 'Acumulador de succión 7/8',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/acumulador-de-succion-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 1.00',
-    category: 'Acumulador'
-  },
-  {
-    name: 'Portaelemento 1 piedra',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/portafiltros-de-succion-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 87.00',
-    category: 'Filtros'
-  },
-  {
-    name: 'Separador de aceite 7/8',
-    src: 'https://tiendasgafpri.com/wp-content/uploads/2021/07/separador-de-aceite-para-aires-acondicionados-repuestos-de-refrigeracion-al-mayor-marca-gafpri.jpg',
-    price: '$ 43.00',
-    category: 'Separadores'
-  }
-]
 
-export function Categories() {
+
+export function Categories({id}: {id: string | string[] | undefined}) {
+  const { useProducts, useLogin } = useTheme();
+  const [fetching, setFetching] = useState<boolean>(false);
+  const [fetchingMore, setFetchingMore] = useState<boolean>(false);
+  const [items, setItems] = useState<ProductsAttributesReturn[]>([]);
+  const [offset, setOffset] = useState<number>(0);
+
+
+  const pushProducts = (products: ProductsAttributesReturn[]) => {
+    setItems([...items, ...products]);
+  }
+
+  const getMoreProducts = (productId: string) => {
+    try {
+      setFetchingMore(true);
+      useProducts.api.actions.getProductsByCategoryId(productId, pushProducts, offset, setOffset);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setFetchingMore(false);
+    }
+  }
+
+  useEffect(() => {
+    if(id && typeof id === 'string') {
+      const fetchData = async () => {
+        try {
+          useProducts.api.actions.getProductsByCategoryId(id, pushProducts, offset, setOffset);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        } finally {
+          setFetching(false);
+        }
+      };
+
+      fetchData();
+    }
+  }, [useLogin.data.states.token]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <>
       <LayoutApp>
         <>
           <main className={mainStyles}>
           <div>
-              <h1 className={title1AppStyles}>Tienda</h1>
+              <h1 className={title1AppStyles}>Todos los Productos</h1>
           </div>
             <div>
-              <ProductList items={items} />
+              {fetching ? <Loading /> :
+                <ProductList items={items} />
+              }
+              {fetchingMore && <Loading />}
             </div>
+            {!fetching && typeof id === 'string' &&
+              <div 
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <ButtonAppMobile 
+                  containerProps={{
+                    onClick: () => getMoreProducts(id)
+                  }}
+                  title="Cargar más"
+                />
+              </div>
+            }
           </main>
         </>
       </LayoutApp>

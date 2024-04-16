@@ -51,12 +51,7 @@ export const LoginStep = ({
 
     const login = () => {
         if (useLogin.attributes.actions.validationButton()) {
-            const valid = useLogin.api.actions.login();
-            if(valid){
-                router.push('/tienda');
-            } else{
-                alert('Usuario o contraseña incorrecta');
-            }
+            const valid = useLogin.data.actions.login();
         }
     }
 

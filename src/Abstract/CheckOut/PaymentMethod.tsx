@@ -1,10 +1,11 @@
-import React, {useState} from 'react';
+import React, {use, useState} from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { FiChevronLeft } from 'react-icons/fi';
 import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp  } from '../Select/SelectApp';
+import { useTheme } from '../context/ThemeContext';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -116,20 +117,13 @@ const containerButtonCheckOutStyle = css`
     padding: 1em 0px;
 `
 
-export type PaymentMethodProps = {
-  setModal: (value: boolean) => void;
-  useCheckOut: UseGafpriCheckOutReturn;
-}
+export function PaymentMethod() {
+  const { useCheckOut } = useTheme();
 
-interface Location {
-  latitude: number;
-  longitude: number;
-}
-
-export function PaymentMethod({
-    setModal,
-    useCheckOut,
-}: PaymentMethodProps) {
+  const paymentSelected = (value: string) => {
+    useCheckOut.attributes.actions.setPaymentMethod(value);
+    useCheckOut.pages.actions.onInit();
+  }
 
   return (
     <> 
@@ -148,7 +142,7 @@ export function PaymentMethod({
                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Metodos de Pago</h1>
                 <FiChevronLeft 
                     className={arrowStyle}
-                    onClick={useCheckOut.pages.actions.onAddressList}
+                    onClick={useCheckOut.pages.actions.onInit}
                 />
             </div>
 
@@ -161,6 +155,9 @@ export function PaymentMethod({
                 containerStyles={{
                   backgroundColor: '#324375'
                 }}
+                contentProps={{
+                  onClick: () => paymentSelected('cash')
+                }}
               />
 
             </div>
@@ -172,6 +169,9 @@ export function PaymentMethod({
                 title='Billetera Gafpri'
                 containerStyles={{
                   backgroundColor: '#324375'
+                }}
+                containerProps={{
+                  onClick: () => paymentSelected('wallet')
                 }}
               />
 

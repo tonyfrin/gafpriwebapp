@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
+import { useTheme } from '../../context/ThemeContext';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -40,30 +40,23 @@ const selectStyles = css`
     }
 `
 
-type PhoneStepProps = {
-    nextStep: () => void;
-    attributes: UseGafpriAttributesSingUpReturn;
-}
 
 
 
-
-export const PhoneStep = ({
-    nextStep,
-    attributes
-}: PhoneStepProps) => {
+export const PhoneStep = () => {
+    const { useSingUp } = useTheme();
 
     useEffect(() => {
-        attributes.actions.validationPhone(attributes.states.phone);
-    }, [attributes.states.phone]); // eslint-disable-line
+        useSingUp.attributes.actions.validationPhone(useSingUp.attributes.states.phone);
+    }, [useSingUp.attributes.states.phone]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep3();
-    }, [ attributes.states.phone, attributes.states.phoneValid ]); // eslint-disable-line
+        useSingUp.attributes.actions.validationButtonStep3();
+    }, [ useSingUp.attributes.states.phone, useSingUp.attributes.states.phoneValid ]); // eslint-disable-line
 
     const next = () => {
-        if (attributes.actions.validationButtonStep3()) {
-            nextStep();
+        if (useSingUp.attributes.actions.validationButtonStep3()) {
+            useSingUp.pages.actions.onName();
         }
     }
 
@@ -77,7 +70,7 @@ export const PhoneStep = ({
             inputProps={{
                 type: 'number',
                 placeholder: '414 123 4567',
-                onChange: (e) => attributes.actions.changePhone(e.target.value),
+                onChange: (e) => useSingUp.attributes.actions.changePhone(e.target.value),
             }}
             description="Sin el 0 por delante. (Solo télefonos de Venezuela) Ejemplo: 4141234567"
         />

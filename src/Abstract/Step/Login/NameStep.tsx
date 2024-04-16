@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
-import { UseGafpriAttributesSingUpReturn } from '../../states/useGafpriAttributesSingUp';
+import { useTheme } from '../../context/ThemeContext';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -29,29 +29,21 @@ const containerInput = css`
     margin: 20px auto;
 `
 
-export type NameStepProps = {
-    nextStep: () => void;
-    attributes: UseGafpriAttributesSingUpReturn;
-}
-
-
-export const NameStep = ({
-    nextStep,
-    attributes
-}: NameStepProps) => {
+export const NameStep = () => {
+    const { useSingUp } = useTheme();
 
     useEffect(() => {
-        attributes.actions.validationName(attributes.states.name);
-        attributes.actions.validationLastName(attributes.states.lastName);
-    }, [attributes.states.name, attributes.states.lastName]); // eslint-disable-line
+        useSingUp.attributes.actions.validationName(useSingUp.attributes.states.name);
+        useSingUp.attributes.actions.validationLastName(useSingUp.attributes.states.lastName);
+    }, [useSingUp.attributes.states.name, useSingUp.attributes.states.lastName]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep5();
-    }, [ attributes.states.name, attributes.states.nameValid, attributes.states.lastName, attributes.states.lastNameValid ]); // eslint-disable-line
+        useSingUp.attributes.actions.validationButtonStep5();
+    }, [ useSingUp.attributes.states.name, useSingUp.attributes.states.nameValid, useSingUp.attributes.states.lastName, useSingUp.attributes.states.lastNameValid ]); // eslint-disable-line
 
     const next = () => {
-        if (attributes.actions.validationButtonStep5()) {
-            nextStep();
+        if (useSingUp.attributes.actions.validationButtonStep5()) {
+            useSingUp.pages.actions.onLegal();
         }
     }
 
@@ -65,7 +57,7 @@ export const NameStep = ({
                     inputProps={{
                         type: 'name',
                         placeholder: 'Nombre',
-                        onChange: (e) => attributes.actions.changeName(e.target.value)
+                        onChange: (e) => useSingUp.attributes.actions.changeName(e.target.value)
                     }}
                 />
             </div>
@@ -74,7 +66,7 @@ export const NameStep = ({
                     inputProps={{
                         type: 'name',
                         placeholder: 'Apellido',
-                        onChange: (e) => attributes.actions.changeLastName(e.target.value)
+                        onChange: (e) => useSingUp.attributes.actions.changeLastName(e.target.value)
                     }}
                 />
             </div>

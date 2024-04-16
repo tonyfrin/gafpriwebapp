@@ -1,55 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
+import { useTheme } from '../context/ThemeContext';
+import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { AttributeTable } from '../Table/AttributeTable';
-import { BoxCategoryApp } from '../Box/BoxCategoryApp';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
+import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';
+import { Loading } from '../Loading';
 
 export interface GeneralAttribute {
   name: string;
   value: string;
-}
-
-export interface CategoryAttributes {
-  id?: number;
-  slug?: string;
-  parentId?: number | null;
-  name?: string;
-  description?: string | null;
-  photo?: string | null;
-  status?: string;
-  createdAt?: Date;
-  modifiedAt?: Date;
-  parent?: CategoryAttributes;
-  children?: CategoryAttributes[];
-}
-
-type ProductAttributes = {
-  postsId: number;
-  tags?: string[];
-  sku?: string;
-  name: string;
-  publicName?: string;
-  description?: string;
-  image: string;
-  galleryImage?: string[];
-  note?: string;
-  salesPrice?: number;
-  offerPrice?: number;
-  cost?: number;
-  type?: string;
-  taxStatus?: string;
-  taxClass?: string;
-  packageType?: string;
-  qtyPack?: number;
-  undCbm?: number;
-  attributes?: GeneralAttribute[];
-  weight?: number;
-  height?: number;
-  width?: number;
-  length?: number;
-  catalogOrder?: number;
-  category?: CategoryAttributes;
 }
 
 const title1AppStyles = css`
@@ -185,10 +146,23 @@ const subTitleStyles = css`
 `
 
 export type ProductProps = {
-    item: ProductAttributes;
+    item: ProductsAttributesReturn;
 }
 
 export const Product = ({ item }: ProductProps) => {
+  const { useCartItems } = useTheme();
+  const [fetching, setFetching] = useState<boolean>(false);
+  const router = useRouter();
+
+  const addToCart = async () => {
+    setFetching(true);
+    const data = await (await useCartItems.api).actions.addItemToCart('1', `${item.postsId}`);
+    if(data.success && data.success === true){
+      router.push('/carrito');
+      setFetching(false);
+    }
+  }
+
 
   const dimensionAttributes = [
     {
@@ -243,9 +217,26 @@ export const Product = ({ item }: ProductProps) => {
           <span className={priceStyles}>{`$ ${item.salesPrice}`}</span>
         </section>
         <section className={infoSections}>
+        {fetching ? 
+          <Loading 
+            mainStyles={{
+              padding: '0px',
+            }}
+            divStyle={{
+              width: '40px',
+              height: '40px',
+              border: '4px solid #eee',
+              borderTop: '4px solid #077bb4',
+              borderRadius: '50%',
+            }}
+          /> :
           <ButtonAppMobile 
             title='Agregar al carrito'
+            containerProps={{
+              onClick: addToCart
+            }}
           />
+        }
         </section>
         <section className={infoSections}>
           {item.sku && 
@@ -280,7 +271,7 @@ export const Product = ({ item }: ProductProps) => {
           />
         </section>
         <section className={infoSections}>
-        <BoxCategoryApp 
+        {/* <BoxCategoryApp 
             title = 'También te puede interesar'
             items = {[
               {
@@ -305,7 +296,7 @@ export const Product = ({ item }: ProductProps) => {
               }
             ]}
             buttonProps={false}
-          />
+          /> */}
         </section>
 
 

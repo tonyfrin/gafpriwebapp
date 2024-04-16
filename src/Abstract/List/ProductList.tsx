@@ -1,13 +1,10 @@
 import React from 'react';
 import { css } from '@emotion/css';
+import Link from 'next/link';
 import Image from 'next/image';
-
-type items = {
-    name: string;
-    src: string;
-    category: string;
-    price: string;
-}
+import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';
+import { useTheme } from '../context/ThemeContext';
+import { decimalFormatPriceConverter } from '../helpers';
 
 const containerStyles = css`
     display: flex;
@@ -56,21 +53,32 @@ const priceStyles = css`
 `
 
 export type ProductListProps = {
-    items: items[];
+    items: ProductsAttributesReturn[];
 }
 
 export const ProductList = ({ items }: ProductListProps) => {
+  const { siteOptions } = useTheme();
+
   return (
     <div className={containerStyles}>
       {items.map((item, index) => (
-        <div className={producto} key={`product-${index}`}>
-            <div className={contentProductStyles}>
-                <Image src={item.src} alt={item.name} className={imgStyles} width={500} height={500}/>
-                <h3 className={titleProductStyles}>{item.name}</h3>
-                <span className={categoryStyles}>{item.category}</span>
-                <span className={priceStyles}>{item.price}</span>
-            </div>
-        </div>
+        <Link key={`product-${index}`} href="/producto/[id]" as={`/producto/${item.postsId}`} className={producto} style={{
+          textDecoration: 'none',
+          color: 'inherit',
+        }}>
+          
+              <div className={contentProductStyles}>
+                  <Image src={item.image} alt={item.name} className={imgStyles} width={500} height={500}/>
+                  <h3 className={titleProductStyles}>{item.publicName}</h3>
+                  <span className={categoryStyles}>{item.category.name}</span>
+                  <span className={priceStyles}>{decimalFormatPriceConverter(
+                item.salesPrice || 0,
+                siteOptions.DECIMAL_NUMBERS,
+                siteOptions.CURRENCY_SYMBOL,
+                siteOptions.CURRENCY_LOCATION
+              )}</span>
+              </div>
+        </Link>
       ))}
     </div>
   );

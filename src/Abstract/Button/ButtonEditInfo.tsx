@@ -19,6 +19,8 @@ const infoEditContentStyles = css`
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     color: #a0a0a0;
+    width: 75%;
+    overflow: hidden;
 `
 
 const infoEditLinkStyles = css`
@@ -26,6 +28,7 @@ const infoEditLinkStyles = css`
     font-family: 'Poppins', sans-serif;
     font-weight: 600;
     color: #0ab1e6;
+    width: 25%;
 `
 
 

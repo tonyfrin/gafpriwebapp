@@ -9,12 +9,13 @@ import { NameStep } from './NameStep';
 import { LegalStep } from './LegalStep';
 import { SelfieStep } from './SelfieStep';
 import { FinalStep } from './FinalStep';
-import { useGafpriSingUp } from '../../states/useGafpriSingUp';
 import { FadeIn } from '../../Fade/FadeIn';
 import { LegalPhotoStep } from './LegalPhotoStep';
 import { ProgressBar } from '../../Bar/ProgressBar';
 import { FiChevronLeft } from 'react-icons/fi';
 import Link from 'next/link';
+import { useTheme } from '../../context/ThemeContext';
+import { Loading } from '@/Abstract/Loading';
 
 const progressBarContainerStyles = css`
     display: flex;
@@ -29,46 +30,46 @@ const arrowStyle = css`
 `
 
 export const MainStep = () => {
-  const { pages, attributes } = useGafpriSingUp();
+  const { useSingUp } = useTheme();
 
   const returnStep = () => {
-    if (pages.states.isEmail) {
+    if (useSingUp.pages.states.isEmail) {
       return <Link href="/login" />;
-    } else if (pages.states.isEmailCheck) {
-      pages.actions.onEmail();
-    } else if (pages.states.isPhone) {
-      pages.actions.onEmailCheck();
-    } else if (pages.states.isPhoneCheck) {
-      pages.actions.onPhone();
-    } else if (pages.states.isName) {
-      pages.actions.onPhoneCheck();
-    } else if (pages.states.isLegal) {
-      pages.actions.onName();
-    } else if (pages.states.isPhotoLegal) {
-      pages.actions.onLegal();
-    } else if (pages.states.isSelfie) {
-      pages.actions.onPhotoLegal();
+    } else if (useSingUp.pages.states.isEmailCheck) {
+      useSingUp.pages.actions.onEmail();
+    } else if (useSingUp.pages.states.isPhone) {
+      useSingUp.pages.actions.onEmailCheck();
+    } else if (useSingUp.pages.states.isPhoneCheck) {
+      useSingUp.pages.actions.onPhone();
+    } else if (useSingUp.pages.states.isName) {
+      useSingUp.pages.actions.onPhoneCheck();
+    } else if (useSingUp.pages.states.isLegal) {
+      useSingUp.pages.actions.onName();
+    } else if (useSingUp.pages.states.isPhotoLegal) {
+      useSingUp.pages.actions.onLegal();
+    } else if (useSingUp.pages.states.isSelfie) {
+      useSingUp.pages.actions.onPhotoLegal();
     }
   };
 
  
   let percentage = 0;
 
-    if (pages.states.isEmail) {
+    if (useSingUp.pages.states.isEmail) {
       percentage = (1/8) * 100;
-    } else if (pages.states.isEmailCheck) {
+    } else if (useSingUp.pages.states.isEmailCheck) {
       percentage = (2/8) * 100;
-    } else if (pages.states.isPhone) {
+    } else if (useSingUp.pages.states.isPhone) {
       percentage = (3/8) * 100;
-    } else if (pages.states.isPhoneCheck) {
+    } else if (useSingUp.pages.states.isPhoneCheck) {
       percentage = (4/8) * 100;
-    } else if (pages.states.isName) {
+    } else if (useSingUp.pages.states.isName) {
       percentage = (5/8) * 100;
-    } else if (pages.states.isLegal) {
+    } else if (useSingUp.pages.states.isLegal) {
       percentage = (6/8) * 100;
-    } else if (pages.states.isPhotoLegal) {
+    } else if (useSingUp.pages.states.isPhotoLegal) {
       percentage = (7/8) * 100;
-    } else if (pages.states.isSelfie) {
+    } else if (useSingUp.pages.states.isSelfie) {
       percentage = (8/8) * 100;
     }
 
@@ -85,95 +86,77 @@ export const MainStep = () => {
      
 
       <div className={progressBarContainerStyles}>
-          {!pages.states.isEmail && !pages.states.isFinal &&
+          {!useSingUp.pages.states.isEmail && !useSingUp.pages.states.isFinal &&
             <FiChevronLeft 
                 className={arrowStyle}
                 onClick={returnStep}
             />
           }
-          {!pages.states.isFinal && 
+          {!useSingUp.pages.states.isFinal && 
             <div style={{width: '90%'}}>
                 <ProgressBar percentage={percentage} />
             </div>
           }
       </div>
 
-     {pages.states.isFetching && <div>Fetching...</div>}
+     {useSingUp.pages.states.isFetching && <Loading />}
 
-     {pages.states.isEmail && (
-        <FadeIn keyName="isEmail" isVisible={pages.states.isEmail}>
+     {useSingUp.pages.states.isEmail && (
+        <FadeIn keyName="isEmail" isVisible={useSingUp.pages.states.isEmail}>
           <EmailStep 
-            nextStep={pages.actions.onEmailCheck}
-            attributes={attributes}
+            nextStep={useSingUp.pages.actions.onEmailCheck}
           />
         </FadeIn>
       )}
 
-      {pages.states.isEmailCheck && (
-        <FadeIn keyName="isEmailCheck" isVisible={pages.states.isEmailCheck}>
-          <EmailCheckStep 
-            pages={pages}
-            attributes={attributes}
-          />
+      {useSingUp.pages.states.isEmailCheck && (
+        <FadeIn keyName="isEmailCheck" isVisible={useSingUp.pages.states.isEmailCheck}>
+          <EmailCheckStep />
         </FadeIn>
       )}
 
-      {pages.states.isPhone && 
-        <FadeIn keyName="isPhone" isVisible={pages.states.isPhone}>
+      {useSingUp.pages.states.isPhone && 
+        <FadeIn keyName="isPhone" isVisible={useSingUp.pages.states.isPhone}>
           <PhoneStep 
-            nextStep={pages.actions.onPhoneCheck}
-            attributes={attributes}
+            
           />
         </FadeIn>
       }
 
-      {pages.states.isPhoneCheck &&
-        <FadeIn keyName="isPhoneCheck" isVisible={pages.states.isPhoneCheck}>
-          <PhoneCheckStep 
-             pages={pages}
-             attributes={attributes}
-          />
-        </FadeIn>
-      }
-
-      {pages.states.isName &&
-        <FadeIn keyName="isName" isVisible={pages.states.isName}>
+      {useSingUp.pages.states.isName &&
+        <FadeIn keyName="isName" isVisible={useSingUp.pages.states.isName}>
           <NameStep 
-            nextStep={pages.actions.onLegal}
-            attributes={attributes}
+            
           />  
         </FadeIn>
       }
       
-      {pages.states.isLegal &&
-        <FadeIn keyName="isLegal" isVisible={pages.states.isLegal}>
+      {useSingUp.pages.states.isLegal &&
+        <FadeIn keyName="isLegal" isVisible={useSingUp.pages.states.isLegal}>
           <LegalStep 
-            nextStep={pages.actions.onPhotoLegal}
-            attributes={attributes}
+            
           />
         </FadeIn>
       }
 
-      {pages.states.isPhotoLegal &&
-        <FadeIn keyName="isPhotoLegal" isVisible={pages.states.isPhotoLegal}>
+      {useSingUp.pages.states.isPhotoLegal &&
+        <FadeIn keyName="isPhotoLegal" isVisible={useSingUp.pages.states.isPhotoLegal}>
           <LegalPhotoStep 
-            nextStep={pages.actions.onSelfie}
-            attributes={attributes}
+            
           />
         </FadeIn>
       }
 
-      {pages.states.isSelfie &&
-        <FadeIn keyName="isSelfie" isVisible={pages.states.isSelfie}>
+      {useSingUp.pages.states.isSelfie &&
+        <FadeIn keyName="isSelfie" isVisible={useSingUp.pages.states.isSelfie}>
           <SelfieStep 
-            nextStep={pages.actions.onFinal}
-            attributes={attributes}
+            
           />
         </FadeIn>
       }
 
-      {pages.states.isFinal &&
-        <FadeIn keyName="isFinal" isVisible={pages.states.isFinal}>
+      {useSingUp.pages.states.isFinal &&
+        <FadeIn keyName="isFinal" isVisible={useSingUp.pages.states.isFinal}>
           <FinalStep />
         </FadeIn>
       }

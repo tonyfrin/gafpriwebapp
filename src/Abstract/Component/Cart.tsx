@@ -1,18 +1,16 @@
-import React, {useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
+import { IoCartOutline } from 'react-icons/io5';
+import Link from 'next/link';
 import { LayoutApp } from './LayoutApp';
 import { css } from '@emotion/css';
 import { BoxCart } from '../Box/BoxCart';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { Modal } from '../Modal/Modal';
-import { FiTruck } from 'react-icons/fi';
-import { IoLocationOutline } from 'react-icons/io5';
-import { IoBicycleOutline } from 'react-icons/io5';
-import { IoArrowDown } from 'react-icons/io5';
-import { FiArrowDown } from 'react-icons/fi';
-import { MdClose } from 'react-icons/md';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
-import { IoIosAddCircleOutline } from 'react-icons/io';
 import { CheckOut } from './CheckOut';
+import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
+import { useTheme } from '../context/ThemeContext';
+import { Loading } from '../Loading';
+
 
 const mainStyles = css`
   margin-bottom: 100px;
@@ -108,73 +106,87 @@ const containerColumnEndStyles = css`
 
 export function Cart() {
   const [modal, setModal] = React.useState(false);
+  const [fetching, setFetching] = useState<boolean>(true);
+  const [item, setItem] = useState<CartAttributesReturn | null>(null);
+  const { useCart } = useTheme();
+
+  useEffect(() => {
+      const fetchData = async () => {
+          try{
+            const data = await (useCart.api.actions).getCart();
+            if(data && data.success){
+              setItem(data.item);
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          } finally {
+            setFetching(false);
+          }
+      }
+      fetchData();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>
       <LayoutApp>
         <>
           <main className={mainStyles}>
-            <div>
-                <h1 className={title1AppStyles}>Carrito</h1>
-            </div>
-            <div>
-              <BoxCart 
-                items={[
-                  {
-                    title: 'Protector de nevera marca Gafpri',
-                    img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector1.png',
-                    href: '/',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend dolor. Donec ut est ut arcu tempor posuere.'
-                  },
-                  {
-                    title: 'Protector de nevera marca Gafpri',
-                    img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector2.png',
-                    href: '/',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend dolor. Donec ut est ut arcu tempor posuere.'
-                  },
-                  {
-                    title: 'Protector de nevera marca Gafpri',
-                    img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector1.png',
-                    href: '/',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend dolor. Donec ut est ut arcu tempor posuere.'
-                  },
-                  {
-                    title: 'Protector de nevera marca Gafpri',
-                    img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector2.png',
-                    href: '/',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend dolor. Donec ut est ut arcu tempor posuere.'
-                  },
-                  {
-                    title: 'Protector de nevera marca Gafpri',
-                    img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector1.png',
-                    href: '/',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend dolor. Donec ut est ut arcu tempor posuere.'
-                  },
-                  {
-                    title: 'Protector de nevera marca Gafpri',
-                    img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector2.png',
-                    href: '/',
-                    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, eleifend dolor. Donec ut est ut arcu tempor posuere.'
-                  },
-                ]}
-              />
-            </div>
-            <div className={containerButtonCheckOutStyle}>
-              <ButtonAppMobile 
-                title="Comprar"
+            {fetching ? ( <Loading /> ) : !item ?
+                ( <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  marginTop: '20%',
+                }}>
+                   <div style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                    <IoCartOutline style={{
+                      fontSize: '2em',
+                    }}/>
+                  </div>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}>
+                      <h1 className={title1AppStyles}>El Carrito esta vacío</h1>
+                  </div>
+                    <Link href="/tienda" style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
+                      display: 'flex',
+                      justifyContent: 'center',
+                    }}>
+                      <ButtonAppMobile 
+                        title="Ir a la tienda"
+                      />
+                    </Link>
+                </div> ) : (
+                
+                <>
+                <div><h1 className={title1AppStyles}>Carrito</h1></div>
+                  <BoxCart 
+                    cart={item}
+                    setFetching={setFetching}
+                    setCart={setItem}
+                  />
+                  <div className={containerButtonCheckOutStyle}>
+                    <ButtonAppMobile 
+                      title="Comprar"
 
-                containerProps={{
-                  onClick: () => setModal(true),
-                }}
-              />
-            </div>
-            
+                      containerProps={{
+                        onClick: () => setModal(true),
+                      }}
+                    />
+                  </div>
+              </>
+            )}
           </main>
         </>
       </LayoutApp>
     
         <Modal open={modal}>
-          <CheckOut setModal={setModal} modal={modal}/>
+          <CheckOut setModal={setModal} modal={modal} cart={item} setCart={setItem}/>
         </Modal>
       
     </>

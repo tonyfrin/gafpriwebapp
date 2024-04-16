@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { IoLocationOutline } from 'react-icons/io5';
 import { IoBicycleOutline } from 'react-icons/io5';
-
+import { useTheme } from '../context/ThemeContext';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
+import { FadeIn } from '../Fade/FadeIn';
+import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
+import { decimalFormatPriceConverter } from '../helpers';
+import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
+import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
+import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -71,14 +77,66 @@ const containerColumnEndStyles = css`
 `
 
 export type InitCheckOutProps = {
-  setModal: (value: boolean) => void;
-  useCheckOut: UseGafpriCheckOutReturn;
+  cart: CartAttributesReturn | null;
+  user: UserAttributesReturn | null;
+  sites: SitesAttributesReturn[] | null;
+  setCart: (value: CartAttributesReturn | null) => void;
 }
 
 export function InitCheckOut({
-    setModal,
-    useCheckOut,
+    cart,
+    user,
+    sites,
+    setCart
 }: InitCheckOutProps) {
+  const { useCheckOut, siteOptions, useOrder } = useTheme();
+
+  let selectAddress: string | null = null;
+  let selectSites: string | null = null;
+
+  if(user && useCheckOut.attributes.states.addressId) {
+    user.entity.map((entity) => {
+      entity.address.map((address) => {
+        if(address.id === useCheckOut.attributes.states.addressId) {
+          selectAddress = `${address.address1}, ${address.city}`;
+        }
+        return null;
+      });
+      return null;
+    });
+  }
+
+  if(useCheckOut.attributes.states.sitesId && sites) {
+    sites?.map((site) => {
+      if(site.id === useCheckOut.attributes.states.sitesId) {
+        selectSites = `${site.name} | ${site.address1}, ${site.city}`;
+      }
+      return null;
+    });
+  }
+
+  const changeShippingType = (shippingType: string) => {
+    useCheckOut.attributes.actions.setAddressId('');
+    useCheckOut.attributes.actions.setSitesId('');
+    useCheckOut.attributes.actions.setShippingType(shippingType);
+  }
+
+  useEffect(() => {
+    useCheckOut.attributes.actions.validationButtonNext();
+  }, [useCheckOut.attributes.states.shippingType, useCheckOut.attributes.states.addressId, useCheckOut.attributes.states.paymentMethod, useCheckOut.attributes.states.sitesId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const addOrder = async () => {
+    if(useCheckOut.attributes.actions.validationButtonNext()){
+      useCheckOut.pages.actions.onFetching();
+      const data = await useOrder.api.actions.createOrder();
+      console.log(data);
+      if(data && data.success){
+        
+        setCart(null);
+        useCheckOut.pages.actions.onFinal();
+      }
+    }
+  }
 
   return (
     <> 
@@ -87,37 +145,93 @@ export function InitCheckOut({
             </div>
             <div>
               <div className={containerBottonCheckOutStyle}>
-                <button className={buttonCheckOut}>
+                <button className={buttonCheckOut}
+                  style={{
+                    backgroundColor: useCheckOut.attributes.states.shippingType === 'delivery' ? '#324375' : '',
+                    color: useCheckOut.attributes.states.shippingType === 'delivery' ? '#fff' : '',
+                  }}
+                  onClick={() => changeShippingType('delivery')}
+                >
                   <IoBicycleOutline style={{margin: 'auto'}}/>
                   <span style={{margin: 'auto'}}>Delivery</span>
                 </button>
-                <button className={buttonCheckOut}>
+                <button className={buttonCheckOut}
+                  style={{
+                    backgroundColor: useCheckOut.attributes.states.shippingType === 'store' ? '#324375' : '',
+                    color: useCheckOut.attributes.states.shippingType === 'store' ? '#fff' : '',
+                  }}
+                  onClick={() => changeShippingType('store')}
+                >
                   <IoLocationOutline style={{margin: 'auto'}}/>
                   <span>Tienda</span>
                 </button>
               </div>
-              <div className={fila3}>
-                <div style={{
-                  width: '40%',
-                }}>
-                  <span className={priceTotalStyles}>Envío:</span>
+              {useCheckOut.attributes.states.shippingType === 'delivery' && 
+              <FadeIn keyName='delivery' isVisible={useCheckOut.attributes.states.shippingType === 'delivery'}>
+                <div className={`${fila3}`}>
+                  <div style={{
+                    width: '40%',
+                  }}>
+                    <span className={priceTotalStyles}>Envío:</span>
+                  </div>
+                  <div style={{
+                    width: '40%',
+                  }} className={containerColumnCenterStyles}>
+                    {!useCheckOut.attributes.states.addressId ?
+                    <span className={priceStyles} style={{
+                    color: '#c12429',
+                    }}>Seleccionar dirección</span> :
+                    <span className={priceStyles}>{selectAddress}</span>
+                  }
+                  </div>
+                  <div style={{
+                    width: '20%',
+                  }} className={containerColumnEndStyles}>
+                    <button
+                      onClick={() => useCheckOut.pages.actions.onAddressList()}
+                    >
+                      <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
+                    </button>
+                  </div>
+                  
                 </div>
-                <div style={{
-                  width: '40%',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>Av 15 delicias con calle 74, Maracaibo, Zulia, Venezuela</span>
+                </FadeIn>
+              }
+
+              {useCheckOut.attributes.states.shippingType === 'store' && 
+              <FadeIn keyName='store' isVisible={useCheckOut.attributes.states.shippingType === 'store'}>
+                <div className={`${fila3}`}>
+                  <div style={{
+                    width: '40%',
+                  }}>
+                    <span className={priceTotalStyles}>Recoger:</span>
+                  </div>
+                  <div style={{
+                    width: '40%',
+                  }} className={containerColumnCenterStyles}>
+                     {!useCheckOut.attributes.states.sitesId ?
+                      <span className={priceStyles} style={{
+                      color: '#c12429',
+                      }}>Selecciona la tienda de tu preferencia</span> :
+                      <span className={priceStyles}>{selectSites}</span>
+                    }
+                  </div>
+                  <div style={{
+                    width: '20%',
+                  }} className={containerColumnEndStyles}>
+                    <button
+                      onClick={() => useCheckOut.pages.actions.onStoreList()}
+                    >
+                      <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
+                    </button>
+                  </div>
+                  
                 </div>
-                <div style={{
-                  width: '20%',
-                }} className={containerColumnEndStyles}>
-                  <button
-                    onClick={() => useCheckOut.pages.actions.onAddressList()}
-                  >
-                    <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
-                  </button>
-                </div>
-                
-              </div>
+                </FadeIn>
+              }
+
+
+
               <div className={fila3}>
                 <div style={{
                   width: '40%',
@@ -127,9 +241,11 @@ export function InitCheckOut({
                 <div style={{
                   width: '40%',
                 }}>
+                  {!useCheckOut.attributes.states.paymentMethod ?
                   <span className={priceStyles} style={{
                     color: '#c12429',
                   }}>Seleccionar pago</span>
+                  : <span className={priceStyles}>{useCheckOut.attributes.states.paymentMethod === 'cash' ? 'Efectivo' : 'Billetera Gafpri'}</span>}
                 </div>
                 <div style={{
                   width: '20%',
@@ -151,7 +267,12 @@ export function InitCheckOut({
                 <div style={{
                   width: '40%',
                 }}>
-                  <span className={priceStyles} >$ 346.40</span>
+                  <span className={priceStyles} >{decimalFormatPriceConverter(
+                cart?.total || 0,
+                siteOptions.DECIMAL_NUMBERS,
+                siteOptions.CURRENCY_SYMBOL,
+                siteOptions.CURRENCY_LOCATION
+              )}</span>
                 </div>
                 <div style={{
                   width: '20%',
@@ -178,6 +299,10 @@ export function InitCheckOut({
             >
               <ButtonAppMobile 
                 title='Pagar'
+                containerProps={{
+                  id: 'gs-button-purchase',
+                  onClick: () => addOrder(),
+                }}
               />
             </div>
     </>
