@@ -288,8 +288,9 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   }
 
   const changeCheckEmail = (value: string) => {
-    validationCheckEmail(value);
-    setCheckEmail(value);
+    const newValue = value.toLowerCase();
+    validationCheckEmail(newValue);
+    setCheckEmail(newValue);
   }
 
   const changePhone = (value: string) => {
