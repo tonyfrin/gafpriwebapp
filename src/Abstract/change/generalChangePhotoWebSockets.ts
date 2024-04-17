@@ -38,29 +38,15 @@ export const generalChangePhotoWebSockets = async ({
 
   try {
     if(clientId !== ''){
-    const fileReader = new FileReader();
-    fileReader.onload = function () {
-      if (fileReader.readyState === 2 && fileReader.result !== null) {
-        let blob;
-        if (typeof fileReader.result === 'string') {
-          blob = new Blob([fileReader.result], { type: mimeType });
-        } else {
-          blob = new Blob([new Uint8Array(fileReader.result)], { type: mimeType });
-        }
 
-        console.log('blob', blob);
-        
-        const data = {
-          clientId: clientId,
-          fileBlob: blob
-        };
-    
-        // Convertir el objeto a JSON y enviarlo a través del WebSocket
-        websocket.send(JSON.stringify(data));
-      }
-    };
-    fileReader.readAsArrayBuffer(newFile);
-  }
+          const data = {
+            clientId: clientId,
+            image: newFile
+          };
+      
+          // Convertir el objeto a JSON y enviarlo a través del WebSocket
+          websocket.send(JSON.stringify(data));
+    }
 
     
 
