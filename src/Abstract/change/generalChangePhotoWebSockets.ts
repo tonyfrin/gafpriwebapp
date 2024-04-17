@@ -37,6 +37,7 @@ export const generalChangePhotoWebSockets = async ({
   setSubmitting(true);
 
   try {
+    if(clientId !== ''){
     const fileReader = new FileReader();
     fileReader.onload = function () {
       if (fileReader.readyState === 2 && fileReader.result !== null) {
@@ -56,6 +57,7 @@ export const generalChangePhotoWebSockets = async ({
       }
     };
     fileReader.readAsArrayBuffer(newFile);
+  }
 
     
 
