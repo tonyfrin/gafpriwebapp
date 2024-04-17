@@ -1,4 +1,5 @@
 'use client'
+import React from 'react';
 import { useState, ChangeEvent } from 'react';
 import { SingleValue } from 'react-select';
 import { generalValidationButtonNext, validationInput } from '../../helpers';
@@ -86,7 +87,8 @@ export type UseGafpriAttributesSingUpProps = {
 };
 
 export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpProps): UseGafpriAttributesSingUpReturn {
-  const [websocket] = useState(() => connectToWebSocket(`ws:${API_URL}`));
+  const socketRef = React.useRef<WebSocket | null>( null );
+  const [websocket] = useState(() => connectToWebSocket(`ws://localhost:3001`));
   const [email, setEmail] = useState<string>('');
   const [emailValid, setEmailValid] = useState<boolean>(false);
 
@@ -440,6 +442,41 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
       inputId: 'btn-step-8',
     });
   }
+
+  React.useEffect(() => {
+    if (!socketRef.current) {
+      const ws = new WebSocket('ws://localhost:3001');
+  
+      ws.onopen = () => {
+        console.log('Connected to the WebSocket server');
+      };
+  
+      ws.onmessage = (event: MessageEvent) => {
+        const receivedData = JSON.parse(event.data);
+      
+        if (receivedData.model === 'image' && receivedData.action === 'create') {
+          setDocumentIdPhoto(receivedData.data);
+        } 
+      };      
+  
+      ws.onerror = (error: Event) => {
+        console.error('WebSocket error:', error);
+      };
+  
+      ws.onclose = () => {
+        console.log('Disconnected from the WebSocket server');
+      };
+  
+      socketRef.current = ws;
+    }
+  
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.close();
+        socketRef.current = null;
+      }
+    };
+  }, []);
 
   
  
