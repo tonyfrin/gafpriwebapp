@@ -4,6 +4,9 @@ import { SingleValue } from 'react-select';
 import { generalValidationButtonNext, validationInput } from '../../helpers';
 import { generalChangePhoto } from '../../change/generalChangePhoto';
 import { UseGafpriErrorReturn } from '../useGafpriError';
+import { connectToWebSocket } from '../../helpers';
+import { API_URL } from '../../constants';
+import { generalChangePhotoWebSockets } from '@/Abstract/change/generalChangePhotoWebSockets';
 
 type State = {
     email: string;
@@ -83,6 +86,7 @@ export type UseGafpriAttributesSingUpProps = {
 };
 
 export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpProps): UseGafpriAttributesSingUpReturn {
+  const [websocket] = useState(() => connectToWebSocket(`ws:${API_URL}`));
   const [email, setEmail] = useState<string>('');
   const [emailValid, setEmailValid] = useState<boolean>(false);
 
@@ -339,24 +343,26 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   const changeDocumentIdPhoto = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
-    generalChangePhoto({
+    generalChangePhotoWebSockets({
       e,
       changeError: useError.actions.changeError,
       setSubmitting: setSubmittingDocumentId,
       setPhoto: setDocumentIdPhoto,
       validation: validationDocumentIdPhoto,
+      websocket,
     });
   };
 
   const changeUserPhoto = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
-    generalChangePhoto({
+    generalChangePhotoWebSockets({
       e,
       changeError: useError.actions.changeError,
       setSubmitting: setSubmittingUser,
       setPhoto: setUserPhoto,
       validation: validationUserPhoto,
+      websocket,
     });
   };
 

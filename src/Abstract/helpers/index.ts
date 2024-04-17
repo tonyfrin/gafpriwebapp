@@ -225,3 +225,17 @@ export const scrollToTop = (): void => {
     behavior: 'smooth',
   });
 };
+
+export const connectToWebSocket = (websocketUrl: string): WebSocket => {
+  const websocket = new WebSocket(websocketUrl);
+
+  websocket.onopen = () => {
+    console.log('Conexión establecida con el servidor WebSocket');
+  };
+
+  websocket.onerror = (error) => {
+    console.error('Error al conectar al servidor WebSocket:', error);
+  };
+
+  return websocket;
+};

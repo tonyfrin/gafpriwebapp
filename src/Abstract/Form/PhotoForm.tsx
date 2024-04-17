@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, ChangeEvent } from 'react';
 import { css } from '@emotion/css';
 import { Loading, LoadingProps } from '../Loading';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import NextImage from 'next/image';
+
 
 
 export type PhotoFormProps = {
@@ -66,6 +67,7 @@ export const PhotoForm = ({
   changeError,
   setSubmitting,
 }: PhotoFormProps) => {
+  
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
