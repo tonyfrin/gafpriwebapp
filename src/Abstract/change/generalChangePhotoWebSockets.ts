@@ -44,7 +44,7 @@ export const generalChangePhotoWebSockets = async ({
         
           const data = {
             clientId: clientId,
-            fileArrayBuffer: new Uint8Array(fileReader.result as ArrayBuffer), // Convertir a Uint8Array
+            fileArrayBuffer: fileReader.result as ArrayBuffer
           };
 
           // Convertir el objeto a JSON y enviarlo a través del WebSocket
