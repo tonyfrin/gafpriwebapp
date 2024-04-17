@@ -449,15 +449,18 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   
       ws.onopen = () => {
         console.log('Connected to the WebSocket server');
+        ws.send('pong');
       };
   
       ws.onmessage = (event: MessageEvent) => {
         const receivedData = JSON.parse(event.data);
+        console.log('receivedData', receivedData);
       
         if (receivedData.model === 'image' && receivedData.action === 'create') {
           setDocumentIdPhoto(receivedData.data);
         } 
-      };      
+      }; 
+      
   
       ws.onerror = (error: Event) => {
         console.error('WebSocket error:', error);
