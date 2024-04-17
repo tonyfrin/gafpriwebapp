@@ -57,7 +57,7 @@ export const generalChangePhoto = async ({
   };
 
   try {
-    const response = await axios.post('/api/upload-image', formData, config);
+    const response = await axios.post(UPLOAD_PHOTO_ROUTE, formData, config);
 
     if (response.status === 200) {
       const valid = validation ? validation(response.data.imageUrl) : true;
