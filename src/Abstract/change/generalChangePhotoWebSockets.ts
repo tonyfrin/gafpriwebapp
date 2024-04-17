@@ -7,18 +7,16 @@ export type GeneralChangePhotoProps = {
   e: ChangeEvent<HTMLInputElement>;
   changeError: (valueError: string[]) => void;
   setSubmitting: (valueSubmitting: boolean) => void;
-  setPhoto: (valuePhoto: string) => void;
-  validation?: (valueValid: string) => boolean;
   websocket: WebSocket; 
+  clientId: string;
 };
 
 export const generalChangePhotoWebSockets = async ({
   e,
   changeError,
   setSubmitting,
-  setPhoto,
-  validation,
   websocket,
+  clientId,
 }: GeneralChangePhotoProps): Promise<void> => {
   console.log('e.target.files', e.target.files);
   const newFile = e.target.files && e.target.files[0];
@@ -48,25 +46,19 @@ export const generalChangePhotoWebSockets = async ({
         } else {
           blob = new Blob([new Uint8Array(fileReader.result)], { type: mimeType });
         }
-        websocket.send(blob); // Enviar el Blob a través del WebSocket
+        const data = {
+          clientId: clientId,
+          fileBlob: blob
+        };
+    
+        // Convertir el objeto a JSON y enviarlo a través del WebSocket
+        websocket.send(JSON.stringify(data));
       }
     };
     fileReader.readAsArrayBuffer(newFile);
 
+    
 
-    websocket.onmessage = function (event) {
-      console.log('event', event);
-      const data = JSON.parse(event.data);
-      if (data.success && data.imageUrl) {
-        const valid = validation ? validation(data.imageUrl) : true;
-        if (valid) {
-          setPhoto(data.imageUrl);
-        }
-      } else {
-        changeError(['Error al cargar la imagen']);
-      }
-      setSubmitting(false);
-    };
 
   } catch (newErrorValue: any) {
     changeError([`${newErrorValue.message}`]);

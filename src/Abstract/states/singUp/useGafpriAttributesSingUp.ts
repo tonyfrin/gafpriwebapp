@@ -350,9 +350,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
       e,
       changeError: useError.actions.changeError,
       setSubmitting: setSubmittingDocumentId,
-      setPhoto: setDocumentIdPhoto,
-      validation: validationDocumentIdPhoto,
       websocket,
+      clientId
     });
   };
 
@@ -363,9 +362,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
       e,
       changeError: useError.actions.changeError,
       setSubmitting: setSubmittingUser,
-      setPhoto: setUserPhoto,
-      validation: validationUserPhoto,
       websocket,
+      clientId
     });
   };
 
