@@ -38,14 +38,18 @@ export const generalChangePhotoWebSockets = async ({
 
   try {
     if(clientId !== ''){
-
+      const fileReader = new FileReader();
+      fileReader.onload = function () {
+        if (fileReader.readyState === 2 && fileReader.result !== null) {
+          const arrayBuffer = fileReader.result as ArrayBuffer;
           const data = {
             clientId: clientId,
-            image: newFile
+            fileArrayBuffer: arrayBuffer
           };
-      
-          // Convertir el objeto a JSON y enviarlo a través del WebSocket
           websocket.send(JSON.stringify(data));
+        }
+      };
+      fileReader.readAsArrayBuffer(newFile);
     }
 
     
