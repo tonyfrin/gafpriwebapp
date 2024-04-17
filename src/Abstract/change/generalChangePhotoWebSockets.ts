@@ -47,6 +47,9 @@ export const generalChangePhotoWebSockets = async ({
         } else {
           blob = new Blob([new Uint8Array(fileReader.result)], { type: mimeType });
         }
+
+        console.log('blob', blob);
+        
         const data = {
           clientId: clientId,
           fileBlob: blob
