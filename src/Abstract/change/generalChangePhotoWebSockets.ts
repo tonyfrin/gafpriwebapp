@@ -46,7 +46,7 @@ export const generalChangePhotoWebSockets = async ({
             clientId: clientId,
             fileArrayBuffer: arrayBuffer
           };
-          websocket.send(JSON.stringify(data));
+          websocket.send(arrayBuffer);
         }
       };
       fileReader.readAsArrayBuffer(newFile);
