@@ -55,6 +55,7 @@ export const generalChangePhotoWebSockets = async ({
 
 
     websocket.onmessage = function (event) {
+      console.log('event', event);
       const data = JSON.parse(event.data);
       if (data.success && data.imageUrl) {
         const valid = validation ? validation(data.imageUrl) : true;
