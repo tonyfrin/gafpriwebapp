@@ -460,6 +460,7 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
           setClientId(receivedData.data);
         } else if (receivedData.model === 'image' && receivedData.action === 'create') {
           setDocumentIdPhoto(receivedData.data);
+          setSubmittingDocumentId(false);
         } 
       }; 
       
