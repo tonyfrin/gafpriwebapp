@@ -88,6 +88,7 @@ export type UseGafpriAttributesSingUpProps = {
 
 export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpProps): UseGafpriAttributesSingUpReturn {
   const socketRef = React.useRef<WebSocket | null>( null );
+  const [clientId, setClientId] = useState<string>('');
   const [websocket] = useState(() => connectToWebSocket(`wss://lit-cove-22933-f97494e6b56f.herokuapp.com`));
   const [email, setEmail] = useState<string>('');
   const [emailValid, setEmailValid] = useState<boolean>(false);
@@ -452,17 +453,19 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
         ws.send('pong');
       };
   
-      ws.onmessage = (event: MessageEvent) => {
+      ws.onmessage = (event) => {
         const receivedData = JSON.parse(event.data);
         console.log('receivedData', receivedData);
-      
-        if (receivedData.model === 'image' && receivedData.action === 'create') {
+        
+        if (receivedData.type === 'clientId') {
+          // Al recibir el ID del cliente desde el servidor
+          setClientId(receivedData.data);
+        } else if (receivedData.model === 'image' && receivedData.action === 'create') {
           setDocumentIdPhoto(receivedData.data);
         } 
       }; 
       
-  
-      ws.onerror = (error: Event) => {
+      ws.onerror = (error) => {
         console.error('WebSocket error:', error);
       };
   
@@ -480,6 +483,7 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
       }
     };
   }, []);
+  
 
   
  
