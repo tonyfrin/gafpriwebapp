@@ -88,7 +88,7 @@ export type UseGafpriAttributesSingUpProps = {
 
 export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpProps): UseGafpriAttributesSingUpReturn {
   const socketRef = React.useRef<WebSocket | null>( null );
-  const [websocket] = useState(() => connectToWebSocket(`ws://lit-cove-22933-f97494e6b56f.herokuapp.com`));
+  const [websocket] = useState(() => connectToWebSocket(`wss://lit-cove-22933-f97494e6b56f.herokuapp.com`));
   const [email, setEmail] = useState<string>('');
   const [emailValid, setEmailValid] = useState<boolean>(false);
 
@@ -445,7 +445,7 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
 
   React.useEffect(() => {
     if (!socketRef.current) {
-      const ws = new WebSocket('ws://lit-cove-22933-f97494e6b56f.herokuapp.com');
+      const ws = new WebSocket('wss://lit-cove-22933-f97494e6b56f.herokuapp.com');
   
       ws.onopen = () => {
         console.log('Connected to the WebSocket server');
