@@ -18,9 +18,12 @@ export const generalChangePhoto = async ({
   setPhoto,
   validation,
 }: GeneralChangePhotoProps): Promise<void> => {
+  console.log('e.target.files', e.target.files);
   const newFile = e.target.files && e.target.files[0];
 
   if (!newFile) return;
+
+  console.log('newFile', newFile);
 
   // Obtén el tipo MIME en función de la extensión del archivo
   const mimeType = getMimeTypeByExtension(newFile.name);
@@ -34,6 +37,16 @@ export const generalChangePhoto = async ({
   const formData = new FormData();
   formData.append('file', newFile);
   formData.append('fileName', newFile.name);
+  formData.append('mimeType', mimeType);
+
+  console.log('formData', formData.get('file'));
+
+  if(formData.get('file') === null) {
+    changeError([
+      'El archivo no es una imagen válida. Asegúrate de subir un archivo JPG, JPEG o PNG.',
+    ]);
+    return;
+  }
 
   setSubmitting(true);
 
@@ -44,7 +57,7 @@ export const generalChangePhoto = async ({
   };
 
   try {
-    const response = await axios.post(UPLOAD_PHOTO_ROUTE, formData, config);
+    const response = await axios.post('/api/upload-image', formData, config);
 
     if (response.status === 200) {
       const valid = validation ? validation(response.data.imageUrl) : true;
