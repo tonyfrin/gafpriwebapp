@@ -351,7 +351,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
       changeError: useError.actions.changeError,
       setSubmitting: setSubmittingDocumentId,
       websocket,
-      clientId
+      clientId,
+      from: 'documentIdPhoto'
     });
   };
 
@@ -363,7 +364,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
       changeError: useError.actions.changeError,
       setSubmitting: setSubmittingUser,
       websocket,
-      clientId
+      clientId,
+      from: 'userPhoto'
     });
   };
 
@@ -458,13 +460,21 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
         if (receivedData.type === 'clientId') {
           // Al recibir el ID del cliente desde el servidor
           setClientId(receivedData.data);
-        } else if (receivedData.model === 'image' && receivedData.action === 'create') {
+        } else if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === 'documentIdPhoto') {
           if(receivedData.success){
             setDocumentIdPhoto(receivedData.data);
             setSubmittingDocumentId(false);
           } else {
             useError.actions.changeError([receivedData.data]);
             setSubmittingDocumentId(false);
+          }
+        } else if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === 'userPhoto') {
+          if(receivedData.success){
+            setUserPhoto(receivedData.data);
+            setSubmittingUser(false);
+          } else {
+            useError.actions.changeError([receivedData.data]);
+            setSubmittingUser(false);
           }
         } 
       }; 

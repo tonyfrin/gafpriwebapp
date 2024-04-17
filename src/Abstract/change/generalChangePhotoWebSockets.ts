@@ -9,6 +9,7 @@ export type GeneralChangePhotoProps = {
   setSubmitting: (valueSubmitting: boolean) => void;
   websocket: WebSocket; 
   clientId: string;
+  from: string;
 };
 
 function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -37,6 +38,7 @@ export const generalChangePhotoWebSockets = async ({
   setSubmitting,
   websocket,
   clientId,
+  from
 }: GeneralChangePhotoProps): Promise<void> => {
   console.log('e.target.files', e.target.files);
   const newFile = e.target.files && e.target.files[0];
@@ -76,7 +78,8 @@ export const generalChangePhotoWebSockets = async ({
 
               const data = {
                 clientId: clientId,
-                fileArrayBuffer: base64String
+                fileArrayBuffer: base64String,
+                from
               };
 
 

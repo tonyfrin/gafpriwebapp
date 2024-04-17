@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from 'react';
+import React from 'react';
 import { css } from '@emotion/css';
 import { Loading, LoadingProps } from '../Loading';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
@@ -29,7 +29,7 @@ export type PhotoFormPropsExtended = {
 const defaultImageFormConatinerStyle = css`
   display: flex;
   flex-direction: column-reverse;
-  width: 30%;
+  width: 100%;
 `;
 
 const defaultLoadingContainerStyle = css`
@@ -45,7 +45,7 @@ const defaultLoadingContainerStyle = css`
 
 const defaultImageStyle = css`
   transition: all 1s ease 0s;
-  width: 100%;
+  width: 30%;
   height: auto;
   max-width: 300px;
   max-height: 300px;
