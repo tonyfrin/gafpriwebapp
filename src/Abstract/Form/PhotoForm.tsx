@@ -29,7 +29,7 @@ export type PhotoFormPropsExtended = {
 const defaultImageFormConatinerStyle = css`
   display: flex;
   flex-direction: column-reverse;
-  width: 100%;
+  width: 30%;
 `;
 
 const defaultLoadingContainerStyle = css`

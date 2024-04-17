@@ -11,6 +11,26 @@ export type GeneralChangePhotoProps = {
   clientId: string;
 };
 
+function arrayBufferToBase64(buffer: ArrayBuffer) {
+  let binary = '';
+  const bytes = new Uint8Array(buffer);
+  const len = bytes.byteLength;
+  for (let i = 0; i < len; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+function textToArrayBuffer(text: string): ArrayBuffer {
+  const binaryString = window.atob(text.split(',')[1]);
+  const length = binaryString.length;
+  const bytes = new Uint8Array(length);
+  for (let i = 0; i < length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+  return bytes.buffer;
+}
+
 export const generalChangePhotoWebSockets = async ({
   e,
   changeError,
@@ -40,16 +60,25 @@ export const generalChangePhotoWebSockets = async ({
     if(clientId !== ''){
       const fileReader = new FileReader();
       fileReader.onload = function (event) {
-        if (fileReader.readyState === FileReader.DONE) {
+        if (fileReader.readyState === 2 && fileReader.result !== null)
 
             if(event.target !== null){
 
-              const fileArrayBuffer = event.target.result;
-            
+              let arrayBuffer: ArrayBuffer;
+              if (typeof fileReader.result === 'string') {
+                arrayBuffer = textToArrayBuffer(fileReader.result);
+              } else {
+                arrayBuffer = fileReader.result as ArrayBuffer;
+              }
+
+              // Convertir el ArrayBuffer a una cadena base64
+              const base64String = arrayBufferToBase64(arrayBuffer);
+
               const data = {
                 clientId: clientId,
-                fileArrayBuffer
+                fileArrayBuffer: base64String
               };
+
 
               // Convertir el objeto a JSON y enviarlo a través del WebSocket
               websocket.send(JSON.stringify(data));
@@ -57,10 +86,11 @@ export const generalChangePhotoWebSockets = async ({
               changeError(['Error al leer el archivo']);
               setSubmitting(false);
             }
-        }
       };
       fileReader.readAsArrayBuffer(newFile);
     }
+
+
 
 
    
