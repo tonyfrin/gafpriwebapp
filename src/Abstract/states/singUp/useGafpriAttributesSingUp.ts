@@ -459,8 +459,13 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
           // Al recibir el ID del cliente desde el servidor
           setClientId(receivedData.data);
         } else if (receivedData.model === 'image' && receivedData.action === 'create') {
-          setDocumentIdPhoto(receivedData.data);
-          setSubmittingDocumentId(false);
+          if(receivedData.success){
+            setDocumentIdPhoto(receivedData.data);
+            setSubmittingDocumentId(false);
+          } else {
+            useError.actions.changeError([receivedData.data]);
+            setSubmittingDocumentId(false);
+          }
         } 
       }; 
       
