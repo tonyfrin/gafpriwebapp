@@ -337,7 +337,7 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
                                                                             fontWeight: '600',
                                                                             color: transaction.type === 'debit' ? '#c12429' : '#324375'
                                                                         }}
-                                                                        >{`${transaction.type === 'debit' && '-'} ${decimalFormatPriceConverter(
+                                                                        >{`${transaction.type === 'debit' ? '-' : ''} ${decimalFormatPriceConverter(
                                                                                 transaction.change || 0,
                                                                                 siteOptions.DECIMAL_NUMBERS,
                                                                                 siteOptions.CURRENCY_SYMBOL,
