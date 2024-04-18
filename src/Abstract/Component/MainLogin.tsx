@@ -1,11 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
 import { css } from '@emotion/css';
-import { Layout } from './Layout';
 import FondoLogin from '../assets/img/fondo-login.jpg'
 import { ButtonAppMobile } from '../../Abstract/Button/ButtonAppMobile';
 import { Error } from '../Error';
 import { useTheme } from '../context/ThemeContext';
+import { LayoutLogin } from './LayoutLogin';
 
 
 const loginContainerStyles = css`
@@ -31,7 +31,7 @@ export function MainLogin() {
     const { useError } = useTheme();
   return (
     <>
-     <Layout
+     <LayoutLogin
         containerStyles={{
             backgroundImage: FondoLogin.src,
             custom: `
@@ -60,7 +60,7 @@ export function MainLogin() {
                 </div>
             </div>
         </>
-     </Layout>
+     </LayoutLogin>
     </>
   );
 }

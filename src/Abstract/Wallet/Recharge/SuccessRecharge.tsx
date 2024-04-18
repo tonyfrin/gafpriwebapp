@@ -8,6 +8,7 @@ import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { decimalFormatPriceConverter } from '../../helpers';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Error } from '@/Abstract/Error';
+import { RiCheckboxCircleLine } from 'react-icons/ri';
 
 
 const mainStyles = css`
@@ -138,35 +139,63 @@ export function SuccessRecharge() {
 
   return (
     <>
-          <div
+
+        <div
             style={{
-              marginBottom: '100px'
-            }}
-          >
-          <div style={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                padding: '1em 0px',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '80vh',
+                flexDirection: 'column',
                 width: '90%',
                 margin: 'auto',
-                borderBottom: '1px solid #e1e1e1'
-            }}> 
-                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Recarga de Saldo</h1>
+            }}
+        >
+            <div>   
+                <RiCheckboxCircleLine
+                    style={{
+                        fontSize: '3em'
+                    }}
+                />
             </div>
-            <div><h1 className={title1AppStyles}>Exitosa!</h1></div>
-              
-              <div><h1 className={title1AppStyles} style={{textAlign: 'center'}}>Hemos recibido de manera exitosa su solicitud de recarga, en breve verificarémos su transferencia y recibirá un correo al tener los fondos disonibles. </h1></div>
+            <p
+                style={{
+                    margin: '10px 0px 10px 0px',
+                    padding: '0px',
+                    fontSize: '0.7em',
+                    fontFamily: 'Poppins, sans-serif',
+                    textAlign: 'center',
+                    fontWeight: '600'
+                }}
+            >Recarga enviada.</p>
+            <p
+                style={{
+                    margin: '0px',
+                    padding: '0px',
+                    fontSize: '0.7em',
+                    fontFamily: 'Poppins, sans-serif',
+                    textAlign: 'center'
+                }}
+            >Hemos recibido de manera exitosa su solicitud de recarga, en breve verificarémos su transferencia y recibirá un correo al tener los fondos disonibles.</p>
               <Link href="/billetera" style={{
                 textDecoration: 'none',
                 color: 'inherit',
                 display: 'flex',
                 justifyContent: 'center',
+                width: '100%',
+                margin: '1em 0px'
               }}>
                 <ButtonAppMobile 
                   title="Ir a la Billetera"
+                  contentStyles={{
+                    fontSize: '1.2em',
+                  }}
+                  containerProps={{
+                    onClick: () => useWallet.pagesRecharge.actions.returnInit()
+                  }}
                 />
               </Link>
-          </div>
+        </div>
     </>
   );
 }

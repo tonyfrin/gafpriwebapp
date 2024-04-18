@@ -131,28 +131,26 @@ export function Profile() {
     <>
       <LayoutApp>
         <>
-          <div>
-              {
-                useProfile.pages.states.isFetching &&
-                  <Loading />
-              }
+              { useProfile.pages.states.isFetching ? <Loading /> :
+                <div>
 
-              {
-                useProfile.pages.states.isInit &&
-                <FadeIn keyName='isInit' isVisible={useProfile.pages.states.isInit}>
-                  <InitProfile />
-                </FadeIn>
-              }
+                    {
+                      useProfile.pages.states.isInit &&
+                      <FadeIn keyName='isInit' isVisible={useProfile.pages.states.isInit}>
+                        <InitProfile />
+                      </FadeIn>
+                    }
 
-              {
-                useProfile.pages.states.isOrderList &&
-                <FadeIn keyName='isOrderList' isVisible={useProfile.pages.states.isOrderList}>
-                  <Orders orders={orders}/>
-                </FadeIn>
-              }
+                    {
+                      useProfile.pages.states.isOrderList &&
+                      <FadeIn keyName='isOrderList' isVisible={useProfile.pages.states.isOrderList}>
+                        <Orders orders={orders}/>
+                      </FadeIn>
+                    }
 
-          
-          </div>
+                
+                </div>
+              }
         </>
       </LayoutApp>
     </>

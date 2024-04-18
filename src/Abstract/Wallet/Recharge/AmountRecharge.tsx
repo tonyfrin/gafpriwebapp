@@ -167,170 +167,175 @@ export function AmountRecharge() {
     <>
     {!useWallet.attributes.states.walletAccountIsReady ? <Loading /> : 
         <>
-          <div>
-          <Error 
-              error={useError.states.error}
-          />
-          <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '1em 0px',
-                width: '90%',
-                margin: 'auto',
-                borderBottom: '1px solid #e1e1e1'
-            }}> 
-                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Recarga de Saldo</h1>
-                <Link href='/billetera' style={{
-                  textDecoration: 'none',
+          <div
+            style = {{
+              marginBottom: '200px'
+            }}
+          >
+            <Error 
+                error={useError.states.error}
+            />
+            <div style={{
                   display: 'flex',
-                }}>
-                <FiChevronLeft 
-                    className={arrowStyle}
-                    onClick={useWallet.pagesRecharge.actions.returnInit}
-                />
-                </Link>
-            </div>
-            <div style={{
-                margin: 'auto',
-                padding: '0px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-                <div style={{
-                  width: '85%',
-                  margin: 'auto',
-                }}>
-                  <span className={textInfoTitleStyles}>Cuenta</span>
-                </div>
-                <SelectApp
-                  options={walletAccountOptions}
-                  value={walletAccountLabel}
-                  onChange={(e) => useWallet.attributesRecharge.actions.setWalletAccountPostsId(e)}
-                />
-            </div>
-            <div style={{
-                margin: 'auto',
-                padding: '0px',
-                display: 'flex',
-                flexDirection: 'column',
-              }}>
-                <div style={{
-                  width: '85%',
-                  margin: 'auto',
-                }}>
-                  <span className={textInfoTitleStyles}>Tipo de recarga</span>
-                </div>
-                <SelectApp
-                  options={useWallet.attributesRecharge.states.paymentTypeOptions}
-                  value={useWallet.attributesRecharge.states.paymentType}
-                  onChange={(e) => useWallet.attributesRecharge.actions.setPaymentType(e)}
-                />
-            </div>
-            {useWallet.attributesRecharge.states.paymentType === 'zelle' &&
-              <div
-                style={{
-                  border: '1px solid #ebebeb',
+                  justifyContent: 'space-between',
+                  padding: '1em 0px',
                   width: '90%',
-                  margin: '1em auto',
-                  borderRadius: '15px',
-                  backgroundColor: '#fff',
-                }}
-              >
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '1em',
-                }}>
-                  <span className={textInfoStyles}>Los datos para transferencia Zelle son:</span>
-                  <span className={textInfoStyles}>A nombre de: <span style={{fontWeight: 600}}>Gafpri Corp</span></span>
-                  <span className={textInfoStyles}>Correo: <span style={{fontWeight: 600}}>billetera@gafpri.com</span></span>
-                </div>
-              </div>
-            }
-
-            {useWallet.attributesRecharge.states.paymentType === 'paypal' &&
-              <div
-                style={{
-                  border: '1px solid #ebebeb',
-                  width: '90%',
-                  margin: '1em auto',
-                  borderRadius: '15px',
-                  backgroundColor: '#fff',
-                }}
-              >
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    padding: '1em',
-                }}>
-                  <span className={textInfoStyles}>Los datos para transferencia PayPal son:</span>
-                  <span className={textInfoStyles}>A nombre de: <span style={{fontWeight: 600}}>Gafpri Corp</span></span>
-                  <span className={textInfoStyles}>Correo: <span style={{fontWeight: 600}}>info@gafpri.com</span></span>
-                </div>
-              </div>
-            }
-
-            {useWallet.attributesRecharge.states.paymentType !== '' && 
-              <>  
-                <InputAppContainer 
-                    inputProps={{
-                      placeholder: 'Monto',
-                      type: 'number',
-                      value: useWallet.attributesRecharge.states.amount,
-                      onChange: (e) => useWallet.attributesRecharge.actions.setAmount(e.target.value)
-                    }}
-                  />
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '85%',
-                    margin: '2em auto',
-
+                  margin: 'auto',
+                  borderBottom: '1px solid #e1e1e1',
                   
-                  }}
-                >
-                  <span className={textResumeStyles}>{`Comisión (${useWallet.attributesRecharge.states.commissionRate}): `}</span>
-                  <span className={textResumeStyles} style={{fontWeight: '600'}}>{decimalFormatPriceConverter(
-                            useWallet.attributesRecharge.states.commission || 0,
-                            siteOptions.DECIMAL_NUMBERS,
-                            siteOptions.CURRENCY_SYMBOL,
-                            siteOptions.CURRENCY_LOCATION
-                          )}</span>
-                </div>
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '85%',
-                    margin: '2em auto',
-
-                  
-                  }}
-                >
-                  <span className={textResumeStyles}>Total de recarga: </span>
-                  <span className={textResumeStyles} style={{fontWeight: '600'}}>{decimalFormatPriceConverter(
-                            useWallet.attributesRecharge.states.total || 0,
-                            siteOptions.DECIMAL_NUMBERS,
-                            siteOptions.CURRENCY_SYMBOL,
-                            siteOptions.CURRENCY_LOCATION
-                          )}</span>
-                </div>
-                <div style={{
-                    display: 'flex',
-                    margin: '1em',
+              }}> 
+                  <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Recarga de Saldo</h1>
+                  <Link href='/billetera' style={{
                     textDecoration: 'none',
+                    display: 'flex',
+                  }}>
+                  <FiChevronLeft 
+                      className={arrowStyle}
+                      onClick={useWallet.pagesRecharge.actions.returnInit}
+                  />
+                  </Link>
+              </div>
+              <div style={{
+                  margin: 'auto',
+                  padding: '0px',
+                  display: 'flex',
+                  flexDirection: 'column',
                 }}>
-                    <ButtonAppMobile 
-                        title="Siguiente"
-                        containerProps={{
-                          id: 'amount-recharge-button',
-                          onClick: next
-                        }}
-                    />
+                  <div style={{
+                    width: '85%',
+                    margin: 'auto',
+                  }}>
+                    <span className={textInfoTitleStyles}>Cuenta</span>
+                  </div>
+                  <SelectApp
+                    options={walletAccountOptions}
+                    value={walletAccountLabel}
+                    onChange={(e) => useWallet.attributesRecharge.actions.setWalletAccountPostsId(e)}
+                  />
+              </div>
+              <div style={{
+                  margin: 'auto',
+                  padding: '0px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
+                  <div style={{
+                    width: '85%',
+                    margin: 'auto',
+                  }}>
+                    <span className={textInfoTitleStyles}>Tipo de recarga</span>
+                  </div>
+                  <SelectApp
+                    options={useWallet.attributesRecharge.states.paymentTypeOptions}
+                    value={useWallet.attributesRecharge.states.paymentType}
+                    onChange={(e) => useWallet.attributesRecharge.actions.setPaymentType(e)}
+                  />
+              </div>
+              {useWallet.attributesRecharge.states.paymentType === 'zelle' &&
+                <div
+                  style={{
+                    border: '1px solid #ebebeb',
+                    width: '90%',
+                    margin: '1em auto',
+                    borderRadius: '15px',
+                    backgroundColor: '#fff',
+                  }}
+                >
+                  <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      padding: '1em',
+                  }}>
+                    <span className={textInfoStyles}>Los datos para transferencia Zelle son:</span>
+                    <span className={textInfoStyles}>A nombre de: <span style={{fontWeight: 600}}>Gafpri Corp</span></span>
+                    <span className={textInfoStyles}>Correo: <span style={{fontWeight: 600}}>billetera@gafpri.com</span></span>
+                  </div>
                 </div>
-              </>
-            }
+              }
+
+              {useWallet.attributesRecharge.states.paymentType === 'paypal' &&
+                <div
+                  style={{
+                    border: '1px solid #ebebeb',
+                    width: '90%',
+                    margin: '1em auto',
+                    borderRadius: '15px',
+                    backgroundColor: '#fff',
+                  }}
+                >
+                  <div style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      padding: '1em',
+                  }}>
+                    <span className={textInfoStyles}>Los datos para transferencia PayPal son:</span>
+                    <span className={textInfoStyles}>A nombre de: <span style={{fontWeight: 600}}>Gafpri Corp</span></span>
+                    <span className={textInfoStyles}>Correo: <span style={{fontWeight: 600}}>info@gafpri.com</span></span>
+                  </div>
+                </div>
+              }
+
+              {useWallet.attributesRecharge.states.paymentType !== '' && 
+                <>  
+                  <InputAppContainer 
+                      inputProps={{
+                        placeholder: 'Monto',
+                        type: 'number',
+                        value: useWallet.attributesRecharge.states.amount,
+                        onChange: (e) => useWallet.attributesRecharge.actions.setAmount(e.target.value)
+                      }}
+                    />
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '85%',
+                      margin: '2em auto',
+
+                    
+                    }}
+                  >
+                    <span className={textResumeStyles}>{`Comisión (${useWallet.attributesRecharge.states.commissionRate}): `}</span>
+                    <span className={textResumeStyles} style={{fontWeight: '600'}}>{decimalFormatPriceConverter(
+                              useWallet.attributesRecharge.states.commission || 0,
+                              siteOptions.DECIMAL_NUMBERS,
+                              siteOptions.CURRENCY_SYMBOL,
+                              siteOptions.CURRENCY_LOCATION
+                            )}</span>
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      width: '85%',
+                      margin: '2em auto',
+
+                    
+                    }}
+                  >
+                    <span className={textResumeStyles}>Total de recarga: </span>
+                    <span className={textResumeStyles} style={{fontWeight: '600'}}>{decimalFormatPriceConverter(
+                              useWallet.attributesRecharge.states.total || 0,
+                              siteOptions.DECIMAL_NUMBERS,
+                              siteOptions.CURRENCY_SYMBOL,
+                              siteOptions.CURRENCY_LOCATION
+                            )}</span>
+                  </div>
+                  <div style={{
+                      display: 'flex',
+                      margin: '1em',
+                      textDecoration: 'none',
+                  }}>
+                      <ButtonAppMobile 
+                          title="Siguiente"
+                          containerProps={{
+                            id: 'amount-recharge-button',
+                            onClick: next
+                          }}
+                      />
+                  </div>
+                </>
+              }
           
           
           </div>

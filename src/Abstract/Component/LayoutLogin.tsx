@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { cx, css } from '@emotion/css';
 import { useRouter } from 'next/router';
+import { useTheme } from '../context/ThemeContext';
 import { MainFooter } from '../Footer/Footer';
 import Logo from '../assets/img/logo-blanco.png';
-import { AppHeader } from '../Header/AppHeader';
-import { MenuFooterApp } from '../Menu/MenuFooterApp';
-import { useTheme } from '../context/ThemeContext';
+import { SingleHeader } from '../Header/SingleHeader';
 import { Loading } from '../Loading';
 
 type LayoutContainerStyleProps = {
@@ -23,22 +22,21 @@ const layoutContainerStyle = (
   display: ${styles.display || 'flex'};
   flex-direction: ${styles.flexDirection || 'column'};
   min-height: ${styles.minHeight || '100vh'};
-  background-color: #f9f9f9;
   ${styles.custom || ''}
 `;
 
 
-export type LayoutAppProps = {
+export type LayoutLoginProps = {
   children: React.ReactNode;
   containerStyles?: LayoutContainerStyleProps;
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
-export const LayoutApp = ({ 
+export const LayoutLogin = ({ 
   children,
   containerStyles = {},
   containerProps = {},
-}: LayoutAppProps) => {
+}: LayoutLoginProps) => {
   const { className: containerClassName, ...restContainerProps } = containerProps;
   const { useLogin } = useTheme();
   const [loading, setLoading] = useState(true); // Estado para controlar la carga
@@ -47,7 +45,7 @@ export const LayoutApp = ({
     const fetchData = async () => {
       try {
         const response = await useLogin.data.actions.checkLoginToken(); // Llamar a la API
-        useLogin.data.actions.onCheckLoginToken(response); // Actualizar el estado con la respuesta
+        useLogin.data.actions.onCheckLoginTokenLogin(response); // Actualizar el estado con la respuesta
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -61,18 +59,20 @@ export const LayoutApp = ({
   return (
       <div className={cx(layoutContainerStyle(containerStyles), containerClassName)} {...restContainerProps}>
       <>
-      <AppHeader
+      <SingleHeader
             props={{
                 image: Logo,
+                styleSection: {
+                    padding: '0'
+                },
             }}
         />
         <main style={{ flexGrow: 1 }}>{loading ? (<Loading />) : children}</main>
-        <MenuFooterApp />
         <MainFooter 
             siteName="Gafpri Store"
             isLogin={false}
             styles={{
-              position: 'relative',
+                position: 'relative',
             }}
         />
         </> 

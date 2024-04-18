@@ -335,14 +335,14 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
                                                                             width: '30%',
                                                                             textAlign: 'right',
                                                                             fontWeight: '600',
-                                                                            color: '#324375'
+                                                                            color: transaction.type === 'debit' ? '#c12429' : '#324375'
                                                                         }}
-                                                                        >{decimalFormatPriceConverter(
+                                                                        >{`${transaction.type === 'debit' && '-'} ${decimalFormatPriceConverter(
                                                                                 transaction.change || 0,
                                                                                 siteOptions.DECIMAL_NUMBERS,
                                                                                 siteOptions.CURRENCY_SYMBOL,
                                                                                 siteOptions.CURRENCY_LOCATION
-                                                                            )}</span>
+                                                                            )}`}</span>
                                                                         
                                                                     </div>
                                                             </div>

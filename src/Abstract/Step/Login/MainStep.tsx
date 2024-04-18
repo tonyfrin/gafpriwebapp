@@ -1,10 +1,8 @@
 import React from 'react';
 import { css } from '@emotion/css';
-import { Layout } from '../../Component/Layout';
 import { EmailStep } from './EmailStep';
 import { EmailCheckStep } from './EmailCheckStep';
 import { PhoneStep } from './PhoneStep';
-import { PhoneCheckStep } from './PhoneCheckStep';
 import { NameStep } from './NameStep';
 import { LegalStep } from './LegalStep';
 import { SelfieStep } from './SelfieStep';
@@ -16,6 +14,7 @@ import { FiChevronLeft } from 'react-icons/fi';
 import Link from 'next/link';
 import { useTheme } from '../../context/ThemeContext';
 import { Loading } from '@/Abstract/Loading';
+import { LayoutLogin } from '@/Abstract/Component/LayoutLogin';
 
 const progressBarContainerStyles = css`
     display: flex;
@@ -75,7 +74,7 @@ export const MainStep = () => {
 
   return (
     <>
-     <Layout
+     <LayoutLogin
         containerStyles={{
             custom: `
                 background-color: #f9f9f9;
@@ -162,7 +161,7 @@ export const MainStep = () => {
       }
 
      </>
-    </Layout>
+    </LayoutLogin>
     </>
   );
 }

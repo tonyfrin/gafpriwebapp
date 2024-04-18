@@ -41,6 +41,11 @@ type Actions = {
     user?: CurrentUserAttributes | undefined;
     token?: string | undefined;
   }) => void;
+
+  onCheckLoginTokenLogin: (data: {
+    user?: CurrentUserAttributes | undefined;
+    token?: string | undefined;
+  }) => void;
 };
 
 export type UseGafpriDataLoginReturn = {
@@ -158,6 +163,24 @@ export function useGafpriDataLogin({
     }
   };
 
+  const onCheckLoginTokenLogin = (data: {
+    user?: CurrentUserAttributes | undefined;
+    token?: string | undefined;
+  }): void => {
+    if (data && data.user && data.token) {
+      changeToken(data.token);
+      changeCurrentUser(data.user);
+      setIsLogin(true);
+      setIsFetchingGlobal(false);
+      attributes.actions.resetInfo();
+      router.push('/tienda');
+    } else {
+      setIsLogin(false);
+      changeToken(null);
+      changeCurrentUser(null);
+    }
+  };
+
   const checkLoginToken = async (): Promise<any> => {
     if (token) {
       const data = await gafpriFetch({
@@ -189,7 +212,9 @@ export function useGafpriDataLogin({
 
     checkLoginToken,
 
-    onCheckLoginToken
+    onCheckLoginToken,
+
+    onCheckLoginTokenLogin
   };
 
   return {

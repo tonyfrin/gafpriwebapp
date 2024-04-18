@@ -1,13 +1,12 @@
 import React, { use, useEffect, useState } from 'react';;
 import { css } from '@emotion/css';
 import { useTheme } from '../../context/ThemeContext';
-import { SelectApp } from '../../Select/SelectApp';
-import { InputAppContainer } from '../../Input/InputAppContainer';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { decimalFormatPriceConverter } from '../../helpers';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Error } from '@/Abstract/Error';
 import { Loading } from '@/Abstract/Loading';
+
 
 
 const mainStyles = css`
@@ -135,33 +134,21 @@ const arrowStyle = css`
 
 export function ConfirmationRecharge() {
   const { useWallet, siteOptions, useError } = useTheme();
-  const [fetching, setFetching] = useState<boolean>(false);
  
 
   const add = async () => {
     try{
-      setFetching(true);
+      useWallet.pagesRecharge.actions.onFetching();
       const data = await useWallet.account.actions.addRecharge();
       if(data && data.success){
         useWallet.pagesRecharge.actions.onSuccess();
-        setFetching(false);
       } else{
         useWallet.pagesRecharge.actions.returnInit();
         useError.actions.changeError(['Lo sentimos! No se pudo realizar la recarga de saldo. Intente nuevamente.']);
-        setFetching(false);
       }
     } catch (error) {
       useWallet.pagesRecharge.actions.returnInit();
       useError.actions.changeError(['Lo sentimos! No se pudo realizar la recarga de saldo. Intente nuevamente.']);
-      setFetching(false);
-    } finally {
-      setFetching(false);
-    }
-  }
-
-  const next = () => {
-    if(useWallet.attributesRecharge.actions.validationAmountButton()){
-      useWallet.pagesRecharge.actions.onInfo();
     }
   }
 
@@ -175,10 +162,10 @@ export function ConfirmationRecharge() {
     <>
           <div
             style={{
-              marginBottom: '100px'
+              marginBottom: '200px'
             }}
           >
-            {fetching ? <Loading /> :
+            
             <>
             <Error 
               error={useError.states.error}
@@ -325,7 +312,6 @@ export function ConfirmationRecharge() {
                       title="Recargar"
                       containerProps={{
                         id: 'amount-recharge-button',
-                        onClick: next
                       }}
                       contentProps={{
                         onClick: add
@@ -333,7 +319,7 @@ export function ConfirmationRecharge() {
                   />
               </div>
               </>
-            } 
+
           </div>
       
     </>

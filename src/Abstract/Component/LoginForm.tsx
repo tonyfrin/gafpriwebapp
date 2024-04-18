@@ -1,8 +1,7 @@
 import React from 'react';
-import { Layout } from './Layout';
 import { LoginStep } from '../Step/Login/LoginStep';
-import { useGafpriLogin } from '../states/login/useGafpriLogin';
 import { useTheme } from '../context/ThemeContext';
+import { LayoutLogin } from './LayoutLogin';
 
 export const LoginForm = () => {
   const { useLogin } = useTheme();
@@ -11,7 +10,7 @@ export const LoginForm = () => {
 
   return (
     <>
-     <Layout
+     <LayoutLogin
         containerStyles={{
             custom: `
                 background-color: #f9f9f9;
@@ -25,7 +24,7 @@ export const LoginForm = () => {
 
 
      </>
-    </Layout>
+    </LayoutLogin>
     </>
   );
 }

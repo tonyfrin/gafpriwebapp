@@ -496,7 +496,7 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
         socketRef.current = null;
       }
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
 
   
