@@ -37,7 +37,7 @@ export type LayoutAppProps = {
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
-export const LayoutApp = ({ 
+export const LayoutAdmin = ({ 
   children,
   containerStyles = {},
   containerProps = {},
@@ -69,26 +69,26 @@ export const LayoutApp = ({
 
   const menuItems= [
       {
-          title: 'Tienda',
-          href: '/tienda',
-          icon: IoStorefrontOutline,
-          action: globalInfoReset
-      },
-      {
-          title: 'Carrito',
-          href: '/carrito',
-          icon: IoCartOutline,
+          title: 'Usuarios',
+          href: '/users/pending',
+          icon: IoPersonOutline,
           action: globalInfoReset
       },
       {
           title: 'Billetera',
-          href: '/billetera',
+          href: '/',
+          icon: IoWalletOutline,
+          action: globalInfoReset
+      },
+      {
+          title: 'Configuración',
+          href: '/',
           icon: IoWalletOutline,
           action: globalInfoReset
       },
       {
           title: 'Perfil',
-          href: '/perfil',
+          href: '/',
           icon: IoPersonOutline,
           action: globalInfoReset
       }
@@ -105,7 +105,7 @@ export const LayoutApp = ({
         <main style={{ flexGrow: 1 }}>{loading ? (<Loading />) : children}</main>
         <MenuFooterApp items={menuItems}/>
         <MainFooter 
-            siteName="Gafpri Store"
+            siteName="Gafpri Admin"
             isLogin={false}
             styles={{
               position: 'relative',

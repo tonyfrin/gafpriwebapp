@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { LayoutApp } from './LayoutApp';
 import { css } from '@emotion/css';
 import { User } from '../Users/User';
+import { LayoutAdmin } from './LayoutAdmin';
 
 
 const mainStyles = css`
@@ -102,7 +103,7 @@ export function UserDetails({id}: {id: string | string[] | undefined}) {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAdmin>
         <>
           <div>
 
@@ -110,7 +111,7 @@ export function UserDetails({id}: {id: string | string[] | undefined}) {
           
           </div>
         </>
-      </LayoutApp>
+      </LayoutAdmin>
     </>
   );
 }

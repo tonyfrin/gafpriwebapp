@@ -3,21 +3,9 @@ import { IoCartOutline } from 'react-icons/io5';
 import Link from 'next/link';
 import { LayoutApp } from './LayoutApp';
 import { css } from '@emotion/css';
-import { BoxCart } from '../Box/BoxCart';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
-import { Modal } from '../Modal/Modal';
-import { CheckOut } from './CheckOut';
-import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
-import { useTheme } from '../context/ThemeContext';
-import { Loading } from '../Loading';
-import { FadeIn } from '../Fade/FadeIn';
-import { InitProfile } from '../Profile/InitProfile';
-import { Orders } from '../Profile/Orders';
-import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
-import { InitWallet } from '../Wallet/InitWallet';
-import { EntityAttributesReturn } from '../states/user/useGafpriApiEntity';
-import { UsersListPending } from '../Users/UsersListPending';
+import { User } from '../Users/User';
 import { LayoutAdmin } from './LayoutAdmin';
+import { Recharge } from '../Wallet/Recharge/Recharge';
 
 
 const mainStyles = css`
@@ -112,7 +100,7 @@ const containerColumnEndStyles = css`
   align-items: flex-start;
 `
 
-export function UsersPending() {
+export function WalletRechargeDetails({id}: {id: string | string[] | undefined}) {
 
   return (
     <>
@@ -120,7 +108,7 @@ export function UsersPending() {
         <>
           <div>
 
-            <UsersListPending />
+            <Recharge id={id}/>
           
           </div>
         </>

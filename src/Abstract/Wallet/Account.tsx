@@ -96,7 +96,7 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
     const getMoreTransactionsCompleted = async (id: string) => {
         try {
             setFetchingPendingMore(true);
-            const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'completed', transactionsCompletedLimit, transactionsCompletedOffset);
+            const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'complete', transactionsCompletedLimit, transactionsCompletedOffset);
             const offset = transactionsCompleted.length + data.data.items.length;
             transactionsCompletedPush(data.data.items);
             setTransactionsCompletedCount(data.data.totalCount);
@@ -156,7 +156,7 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
             const fetchWalletTransactionsCompleted = async () => {
                 try {
                     setIsReadyTransactionsCompleted(false);
-                    const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'completed', transactionsPendingLimit, transactionsPendingOffset);
+                    const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'complete', transactionsPendingLimit, transactionsPendingOffset);
                     if(data && data.success){
                         const offset = transactionsCompleted.length + data.data.items.length;
                         transactionsCompletedPush(data.data.items);
@@ -477,18 +477,18 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
                                                                         <span className={cx(statusButtonStyles())}>Completado</span>
                                                                     </div>
                                                                     <span
-                                                                    style={{
-                                                                        width: '30%',
-                                                                        textAlign: 'right',
-                                                                        fontWeight: '600',
-                                                                        color: '#324375'
-                                                                    }}
-                                                                    >{decimalFormatPriceConverter(
+                                                                        style={{
+                                                                            width: '30%',
+                                                                            textAlign: 'right',
+                                                                            fontWeight: '600',
+                                                                            color: transaction.type === 'debit' ? '#c12429' : '#324375'
+                                                                        }}
+                                                                    >{`${transaction.type === 'debit' ? '-' : ''} ${decimalFormatPriceConverter(
                                                                             transaction.change || 0,
                                                                             siteOptions.DECIMAL_NUMBERS,
                                                                             siteOptions.CURRENCY_SYMBOL,
                                                                             siteOptions.CURRENCY_LOCATION
-                                                                        )}</span>
+                                                                        )}`}</span>
                                                                     
                                                                 </div>
                                                         </div>

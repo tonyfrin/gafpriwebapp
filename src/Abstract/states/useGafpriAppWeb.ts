@@ -15,6 +15,7 @@ import { UseGafpriOrderReturn, useGafpriOrder } from "./order/useGafpriOrder";
 import { UseGafpriProfileReturn, useGafpriProfile } from "./profile/useGafpriProfile";
 import { UseGafpriWalletReturn, useGafpriWallet } from "./wallet/useGafpriWallet";
 import { UseGafpriSingUpReturn, useGafpriSingUp } from "./singUp/useGafpriSingUp";
+import { UseGafpriPaymentMethodsReturn, useGafpriPaymentMethods } from "./paymentMethods/useGafpriPaymentMethods";
 
 type State = {
     isFetchingGlobal: boolean;
@@ -42,6 +43,7 @@ export type UseGafpriAppWebReturn = {
     useProfile: UseGafpriProfileReturn;
     useWallet: UseGafpriWalletReturn;
     useSingUp: UseGafpriSingUpReturn;
+    usePaymentMethods: UseGafpriPaymentMethodsReturn;
 }
 
 export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
@@ -64,6 +66,7 @@ export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
     const useProfile = useGafpriProfile();
     const useWallet = useGafpriWallet({useLogin, useUser, siteOptions});
     const useSingUp = useGafpriSingUp({useError});
+    const usePaymentMethods = useGafpriPaymentMethods({useLogin});
 
     const state = {
         isFetchingGlobal
@@ -90,6 +93,7 @@ export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
         useOrder,
         useProfile,
         useWallet,
-        useSingUp
+        useSingUp,
+        usePaymentMethods
     }
 }

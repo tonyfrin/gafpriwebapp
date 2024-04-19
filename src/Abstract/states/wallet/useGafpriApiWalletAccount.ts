@@ -29,6 +29,7 @@ export type WalletTransactionsAttributesReturn = {
     change: string;
     status: string;
     createdAt: string;
+    walletAccount: WalletAccountAtrributesReturn;
 }
 
 type actions = {

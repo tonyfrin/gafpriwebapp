@@ -153,8 +153,6 @@ export function useGafpriDataLogin({
     token?: string | undefined;
   }): void => {
     if (data && data.user && data.token) {
-      changeToken(data.token);
-      changeCurrentUser(data.user);
       setIsLogin(true);
       setIsFetchingGlobal(false);
       attributes.actions.resetInfo();
@@ -168,8 +166,6 @@ export function useGafpriDataLogin({
     token?: string | undefined;
   }): void => {
     if (data && data.user && data.token) {
-      changeToken(data.token);
-      changeCurrentUser(data.user);
       setIsLogin(true);
       setIsFetchingGlobal(false);
       attributes.actions.resetInfo();
