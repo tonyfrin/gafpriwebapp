@@ -95,7 +95,7 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
 
     const getMoreTransactionsCompleted = async (id: string) => {
         try {
-            setFetchingPendingMore(true);
+            setFetchingCompletedMore(true);
             const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'complete', transactionsCompletedLimit, transactionsCompletedOffset);
             const offset = transactionsCompleted.length + data.data.items.length;
             transactionsCompletedPush(data.data.items);
