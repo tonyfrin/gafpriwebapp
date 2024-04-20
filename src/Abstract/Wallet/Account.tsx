@@ -156,7 +156,7 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
             const fetchWalletTransactionsCompleted = async () => {
                 try {
                     setIsReadyTransactionsCompleted(false);
-                    const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'complete', transactionsPendingLimit, transactionsPendingOffset);
+                    const data = await useWallet.account.actions.getWalletTransactionsByPostsId(id, 'complete', transactionsCompletedLimit, transactionsCompletedOffset);
                     if(data && data.success){
                         const offset = transactionsCompleted.length + data.data.items.length;
                         transactionsCompletedPush(data.data.items);
@@ -317,10 +317,6 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
                                                                                 width: '70%'
                                                                             }}
                                                                         >
-                                                                            <span style={{
-                                                                                fontWeight: '600',
-                                                                                textAlign: 'left',
-                                                                            }}>{transaction.description}</span>
                                                                             <span
                                                                                 style={{
                                                                                     fontSize: '0.7em',
@@ -328,6 +324,11 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
 
                                                                                 }}
                                                                             >{formatDate(transaction.createdAt)}</span>
+                                                                            <span style={{
+                                                                                fontWeight: '600',
+                                                                                textAlign: 'left',
+                                                                            }}>{transaction.description}</span>
+                                                                            
                                                                             <span className={cx(statusButtonStyles('rgb(0, 20, 53)', 'rgb(230, 224, 217)'))}>Pendiente</span>
                                                                         </div>
                                                                         <span
@@ -463,10 +464,6 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
                                                                             width: '70%'
                                                                         }}
                                                                     >
-                                                                        <span style={{
-                                                                            fontWeight: '600',
-                                                                            textAlign: 'left',
-                                                                        }}>{transaction.description}</span>
                                                                         <span
                                                                             style={{
                                                                                 fontSize: '0.7em',
@@ -474,6 +471,11 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
 
                                                                             }}
                                                                         >{formatDate(transaction.createdAt)}</span>
+                                                                        <span style={{
+                                                                            fontWeight: '600',
+                                                                            textAlign: 'left',
+                                                                        }}>{transaction.description}</span>
+                                                                        
                                                                         <span className={cx(statusButtonStyles())}>Completado</span>
                                                                     </div>
                                                                     <span

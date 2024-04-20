@@ -22,6 +22,15 @@ const arrowStyle = css`
 export function InitTransfers() {
   const { useWallet, siteOptions } = useTheme();
 
+  const email = ():void => {
+    useWallet.attributesTransfers.actions.setAccount({
+      id: useWallet.attributes.states.walletAccount[0].postsId,
+      name: useWallet.attributes.states.walletAccount[0].name,
+      balance: useWallet.attributes.states.walletAccount[0].available,
+    })
+    useWallet.pagesTransfers.actions.onBeneficiary();
+  }
+
   return (
     <>
           <div>
@@ -44,18 +53,6 @@ export function InitTransfers() {
                 />
                 </Link>
             </div>
-            <div style={{
-                  display: 'flex',
-                  margin: '1em',
-                  textDecoration: 'none',
-              }}>
-                  <ButtonAppMobile 
-                      title="Enviar por Código"
-                      containerProps={{
-                        onClick: useWallet.pagesTransfers.actions.onCode,
-                      }}
-                  />
-              </div>
               <div style={{
                   display: 'flex',
                   margin: '1em',
@@ -64,7 +61,7 @@ export function InitTransfers() {
                   <ButtonAppMobile 
                       title="Enviar por Email"
                       containerProps={{
-                        onClick: useWallet.pagesTransfers.actions.onBeneficiary
+                        onClick: email
                       }}
                   />
               </div>

@@ -5,6 +5,7 @@ import { UseGafpriLoginReturn } from "../login/useGafpriLogin";
 import { EntityAttributesReturn } from "../user/useGafpriApiEntity";
 import { UseGafpriAttributesRechargeReturn } from "./useGafpriAttributesRecharge";
 import { SiteOptions } from '../../config/gafpriConfig';
+import { UseGafpriAttributesTransfersReturn } from "./useGafpriAttributesTransfers";
 
 export type WalletAccountAtrributesReturn = {
     postsId: string;
@@ -15,8 +16,30 @@ export type WalletAccountAtrributesReturn = {
     pending: string;
     balance: string;
     posts: PostsAttributesReturn;
+    email: string;
+    phone: string;
     entity: EntityAttributesReturn;
 }
+
+export interface WalletBeneficiariesAttributesReturn {
+    id: number;
+    walletAccountId: number;
+    type: string;
+    name: string;
+    email?: string;
+    zelle?: string;
+    phone?: string;
+    bankName?: string;
+    accountNumber?: string;
+    routing?: string;
+    swift?: string;
+    address1?: string;
+    city?: string;
+    state?: string;
+    postCode?: string;
+    country?: string;
+    status?: string;
+  }
 
 export type WalletTransactionsAttributesReturn = {
     id: string;
@@ -32,6 +55,32 @@ export type WalletTransactionsAttributesReturn = {
     walletAccount: WalletAccountAtrributesReturn;
 }
 
+type DataItemsReturn = {
+    items?: WalletAccountAtrributesReturn[];
+    totalCount?: number;
+    success: boolean;
+    statusCode?: number;
+    error?: string;
+    message?: string;
+ }
+
+ type DataItemsBeneficiariesReturn = {
+    items?: WalletBeneficiariesAttributesReturn[];
+    totalCount?: number;
+    success: boolean;
+    statusCode?: number;
+    error?: string;
+    message?: string;
+ }
+
+ type DataItemReturn = {
+    item?: WalletAccountAtrributesReturn;
+    success: boolean;
+    statusCode?: number;
+    error?: string;
+    message?: string;
+ }
+
 type actions = {
     getWalletAccount: () => Promise<any>;
     addRecharge: () => Promise<any>;
@@ -42,6 +91,9 @@ type actions = {
         limit: number,
         offset: number,
     ) => Promise<any>;
+    getBeneficiaries: () => Promise<DataItemsBeneficiariesReturn>;
+    getWalletAccountByEmail: (email: string) => Promise<DataItemReturn>; 
+    addTransfer: () => Promise<any>;
 }
 
 export type UseGafpriApiWalletAccountReturn = {
@@ -52,10 +104,11 @@ export type UseGafpriApiWalletAccountProps = {
     useLogin: UseGafpriLoginReturn;
     attributesRecharge: UseGafpriAttributesRechargeReturn;
     siteOptions: SiteOptions;
+    attributesTransfers: UseGafpriAttributesTransfersReturn;
 }
 
 
-export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOptions}: UseGafpriApiWalletAccountProps): UseGafpriApiWalletAccountReturn  => {
+export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOptions, attributesTransfers}: UseGafpriApiWalletAccountProps): UseGafpriApiWalletAccountReturn  => {
     
     const getWalletAccount = async (): Promise<any> => {
         try {
@@ -132,6 +185,72 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
         }
     }
 
+    const addTransfer = async (): Promise<any> => {
+        try {
+            if(useLogin.data.states.token){
+                const data = await gafpriFetch({
+                    initMethod: 'POST',
+                    initRoute: PAYMENT_WALLET,
+                    initToken: { token: useLogin.data.states.token },
+                    initCredentials:{
+                        total: attributesTransfers.states.amount,
+                        note: 'Transferencia de saldo',
+                        posts: {
+                            visibility: 'public',
+                        },
+                        paymentMethods: [
+                            {
+                                paymentMethods:{
+                                    type: 'deposit',
+                                    methodType: 'wallet',
+                                    paymentType: 'wallet-transfer',
+                                    currenciesId: siteOptions.currencyId,
+                                    amount: attributesTransfers.states.amount,
+                                    change: attributesTransfers.states.amount,
+                                    nameSend: attributesTransfers.states.account?.name,
+                                    note: 'Transferencia de saldo',
+                                    posts: {
+                                        visibility: 'public',
+                                    },
+                                },
+                                walletTransactions: {
+                                    walletAccountPostsId: attributesTransfers.states.beneficiary?.postsId,
+                                    type: 'deposit',
+                                    transactionsType: 'transfer',
+                                    amount: attributesTransfers.states.amount,
+                                }
+                            },
+                            {
+                                paymentMethods:{
+                                    type: 'debit',
+                                    methodType: 'wallet',
+                                    paymentType: 'wallet-transfer',
+                                    currenciesId: siteOptions.currencyId,
+                                    amount: attributesTransfers.states.amount,
+                                    change: attributesTransfers.states.amount,
+                                    nameSend: attributesTransfers.states.beneficiary?.entity.name,
+                                    note: 'Transferencia de saldo',
+                                    posts: {
+                                        visibility: 'public',
+                                    },
+                                },
+                                walletTransactions: {
+                                    walletAccountPostsId: attributesTransfers.states.account?.id,
+                                    type: 'debit',
+                                    transactionsType: 'transfer',
+                                    amount: attributesTransfers.states.amount,
+                                }
+                            }    
+                    ]
+                    }
+                });
+                return data;
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+
     const getWalletTransactionsByPostsId = async (
         postsId: string,
         status: string,
@@ -152,12 +271,55 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
         }
     }
 
+    const getBeneficiaries = async (): Promise<DataItemsBeneficiariesReturn> => {
+        try {
+            if(useLogin.data.states.token){
+                const data = await gafpriFetch({
+                    initMethod: 'GET',
+                    initRoute: `${WALLET_ACCOUNT_ROUTE}/beneficiaries`,
+                    initToken: { token: useLogin.data.states.token }
+                });
+                return data;
+            }
+            return { success: false, error: 'No token' };
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                error: 'Error en consola',
+            };
+        }
+    }
+
+    const getWalletAccountByEmail = async (email: string): Promise<DataItemReturn> => {
+        try {
+            if(useLogin.data.states.token){
+                const data = await gafpriFetch({
+                    initMethod: 'GET',
+                    initRoute: `${WALLET_ACCOUNT_ROUTE}/byemail/${email}`,
+                    initToken: { token: useLogin.data.states.token }
+                });
+                return data;
+            }
+            return { success: false, error: 'No token' };
+        } catch (error) {
+            console.error(error);
+            return {
+                success: false,
+                error: 'Error en consola',
+            };
+        }
+    }
+
 
     const actions = {
         getWalletAccount,
         addRecharge,
         getWalletAccountByPostsId,
-        getWalletTransactionsByPostsId
+        getWalletTransactionsByPostsId,
+        getBeneficiaries,
+        getWalletAccountByEmail,
+        addTransfer
     }
 
     return {

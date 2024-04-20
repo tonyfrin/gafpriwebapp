@@ -46,7 +46,7 @@ export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn 
         if (paymentType === 'zelle') {
             setCommissionRate('0 %');
             setCommission('0.00');
-            setTotal((parseFloat(amount) + parseFloat(commission)).toFixed(2));
+            setTotal(amount);
         } else if (paymentType === 'paypal') {
             setCommissionRate('3 %');
             const newCommission = (parseFloat(amount) * 0.03).toFixed(2);

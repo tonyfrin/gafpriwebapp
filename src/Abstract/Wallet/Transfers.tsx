@@ -5,6 +5,7 @@ import { InitTransfers } from './Transfers/InitTransfers';
 import { Beneficiary } from './Transfers/Beneficiary';
 import { AmountTransfert } from './Transfers/AmountTransfert';
 import { ConfirmationTransfers } from './Transfers/ConfirmationTransfers';
+import { SuccessTransfers } from './Transfers/SuccessTransfers';
 
 
 export function Transfers() {
@@ -23,6 +24,8 @@ export function Transfers() {
             { useWallet.pagesTransfers.states.isInfo && <AmountTransfert />}
 
             { useWallet.pagesTransfers.states.isConfirmation && <ConfirmationTransfers />}
+
+            { useWallet.pagesTransfers.states.isSuccess && <SuccessTransfers />}
          </div>
         </>
       </LayoutApp>

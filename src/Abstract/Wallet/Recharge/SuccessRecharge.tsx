@@ -137,6 +137,13 @@ const arrowStyle = css`
 export function SuccessRecharge() {
   const { useWallet } = useTheme();
 
+  const returnInit = ():void => {
+    useWallet.pagesRecharge.actions.onFetching();
+    
+    setTimeout(useWallet.pagesRecharge.actions.returnInit, 1000);
+
+  }
+
   return (
     <>
 
@@ -191,7 +198,7 @@ export function SuccessRecharge() {
                     fontSize: '1.2em',
                   }}
                   containerProps={{
-                    onClick: () => useWallet.pagesRecharge.actions.returnInit()
+                    onClick: () => returnInit()
                   }}
                 />
               </Link>

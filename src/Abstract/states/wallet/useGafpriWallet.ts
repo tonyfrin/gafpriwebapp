@@ -35,7 +35,7 @@ export const useGafpriWallet = ({useLogin, useUser, siteOptions}: UseGafpriWalle
     const pagesRecharge = useGafpriPagesRecharge({attributesRecharge});
     const attributesTransfers = useGafpriAttributesTransfers();
     const pagesTransfers = useGafpriPagesTransfers({attributesTransfers});
-    const account = useGafpriApiWalletAccount({useLogin, attributesRecharge, siteOptions});
+    const account = useGafpriApiWalletAccount({useLogin, attributesRecharge, siteOptions, attributesTransfers});
     const attributes = useGafpriAttributesWallet({account, useLogin, useUser});
     
     const globalResetInfo = (): void => {

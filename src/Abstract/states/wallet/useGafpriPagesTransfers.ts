@@ -9,6 +9,7 @@ type states = {
     isInfo: boolean;
     isBeneficiary: boolean;
     isConfirmation: boolean;
+    isSuccess: boolean;
 }
 
 type actions = {
@@ -17,6 +18,7 @@ type actions = {
     onInfo: () => void;
     onBeneficiary: () => void;
     onConfirmation: () => void;
+    onSuccess: () => void;
     returnInit: () => void;
 }
 
@@ -34,6 +36,7 @@ export const useGafpriPagesTransfers = ({
     const [isInfo, setIsInfo] = useState<boolean>(false);
     const [isBeneficiary, setIsBeneficiary] = useState<boolean>(false);
     const [isConfirmation, setIsConfirmation] = useState<boolean>(false);
+    const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
     const onInit = () => {
         setIsInit(true);
@@ -41,6 +44,7 @@ export const useGafpriPagesTransfers = ({
         setIsInfo(false);
         setIsBeneficiary(false);
         setIsConfirmation(false);
+        setIsSuccess(false);
     }
 
     const onCode = () => {
@@ -49,6 +53,7 @@ export const useGafpriPagesTransfers = ({
         setIsInfo(false);
         setIsBeneficiary(false);
         setIsConfirmation(false);
+        setIsSuccess(false);
     }
 
     const onInfo = () => {
@@ -57,6 +62,7 @@ export const useGafpriPagesTransfers = ({
         setIsInfo(true);
         setIsBeneficiary(false);
         setIsConfirmation(false);
+        setIsSuccess(false);
     }  
 
     const onBeneficiary = () => {
@@ -65,6 +71,7 @@ export const useGafpriPagesTransfers = ({
         setIsInfo(false);
         setIsBeneficiary(true);
         setIsConfirmation(false);
+        setIsSuccess(false);
     }
 
     const onConfirmation = () => {
@@ -73,6 +80,16 @@ export const useGafpriPagesTransfers = ({
         setIsInfo(false);
         setIsBeneficiary(false);
         setIsConfirmation(true);
+        setIsSuccess(false);
+    }
+
+    const onSuccess = () => {
+        setIsInit(false);
+        setIsCode(false);
+        setIsInfo(false);
+        setIsBeneficiary(false);
+        setIsConfirmation(false);
+        setIsSuccess(true);
     }
 
     const returnInit = (): void => {
@@ -85,7 +102,8 @@ export const useGafpriPagesTransfers = ({
         isCode,
         isInfo,
         isBeneficiary,
-        isConfirmation
+        isConfirmation,
+        isSuccess
     };
 
     const actions = { 
@@ -94,7 +112,8 @@ export const useGafpriPagesTransfers = ({
         onInfo,
         onBeneficiary,
         onConfirmation,
-        returnInit
+        returnInit,
+        onSuccess
      };
 
     return { states, actions };

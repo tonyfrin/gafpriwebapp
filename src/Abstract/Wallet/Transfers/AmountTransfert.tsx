@@ -145,10 +145,17 @@ type account = {
 export function AmountTransfert() {
   const { useWallet, siteOptions } = useTheme();
 
-  const accounts: account[] = [
-    { id: '1', name: 'Cuenta 9855 de Anthony', balance: '88.00' },
-    { id: '2', name: 'Cuenta 5698 de Gafpri', balance: '100.00' },
-  ];
+  const accounts: account[] = [];
+
+  useWallet.attributes.states.walletAccount.forEach((account) => {
+    accounts.push({
+      id: account.postsId,
+      name: account.name,
+      balance: account.available,
+    });
+  });
+
+  console.log('accounts', accounts);
 
   const accountOptions = accounts.map((account) => {
     return { value: account.id, label: account.name };
@@ -159,7 +166,7 @@ export function AmountTransfert() {
   const labelAccount = accountOptions.find(option => option.value === useWallet.attributesTransfers.states.account?.id)?.label || 'Selecciona una cuenta';
 
   const changeAccount = (id: string): void => {
-    const newAccount = accounts.find((account) => account.id === id);
+    const newAccount = accounts.find((account) => `${account.id}` === `${id}`);
     if (newAccount) {
         useWallet.attributesTransfers.actions.setAccount(newAccount);
     } else{
@@ -250,7 +257,7 @@ export function AmountTransfert() {
                 fontSize: '1.5em',
                 margin: 'auto',
                 textTransform: 'uppercase',
-              }}>{useWallet.attributesTransfers.states.beneficiary?.name.substring(0, 1)}</span>
+              }}>{useWallet.attributesTransfers.states.beneficiary?.entity.name.substring(0, 1)}</span>
             </div>
           </div>
           <div
@@ -258,7 +265,7 @@ export function AmountTransfert() {
               margin: 'auto',
             }}
           >
-            <h1 style={{textAlign: 'center', padding: '0.3em', fontSize: '1em', fontWeight: 600}} className={title1AppStyles}>{useWallet.attributesTransfers.states.beneficiary?.name}</h1>
+            <h1 style={{textAlign: 'center', padding: '0.3em', fontSize: '1em', fontWeight: 600}} className={title1AppStyles}>{useWallet.attributesTransfers.states.beneficiary?.entity.name}</h1>
           </div>
           <div
             style={{
