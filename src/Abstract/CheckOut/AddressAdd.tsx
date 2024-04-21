@@ -128,14 +128,9 @@ interface Location {
   longitude: number;
 }
 
-type AddressUpdateProps = {
-  setUser: (value: UserAttributesReturn) => void;
-}
-
-export function AddressAdd({
-  setUser
-}: AddressUpdateProps) {
-  const { useAddress, useCheckOut } = useTheme();
+export function AddressAdd() {
+  const { useAddress, useCheckOut, useUser} = useTheme();
+  const [location, setLocation] = useState<boolean>(false);
 
   const labelEntity = useAddress.attributes.states.entityOptions.find(option => option.value === useAddress.attributes.states.entityId)?.label || 'Selecciona una entidad';
   console.log('labelEntity', labelEntity);
@@ -144,7 +139,7 @@ export function AddressAdd({
       useCheckOut.pages.actions.onFetching();
       const data = await useAddress.api.actions.addAddress();
       if(data && data.success){
-        setUser(data.item);
+        useUser.api.actions.setUser(data.item);
         useCheckOut.pages.actions.onAddressList();
       }
     }
@@ -162,6 +157,10 @@ export function AddressAdd({
     useAddress.attributes.actions.validationButton();
   }, [ useAddress.attributes.states.address1, useAddress.attributes.states.address2, useAddress.attributes.states.city, ]); // eslint-disable-line
 
+  const changeLocation = () => {
+    setLocation(true);
+    useAddress.attributes.actions.changeCurrentLocation();
+  }
 
   
 
@@ -234,26 +233,72 @@ export function AddressAdd({
                   flexDirection: 'column',
                 }}
               >
-                <span style={{
-                  fontSize: '0.6em',
-                  fontFamily: 'Poppins',
-                  margin: 'auto',
-                  textAlign: 'center',
-                  width: '90%',
-                }}>Si te encuentras en la dirección, agrega la posición en el mapa</span>
-                <ButtonAppMobile 
-                  title='Agrega tu posición'
-
-                  containerStyles={{
-                    backgroundColor: '#314577',
-                  }}
-                  containerProps={{
-                    onClick: () => useAddress.attributes.actions.changeCurrentLocation()
-                  }}
-                  contentStyles={{
-                    fontSize: '1.2em',
-                  }}
-                />
+                {location && !useAddress.attributes.states.latitude && !useAddress.attributes.states.longitude? 
+                    <Loading 
+                      divStyle={{
+                        border: '3px solid #eee',
+                        borderTop: '3px solid #077bb4',
+                        width: '40px',
+                        height: '40px',
+                      }}
+                      mainStyles={{
+                        padding: '5%'
+                      }}
+                    /> 
+                  : 
+                  <>
+                    {useAddress.attributes.states.latitude && useAddress.attributes.states.longitude ?
+                        <>
+                          <span
+                            style={{
+                              fontSize: '0.8em',
+                              fontFamily: 'Poppins',
+                              margin: '1em auto',
+                              textAlign: 'center',
+                              width: '90%',
+                              fontWeight: '600'
+                            }}
+                          >Se agregó correctamente su posición</span> 
+                          <ButtonAppMobile 
+                              title='Volver agregar tu posición'
+            
+                              containerStyles={{
+                                backgroundColor: '#314577',
+                              }}
+                              containerProps={{
+                                onClick: () => changeLocation()
+                              }}
+                              contentStyles={{
+                                fontSize: '1.2em',
+                              }}
+                            />
+                        </>
+                        : 
+                        <>
+                          <span style={{
+                            fontSize: '0.6em',
+                            fontFamily: 'Poppins',
+                            margin: 'auto',
+                            textAlign: 'center',
+                            width: '90%',
+                          }}>Si te encuentras en la dirección, agrega la posición en el mapa</span>
+                          <ButtonAppMobile 
+                            title='Agrega tu posición'
+          
+                            containerStyles={{
+                              backgroundColor: '#314577',
+                            }}
+                            containerProps={{
+                              onClick: () => changeLocation()
+                            }}
+                            contentStyles={{
+                              fontSize: '1.2em',
+                            }}
+                          />
+                        </>
+                      }
+                  </>
+                }
               </div>
             
             <div className={containerButtonCheckOutStyle}>

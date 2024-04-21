@@ -14,6 +14,8 @@ export type AddressAttributesReturn = {
     postCode: string | null;
     country: string;
     entityId: string;
+    latitude: string | null;
+    longitude: string | null;
 }
 
 type Actions = {
@@ -51,7 +53,9 @@ export function useGafpriApiAddress({
                 state: attributes.states.state,
                 postCode: attributes.states.postCode,
                 country:  attributes.states.country,
-                entityId: attributes.states.entityId
+                entityId: attributes.states.entityId,
+                latitude: attributes.states.latitude,
+                longitude: attributes.states.longitude
               }
             });
             return data;
@@ -71,7 +75,9 @@ export function useGafpriApiAddress({
               initCredentials: {
                 address1: attributes.states.address1,
                 address2: attributes.states.address2,
-                city:  attributes.states.city,
+                city: attributes.states.city,
+                latitude: attributes.states.latitude,
+                longitude: attributes.states.longitude
               }
             });
             return data;
@@ -83,7 +89,7 @@ export function useGafpriApiAddress({
 
     const actions = {
         addAddress,
-        updateAddress
+        updateAddress,
     }
 
     return {

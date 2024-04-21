@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect} from 'react';
 import { gafpriFetch } from '../../helpers';
 import { USER_ROUTE } from '../../constants';
 import { UseGafpriLoginReturn } from '../login/useGafpriLogin';
@@ -23,6 +23,11 @@ export type UserAttributesReturn = {
     entity: EntityAttributesReturn[];
 }
 
+type States = {
+    user: UserAttributesReturn | null;
+    userIsReady: boolean;
+}
+
 type Actions = {
     getUser: () => Promise<any>;
     getUserPending: (offset: number, limit:  number) => Promise<any>;
@@ -30,10 +35,12 @@ type Actions = {
     userAproval: (id: string) => Promise<any>;
     userCancel: (id: string) => Promise<any>;
     changePassword: () => Promise<any>; 
+    setUser: (value: UserAttributesReturn | null) => void;
 }
 
 export type UseGafpriApiUserReturn = {
     actions: Actions;
+    states: States;
 }
 
 export type UseGafpriApiUserProps = {
@@ -47,10 +54,11 @@ export function useGafpriApiUser({
     siteOptions,
     attributes,
 }: UseGafpriApiUserProps): UseGafpriApiUserReturn {
+  const [user, setUser] = useState<UserAttributesReturn | null>(null);
+  const [userIsReady, setUserIsReady] = useState<boolean>(false);
 
     const getUser = async (): Promise<any> => {
         try {
-    
           if(useLogin.data.states.token){
             const data = await gafpriFetch({
               initMethod: 'GET',
@@ -153,16 +161,35 @@ export function useGafpriApiUser({
         }
     }
 
+    useEffect(() => {
+        const fetchDataUser = async () => {
+            setUserIsReady(false);
+            const data = await getUser();
+            if(data && data.success) {
+                setUser(data.item);
+                setUserIsReady(true);
+            }
+        }
+        fetchDataUser();
+    }, [useLogin.data.states.token]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    const states = {
+        user,
+        userIsReady
+    }
+
     const actions = {
         getUser,
         getUserPending,
         getUserById,
         userAproval,
         userCancel,
-        changePassword
+        changePassword,
+        setUser
     }
 
     return {
-        actions
+        actions,
+        states
     }
 }

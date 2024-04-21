@@ -36,6 +36,8 @@ type actions = {
     changeCurrentLocation: () => void;
     setAddress: (value: AddressAttributesReturn | null) => void;
     setEntityOptions: (value: { value: string; label: string }[]) => void;
+    setLatitude: (latitude: string) => void;
+    setLongitude: (longitude: string) => void;
 }
 
 export type UseGafpriAttributesAddressReturn = {
@@ -191,6 +193,8 @@ export const useGafpriAttributesAddress = (): UseGafpriAttributesAddressReturn =
         changeCurrentLocation,
         setAddress,
         setEntityOptions,
+        setLatitude,
+        setLongitude,
     }
 
     return {

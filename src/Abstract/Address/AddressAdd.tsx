@@ -13,7 +13,6 @@ import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddr
 import { Loading } from '../Loading';
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 
-
 const title1AppStyles = css`
   font-size: 1.2em;
   padding: 0.9em;
@@ -116,7 +115,7 @@ const containerButtonCheckOutStyle = css`
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 996;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     background-color: #f9f9f9;
@@ -129,61 +128,58 @@ interface Location {
   longitude: number;
 }
 
-export function AddressUpdate() {
-  const { useAddress, useCheckOut, useUser } = useTheme();
+export function AddressAdd() {
+  const { useAddress, useError, useUser, useProfile} = useTheme();
   const [location, setLocation] = useState<boolean>(false);
-  const address = useAddress.attributes.states.address;
-
-  useEffect(() => {
-    if(address){
-      useAddress.attributes.actions.changeAddress1(address.address1);
-      if(address.address2)useAddress.attributes.actions.changeAddress2(address.address2);
-      useAddress.attributes.actions.changeCity(address.city);
-      if(address.latitude) useAddress.attributes.actions.setLatitude(address.latitude);
-      if(address.longitude) useAddress.attributes.actions.setLongitude(address.longitude);
-    }
-  }, [address]); // eslint-disable-line
-
-  useEffect(() => {
-    if(address){
-      useAddress.attributes.actions.validationAddress1(address.address1);
-      if(address.address2) useAddress.attributes.actions.validationAddress2(address.address2);
-      useAddress.attributes.actions.validationCity(address.city);
-      useAddress.attributes.actions.validationButton();
-    }
-  }, [ address, useAddress.attributes.states.address1, useAddress.attributes.states.address2, useAddress.attributes.states.city,]); // eslint-disable-line
-
-  if(!address) return(<Loading />);
-
-  const update = async () => {
-    if(useAddress.attributes.actions.validationButton()){
-      useCheckOut.pages.actions.onFetching();
-      const data = await useAddress.api.actions.updateAddress();
-      if(data && data.success){
-        useUser.api.actions.setUser(data.item);
-        useCheckOut.pages.actions.onAddressList();
-      }
-    }
-  }
 
   const changeLocation = () => {
     setLocation(true);
     useAddress.attributes.actions.changeCurrentLocation();
   }
 
-  
+  const labelEntity = useAddress.attributes.states.entityOptions.find(option => option.value === useAddress.attributes.states.entityId)?.label || 'Selecciona una entidad';
+
+  const add = async () => {
+    if(useAddress.attributes.actions.validationButton()){
+      try {
+          useProfile.pages.actions.onFetching();
+          const data = await useAddress.api.actions.addAddress();
+          if(data && data.success){
+            useUser.api.actions.setUser(data.item);
+            useAddress.attributes.actions.resetInfo();
+            useProfile.pages.actions.onAddressList();
+          } else{
+            useError.actions.changeError(['No se pudo agregar la dirección, intente de nuevo']);
+            useProfile.pages.actions.onAddressAdd();
+          }
+      } catch (error) {
+        console.log(error);
+        useError.actions.changeError(['No se pudo agregar la dirección, intente de nuevo']);
+        useProfile.pages.actions.onAddressAdd();
+      }
+    }
+  }
 
   const returnList = () => {
     useAddress.attributes.actions.resetInfo();
-    useCheckOut.pages.actions.onAddressList();
+    useProfile.pages.actions.onAddressList();
   }
+
+  useEffect(() => {
+    useAddress.attributes.actions.validationAddress1(useAddress.attributes.states.address1);
+    useAddress.attributes.actions.validationAddress2(useAddress.attributes.states.address2);
+    useAddress.attributes.actions.validationCity(useAddress.attributes.states.city);
+    useAddress.attributes.actions.validationButton();
+  }, [ useAddress.attributes.states.address1, useAddress.attributes.states.address2, useAddress.attributes.states.city, ]); // eslint-disable-line
+
+
   
 
   return (
     <> 
           <div
             style={{
-              marginBottom: '120px'
+              marginBottom: '220px'
             }}
           >
             <div style={{
@@ -193,12 +189,24 @@ export function AddressUpdate() {
                 width: '90%',
                 margin: 'auto',
             }}> 
-                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Actualiza dirección</h1>
+                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Nueva dirección</h1>
                 <FiChevronLeft 
                     className={arrowStyle}
                     onClick={returnList}
                 />
             </div>
+
+              <div style={{
+                margin: ' 5px auto',
+                padding: '0px',
+                display: 'flex',
+              }}>
+                <SelectApp
+                  options={useAddress.attributes.states.entityOptions}
+                  value={labelEntity}
+                  onChange={(e) => useAddress.attributes.actions.setEntityId(e)}
+                />
+              </div>
            
               <InputAppContainer 
                 inputProps={{
@@ -206,6 +214,9 @@ export function AddressUpdate() {
                   type: 'text',
                   value: useAddress.attributes.states.address1,
                   onChange: (e) => useAddress.attributes.actions.changeAddress1(e.target.value)
+                }}
+                containerStyles={{
+                  margin: ' 5px auto',
                 }}
               />
 
@@ -216,10 +227,13 @@ export function AddressUpdate() {
                   value: useAddress.attributes.states.address2,
                   onChange: (e) => useAddress.attributes.actions.changeAddress2(e.target.value)
                 }}
+                containerStyles={{
+                  margin: ' 5px auto',
+                }}
               />
 
               <div style={{
-                margin: 'auto',
+                margin: '5px auto',
                 padding: '0px',
                 display: 'flex',
               }}>
@@ -232,7 +246,7 @@ export function AddressUpdate() {
               <div
                 style={{
                   display: 'flex',
-                  margin: '2em auto',
+                  margin: 'auto',
                   flexDirection: 'column',
                 }}
               >
@@ -306,10 +320,10 @@ export function AddressUpdate() {
             
             <div className={containerButtonCheckOutStyle}>
               <ButtonAppMobile 
-                title="Actualizar"
+                title="Agregar Dirección"
                 containerProps={{
                   id: 'add-update-address-button',
-                  onClick: () => update()
+                  onClick: () => add()
                 }}
               />
             </div>

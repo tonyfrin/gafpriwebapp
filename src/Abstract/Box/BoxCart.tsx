@@ -120,7 +120,7 @@ export function BoxCart({
   setFetching,
   setCart,
 }: BoxCartProps) {
-  const { siteOptions, useCartItems } = useTheme();
+  const { siteOptions, useCartItems, useCheckOut } = useTheme();
 
   const cartItems = cart.cartItems;
   cartItems.sort((a, b) => parseInt(a.id) - parseInt(b.id));
@@ -130,6 +130,7 @@ export function BoxCart({
     const response = await (await useCartItems.api).actions.updateItemToCart(qty, id);
     if(response && response.success){
       setCart(response.item);
+      useCheckOut.attributes.actions.setTotal(response.item.total);
       setFetching(false);
     }
   }

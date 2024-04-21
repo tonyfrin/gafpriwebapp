@@ -6,6 +6,7 @@ import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 import { useTheme } from '../context/ThemeContext';
+import { BiMap } from 'react-icons/bi';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -136,9 +137,13 @@ type options = {
 }
 
 export function AddressList() {
-  const { useAddress, useUser, useCheckOut } = useTheme();
+  const { useAddress, useUser, useCheckOut, useProfile } = useTheme();
+
+
 
   const user = useUser.api.states.user;
+
+  console.log('user', user);
 
   if(!user){
     return null;
@@ -167,18 +172,13 @@ export function AddressList() {
   const goAddressUpdate = (address: AddressAttributesReturn) => {
     useAddress.attributes.actions.setId(address.id);
     useAddress.attributes.actions.setAddress(address);
-    useCheckOut.pages.actions.onAddressUpdate();
+    useProfile.pages.actions.onAddressUpdate();
   }
 
   const goAddressAdd = () => {
     useAddress.attributes.actions.setEntityOptions(entityOptions);
     useAddress.attributes.actions.setEntityId(entityOptions[0].value);
-    useCheckOut.pages.actions.onAddressAdd();
-  }
-
-  const selectAddress = (id: string) => {
-    useCheckOut.attributes.actions.setAddressId(id);
-    useCheckOut.pages.actions.onInit();
+    useProfile.pages.actions.onAddressAdd();
   }
 
   return (
@@ -196,85 +196,106 @@ export function AddressList() {
                 margin: 'auto',
                 borderBottom: '1px solid #e1e1e1'
             }}> 
-                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Envío</h1>
+                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Direcciones</h1>
                 <FiChevronLeft 
                     className={arrowStyle}
-                    onClick={useCheckOut.pages.actions.onInit}
+                    onClick={useProfile.pages.actions.onInit}
                 />
             </div>
-            <div className={fila3}>
-                <div style={{
-                  width: '10%',
-                }}>
-                   <input
-                      type="checkbox"
-                     className={checkboxStyles}
-                     checked={true}
-                    />
+            
+            {items.length === 0 ? 
+            
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        width: '90%',
+                        margin: '2em auto',
+                    }}
+                >
+                    <div>   
+                        <BiMap 
+                            style={{
+                                fontSize: '3em'
+                            }}
+                        />
+                    </div>
+                    <p
+                        style={{
+                            margin: '10px 0px 0px 0px',
+                            padding: '0px',
+                            fontSize: '0.7em',
+                            fontFamily: 'Poppins, sans-serif',
+                            textAlign: 'center'
+                        }}
+                    >No tienes direcciones agregadas.</p>
+                    <p
+                        style={{
+                            margin: '0px',
+                            padding: '0px',
+                            fontSize: '0.7em',
+                            fontFamily: 'Poppins, sans-serif',
+                            textAlign: 'center'
+                        }}
+                    >Por favor, agregue una nueva dirección para que pueda recibir delivery GRATIS</p>
                 </div>
-                <div style={{
-                  width: '80%',
-                  display: 'flex',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceTotalStyles}>Envío Gratis</span>
-                  <span className={priceStyles}>Lo recibiras en menos de una hora</span>
-                </div>
-            </div>
-            <div className={fila3}>
-              <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Detalles de Envío</h1>
-            </div>
-            {items.map((item, index) => (
+            
+            :
               <>
-              <div className={fila3} key={`address-${index}`}>
-                <div style={{
-                  width: '10%',
-                }}>
-                   <input
-                      type="checkbox"
-                     className={checkboxStyles}
-                     checked={item.id === useCheckOut.attributes.states.addressId}
-                     onChange={() => selectAddress(item.id)}
-                    />
+                {items.map((item, index) => (
+                  <>
+                  <div className={fila3} key={`address-${index}`}>
+                    <div style={{
+                      width: '80%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                    }} className={containerColumnCenterStyles}>
+                      <span className={priceStyles}>{item.name}</span>
+                      <span className={priceStyles}>{item.fullAddress}</span>
+                    </div>
+                    <div style={{
+                      width: '10%',
+                      display: 'flex',
+                      margin: 'auto',
+                    }} className={containerColumnCenterStyles}>
+                      <span style={{
+                        fontSize: '0.6em',
+                        color: '#314577',
+                        cursor: 'pointer',
+                        fontFamily: 'Poppins',
+                      }}
+                      onClick={() => goAddressUpdate(item.address)}
+                      >Editar</span>
+                    </div>
                 </div>
-                <div style={{
-                  width: '70%',
-                  display: 'flex',
-                  flexDirection: 'column',
-                }} className={containerColumnCenterStyles}>
-                  <span className={priceStyles}>{item.name}</span>
-                  <span className={priceStyles}>{item.fullAddress}</span>
-                </div>
-                <div style={{
-                  width: '10%',
-                  display: 'flex',
-                  margin: 'auto',
-                }} className={containerColumnCenterStyles}>
-                  <span style={{
-                    fontSize: '0.6em',
-                    color: '#314577',
-                    cursor: 'pointer',
-                    fontFamily: 'Poppins',
-                  }}
-                  onClick={() => goAddressUpdate(item.address)}
-                  >Editar</span>
-                </div>
-            </div>
+                  </>
+                ))}
               </>
-            ))}
-            
-            
-            
-            <div className={containerButtonCheckOutStyle}>
-               <ButtonAppMobile 
-                title="Agregar Dirección"
-                containerStyles={{
-                  backgroundColor: '#314577'
+            }
+
+            {entityOptions.length > 0 &&
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
                 }}
-                containerProps={{
-                  onClick: () => goAddressAdd()
-                }}
-              />
-            </div>
+              >
+
+              
+                <ButtonAppMobile 
+                    title="Agregar Dirección"
+                    containerStyles={{
+                      backgroundColor: '#314577'
+                    }}
+                    containerProps={{
+                      onClick: () => goAddressAdd()
+                    }}
+                />
+              </div>
+            }
+            
           </div>
     </>
   );

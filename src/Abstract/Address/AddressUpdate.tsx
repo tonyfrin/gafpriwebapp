@@ -1,17 +1,12 @@
-import React, {use, useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
-import { IoLocationOutline } from 'react-icons/io5';
-import { IoBicycleOutline } from 'react-icons/io5';
 import { FiChevronLeft } from 'react-icons/fi';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp  } from '../Select/SelectApp';
 import { useTheme } from '../context/ThemeContext';
-import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
 import { Loading } from '../Loading';
-import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
+
 
 
 const title1AppStyles = css`
@@ -116,7 +111,7 @@ const containerButtonCheckOutStyle = css`
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 996;
+    z-index: 999;
     display: flex;
     flex-direction: column;
     background-color: #f9f9f9;
@@ -130,7 +125,7 @@ interface Location {
 }
 
 export function AddressUpdate() {
-  const { useAddress, useCheckOut, useUser } = useTheme();
+  const { useAddress, useUser, useProfile, useError } = useTheme();
   const [location, setLocation] = useState<boolean>(false);
   const address = useAddress.attributes.states.address;
 
@@ -157,11 +152,21 @@ export function AddressUpdate() {
 
   const update = async () => {
     if(useAddress.attributes.actions.validationButton()){
-      useCheckOut.pages.actions.onFetching();
-      const data = await useAddress.api.actions.updateAddress();
-      if(data && data.success){
-        useUser.api.actions.setUser(data.item);
-        useCheckOut.pages.actions.onAddressList();
+      try {
+          useProfile.pages.actions.onFetching();
+          const data = await useAddress.api.actions.updateAddress();
+          if(data && data.success){
+            useUser.api.actions.setUser(data.item);
+            useAddress.attributes.actions.resetInfo();
+            useProfile.pages.actions.onAddressList();
+          } else{
+            useError.actions.changeError(['No se pudo agregar la dirección, intente de nuevo']);
+            useProfile.pages.actions.onAddressUpdate();
+          }
+      } catch (error) {
+        console.log(error);
+        useError.actions.changeError(['No se pudo agregar la dirección, intente de nuevo']);
+        useProfile.pages.actions.onAddressUpdate();
       }
     }
   }
@@ -171,11 +176,9 @@ export function AddressUpdate() {
     useAddress.attributes.actions.changeCurrentLocation();
   }
 
-  
-
   const returnList = () => {
     useAddress.attributes.actions.resetInfo();
-    useCheckOut.pages.actions.onAddressList();
+    useProfile.pages.actions.onAddressList();
   }
   
 
@@ -207,6 +210,9 @@ export function AddressUpdate() {
                   value: useAddress.attributes.states.address1,
                   onChange: (e) => useAddress.attributes.actions.changeAddress1(e.target.value)
                 }}
+                containerStyles={{
+                  margin: '5px auto',
+                }}
               />
 
               <InputAppContainer 
@@ -216,10 +222,13 @@ export function AddressUpdate() {
                   value: useAddress.attributes.states.address2,
                   onChange: (e) => useAddress.attributes.actions.changeAddress2(e.target.value)
                 }}
+                containerStyles={{
+                  margin: '5px auto',
+                }}
               />
 
               <div style={{
-                margin: 'auto',
+                margin: '5px auto',
                 padding: '0px',
                 display: 'flex',
               }}>

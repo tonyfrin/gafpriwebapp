@@ -9,6 +9,7 @@ import { UseGafpriAttributesTransfersReturn } from "./useGafpriAttributesTransfe
 
 export type WalletAccountAtrributesReturn = {
     postsId: string;
+    id: string;
     entityId: string;
     currenciesId: string;
     name: string;

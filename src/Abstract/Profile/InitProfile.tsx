@@ -7,9 +7,10 @@ import { IoIosAddCircleOutline } from 'react-icons/io';
 import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
 
 const photoProfile = css`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 100%;
-    width: 20%;
-    height: auto;
 `
 
 const fila3 = css`
@@ -80,6 +81,10 @@ export const InitProfile = () => {
                 style={{
                     display: 'flex',
                     justifyContent: 'center',
+                    overflow: 'hidden',
+                    width: '100px',
+                    height: '100px',
+                    margin: 'auto'
                 }}
             >
                 <Image 

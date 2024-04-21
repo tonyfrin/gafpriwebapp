@@ -6,6 +6,8 @@ import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp  } from '../Select/SelectApp';
 import { useTheme } from '../context/ThemeContext';
+import { decimalFormatPriceConverter } from '../helpers';
+import { WalletAccountAtrributesReturn } from '../states/wallet/useGafpriApiWalletAccount';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -118,10 +120,18 @@ const containerButtonCheckOutStyle = css`
 `
 
 export function PaymentMethod() {
-  const { useCheckOut } = useTheme();
+  const { useCheckOut, useWallet, siteOptions } = useTheme();
+
+  const walletAccount = useWallet.attributes.states.walletAccount;
 
   const paymentSelected = (value: string) => {
     useCheckOut.attributes.actions.setPaymentMethod(value);
+    useCheckOut.pages.actions.onInit();
+  }
+
+  const paymentSelectedWallet = (walletAccount: WalletAccountAtrributesReturn) => {
+    useCheckOut.attributes.actions.setPaymentMethod('wallet');
+    useCheckOut.attributes.actions.setCustomerWalletAccount(walletAccount)
     useCheckOut.pages.actions.onInit();
   }
 
@@ -153,29 +163,50 @@ export function PaymentMethod() {
               <ButtonAppMobile 
                 title='Efectivo'
                 containerStyles={{
-                  backgroundColor: '#324375'
+                  backgroundColor: '#324375',
+                  borderRadius: '10px',
                 }}
                 contentProps={{
                   onClick: () => paymentSelected('cash')
                 }}
-              />
-
-            </div>
-            <div style={{
-              display: 'flex',
-              margin: 'auto',
-            }}>
-              <ButtonAppMobile 
-                title='Billetera Gafpri'
-                containerStyles={{
-                  backgroundColor: '#324375'
-                }}
-                containerProps={{
-                  onClick: () => paymentSelected('wallet')
+                contentStyles={{
+                  fontSize: '1em'
                 }}
               />
 
             </div>
+            {walletAccount && walletAccount.length > 0 && 
+            
+              walletAccount.map((item, index) => (
+                <div 
+                  style={{
+                    display: 'flex',
+                    margin: 'auto',
+                  }}
+                  key={index}
+                >
+                  <ButtonAppMobile 
+                    title={`Billetera (...${item.id}) - Saldo: ${decimalFormatPriceConverter(
+                      item.available || 0,
+                      siteOptions.DECIMAL_NUMBERS,
+                      siteOptions.CURRENCY_SYMBOL,
+                      siteOptions.CURRENCY_LOCATION
+                    )}`}
+                    containerStyles={{
+                      backgroundColor: '#324375',
+                      borderRadius: '10px',
+                    }}
+                    containerProps={{
+                      onClick: () => paymentSelectedWallet(item)
+                    }}
+                    contentStyles={{
+                      fontSize: '1em'
+                    }}
+                  />
+
+                </div>
+              ))
+          }
            
              
           </div>

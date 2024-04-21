@@ -133,6 +133,7 @@ export function InitCheckOut({
       if(data && data.success){
         
         setCart(null);
+        useCheckOut.attributes.actions.infoReset();
         useCheckOut.pages.actions.onFinal();
       }
     }

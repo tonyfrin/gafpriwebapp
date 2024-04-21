@@ -1,6 +1,15 @@
+import { useState, useEffect } from 'react';
 import { gafpriFetch } from '../../helpers';
 import { SITES_ROUTE } from '../../constants';
-import { UseGafpriLoginReturn } from '../login/useGafpriLogin'
+import { UseGafpriLoginReturn } from '../login/useGafpriLogin';
+import { EntityAttributesReturn } from '../user/useGafpriApiEntity';
+
+type SitesEntityAttributesReturn = {
+    id: string;
+    sitesId: string;
+    entityId: string;
+    entity: EntityAttributesReturn;
+}
 
 export type SitesAttributesReturn = {
     id: string;
@@ -24,6 +33,12 @@ export type SitesAttributesReturn = {
     host: string;
     createdAt: string;
     modifiedAt: string;
+    sitesEntity: SitesEntityAttributesReturn[];
+}
+
+type States = {
+    sites: SitesAttributesReturn[] | null;
+    sitesIsReady: boolean;
 }
 
 type Actions = {
@@ -32,6 +47,7 @@ type Actions = {
 
 export type UseGafpriApiSitesReturn = {
     actions: Actions;
+    states: States;
 }
 
 type UseGafpriApiSitesProps = {
@@ -41,6 +57,10 @@ type UseGafpriApiSitesProps = {
 export const useGafpriApiSites = ({
     useLogin,
 }: UseGafpriApiSitesProps): UseGafpriApiSitesReturn => {
+    const [sites, setSites] = useState<SitesAttributesReturn[] | null>(null);
+    const [sitesIsReady, setSitesIsReady] = useState<boolean>(false);
+    
+    
     const getSites = async (): Promise<any> => {
         try {
     
@@ -57,11 +77,42 @@ export const useGafpriApiSites = ({
         }
     };
 
+    useEffect(() => {
+      
+        const fetchSites = async () => {
+          try {
+            setSitesIsReady(false);
+            const data = await getSites();
+            console.log('data', data);
+            if(data && data.success){
+              setSites(data.data.items);
+            } else {
+              setSites([]);
+            }
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          } finally {
+            setSitesIsReady(true);
+          }
+        }
+    
+   
+    
+        fetchSites();
+     
+    }, [useLogin.data.states.token]);  // eslint-disable-line react-hooks/exhaustive-deps
+
     const actions = {
         getSites
     }
 
+    const states = {
+        sites,
+        sitesIsReady
+    }
+
     return {
-        actions
+        actions,
+        states
     }
 }

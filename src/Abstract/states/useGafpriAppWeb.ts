@@ -62,7 +62,7 @@ export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
     const useUser = useGafpriUser({useLogin, siteOptions});
     const useAddress = useGafpriAddress({useLogin});
     const useSites = useGafpriSites({useLogin});
-    const useOrder = useGafpriOrder({useLogin, useCheckOut});
+    const useOrder = useGafpriOrder({useLogin, useCheckOut, siteOptions});
     const useProfile = useGafpriProfile();
     const useWallet = useGafpriWallet({useLogin, useUser, siteOptions});
     const useSingUp = useGafpriSingUp({useError});

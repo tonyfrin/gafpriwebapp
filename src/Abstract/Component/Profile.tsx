@@ -16,6 +16,9 @@ import { Orders } from '../Profile/Orders';
 import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
 import { Password } from '../Profile/Password';
 import { SuccessPassword } from '../Profile/SuccessPassword';
+import { AddressList } from '../Address/AddressList';
+import { AddressAdd } from '../Address/AddressAdd';
+import { AddressUpdate } from '../Address/AddressUpdate';
 
 
 const mainStyles = css`
@@ -163,6 +166,29 @@ export function Profile() {
                         <SuccessPassword />
                       </FadeIn>
                     }
+
+                    {
+                      useProfile.pages.states.isAddressList &&
+                      <FadeIn keyName='isAddressList' isVisible={useProfile.pages.states.isAddressList}>
+                        <AddressList />
+                      </FadeIn>
+                    }
+
+                    {
+                      useProfile.pages.states.isAddressAdd &&
+                      <FadeIn keyName='isAddressAdd' isVisible={useProfile.pages.states.isAddressAdd}>
+                        <AddressAdd />
+                      </FadeIn>
+                    }
+
+                    {
+                      useProfile.pages.states.isAddressUpdate &&
+                      <FadeIn keyName='isAddressUpdate' isVisible={useProfile.pages.states.isAddressUpdate}>
+                        <AddressUpdate />
+                      </FadeIn>
+                    }
+
+
 
                 
                 </div>

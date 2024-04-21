@@ -122,19 +122,16 @@ const containerButtonCheckOutStyle = css`
     padding: 1em 0px;
 `
 
-export type StoreListProps = {
-  items: SitesAttributesReturn[] | null;
-}
+export function StoreList() {
+  const { useCheckOut, useSites } = useTheme();
 
-export function StoreList({
-  items,
-}: StoreListProps) {
-  const { useCheckOut } = useTheme();
 
+  const items = useSites.api.states.sites;
   items?.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
-  const selectSites = (id: string) => {
-    useCheckOut.attributes.actions.setSitesId(id);
+  const selectSites = (site: SitesAttributesReturn) => {
+    useCheckOut.attributes.actions.setSitesId(site.id);
+    useCheckOut.attributes.actions.setSitesWalletAccount(site.sitesEntity[0].entity.walletAccount[0]);
     useCheckOut.pages.actions.onInit();
   }
 
@@ -190,7 +187,7 @@ export function StoreList({
                         type="checkbox"
                         className={checkboxStyles}
                         checked={item.id === useCheckOut.attributes.states.sitesId}
-                        onChange={() => selectSites(item.id)}
+                        onChange={() => selectSites(item)}
                       />
                   </div>
                   <div style={{

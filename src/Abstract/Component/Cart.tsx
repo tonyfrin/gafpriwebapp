@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { IoCartOutline } from 'react-icons/io5';
 import Link from 'next/link';
 import { LayoutApp } from './LayoutApp';
@@ -108,7 +108,7 @@ export function Cart() {
   const [modal, setModal] = React.useState(false);
   const [fetching, setFetching] = useState<boolean>(true);
   const [item, setItem] = useState<CartAttributesReturn | null>(null);
-  const { useCart } = useTheme();
+  const { useCart, useCheckOut } = useTheme();
 
   useEffect(() => {
       const fetchData = async () => {
@@ -116,6 +116,7 @@ export function Cart() {
             const data = await (useCart.api.actions).getCart();
             if(data && data.success){
               setItem(data.item);
+              useCheckOut.attributes.actions.setTotal(data.item.total);
             }
           } catch (error) {
             console.error('Error fetching data:', error);
