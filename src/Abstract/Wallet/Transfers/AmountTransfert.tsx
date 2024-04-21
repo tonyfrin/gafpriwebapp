@@ -323,6 +323,10 @@ export function AmountTransfert() {
                     fontSize: '1.2em',
                     padding: '0.9em',
                 }}
+                containerProps={{
+                  onClick: () => useWallet.pagesTransfers.actions.returnInit()
+                
+                }}
             />
             <ButtonAppMobile 
                 title="Enviar"

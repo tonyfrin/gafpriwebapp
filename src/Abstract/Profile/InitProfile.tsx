@@ -59,21 +59,14 @@ export const InitProfile = () => {
             action: () => useProfile.pages.actions.onAddressList(),
         },
         {
-            name: 'Email',
-            action: () => useProfile.pages.actions.onEmail(),
-        },
-        {
-            name: 'Teléfono',
-            action: () => useProfile.pages.actions.onPhone(),
-        },
-        {
-            name: 'Perfil Legal',
-            action: () => useProfile.pages.actions.onLegal(),
+            name: 'Contraceña',
+            action: () => useProfile.pages.actions.onPassword(),
         },
         {
             name: 'Cerrar sesion',
             action: () => useLogin.data.actions.logout(),
         }
+        
 
     ]
 
@@ -107,21 +100,14 @@ export const InitProfile = () => {
             </div>
             <div
                 style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                }}
-            >
-                <ButtonAppMobile 
-                    title='Editar perfil'
-                />
-            </div>
-            <div
-                style={{
                     margin: '1em',
                 }}
             ></div>
             {menu.map((item, index) => (
-                <div key={`menu-profile-${index}`}>
+                <div 
+                    key={`menu-profile-${index}`}
+                    onClick={item.action}
+                >
                     <div className={fila3}>
                         <div style={{
                         width: '80%',
@@ -132,7 +118,7 @@ export const InitProfile = () => {
                         width: '20%',
                         }} className={containerColumnEndStyles}>
                         <button
-                            onClick={item.action}
+                            
                         >
                             <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
                         </button>

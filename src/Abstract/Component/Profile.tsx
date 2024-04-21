@@ -14,6 +14,8 @@ import { FadeIn } from '../Fade/FadeIn';
 import { InitProfile } from '../Profile/InitProfile';
 import { Orders } from '../Profile/Orders';
 import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
+import { Password } from '../Profile/Password';
+import { SuccessPassword } from '../Profile/SuccessPassword';
 
 
 const mainStyles = css`
@@ -145,6 +147,20 @@ export function Profile() {
                       useProfile.pages.states.isOrderList &&
                       <FadeIn keyName='isOrderList' isVisible={useProfile.pages.states.isOrderList}>
                         <Orders orders={orders}/>
+                      </FadeIn>
+                    }
+
+                    {
+                      useProfile.pages.states.isPassword &&
+                      <FadeIn keyName='isPassword' isVisible={useProfile.pages.states.isPassword}>
+                        <Password />
+                      </FadeIn>
+                    }
+
+                    {
+                      useProfile.pages.states.isSuccessPassword &&
+                      <FadeIn keyName='isSuccessPassword' isVisible={useProfile.pages.states.isSuccessPassword}>
+                        <SuccessPassword />
                       </FadeIn>
                     }
 

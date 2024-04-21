@@ -239,7 +239,7 @@ export function Beneficiary() {
                           placeholder: 'Correo Electrónico',
                           type: 'text',
                           value: useWallet.attributesTransfers.states.email,
-                          onChange: (e) => useWallet.attributesTransfers.actions.setEmail(e.target.value),
+                          onChange: (e) => useWallet.attributesTransfers.actions.setEmail(e.target.value.toLowerCase()),
                         }}
                       />
                 </div>

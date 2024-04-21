@@ -29,6 +29,7 @@ type Actions = {
     getUserById: (id: string) => Promise<any>;
     userAproval: (id: string) => Promise<any>;
     userCancel: (id: string) => Promise<any>;
+    changePassword: () => Promise<any>; 
 }
 
 export type UseGafpriApiUserReturn = {
@@ -132,12 +133,33 @@ export function useGafpriApiUser({
         }
     }
 
+    const changePassword = async (): Promise<any> => {
+        try {
+          if(useLogin.data.states.token){
+            const data = await gafpriFetch({
+              initMethod: 'PATCH',
+              initRoute: `${USER_ROUTE}/password`,
+              initToken: { token: useLogin.data.states.token },
+              initCredentials: {
+                currentPassword: attributes.states.currentPassword,
+                newPassword: attributes.states.newPassword
+              }
+            });
+            return data;
+          }
+          return null;
+        } catch (error) {
+          return error;
+        }
+    }
+
     const actions = {
         getUser,
         getUserPending,
         getUserById,
         userAproval,
-        userCancel
+        userCancel,
+        changePassword
     }
 
     return {
