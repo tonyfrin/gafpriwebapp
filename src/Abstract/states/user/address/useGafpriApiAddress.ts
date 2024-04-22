@@ -21,6 +21,7 @@ export type AddressAttributesReturn = {
 type Actions = {
     addAddress: () => Promise<any>;
     updateAddress: () => Promise<any>;
+    getAddress: (id: string) => Promise<any>;
 }
 
 export type UseGafpriApiAddressReturn = {
@@ -87,9 +88,25 @@ export function useGafpriApiAddress({
         }
     };
 
+    const getAddress = async (id: string): Promise<any> => {
+      try {
+        if(useLogin.data.states.token){
+          const data = await gafpriFetch({
+            initMethod: 'GET',
+            initRoute: `${ADDRESS_ROUTE}/${id}`,
+            initToken: { token: useLogin.data.states.token }
+          });
+          return data;
+        }
+      } catch (error) {
+        return error;
+      }
+  };
+
     const actions = {
         addAddress,
         updateAddress,
+        getAddress
     }
 
     return {

@@ -7,6 +7,7 @@ import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddr
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 import { useTheme } from '../context/ThemeContext';
 import { BiMap } from 'react-icons/bi';
+import Link from 'next/link';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -137,7 +138,7 @@ type options = {
 }
 
 export function AddressList() {
-  const { useAddress, useUser, useCheckOut, useProfile } = useTheme();
+  const { useAddress, useUser, useProfile } = useTheme();
 
 
 
@@ -149,23 +150,9 @@ export function AddressList() {
     return null;
   }
 
-  const items: items[] = [];
+  const items: items[] = useAddress.attributes.states.addressList;
 
-  const entityOptions: options[] = [];
-
-  user.entity.map((entity) => {
-    entityOptions.push({value: entity.id, label: entity.lastName ? `${entity.name} ${entity.lastName}` : entity.name});
-    entity.address.map((address) => {
-      items.push({
-        id: address.id,
-        name: entity.lastName ? `${entity.name} ${entity.lastName}` : entity.name,
-        fullAddress: `${address.address1}, ${address.city}`,
-        address,
-      });
-      return null;
-    });
-    return null;
-  });
+  const entityOptions: options[] = useAddress.attributes.states.entityOptions;
 
   items.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
@@ -176,8 +163,6 @@ export function AddressList() {
   }
 
   const goAddressAdd = () => {
-    useAddress.attributes.actions.setEntityOptions(entityOptions);
-    useAddress.attributes.actions.setEntityId(entityOptions[0].value);
     useProfile.pages.actions.onAddressAdd();
   }
 
@@ -255,20 +240,26 @@ export function AddressList() {
                       <span className={priceStyles}>{item.name}</span>
                       <span className={priceStyles}>{item.fullAddress}</span>
                     </div>
-                    <div style={{
-                      width: '10%',
-                      display: 'flex',
-                      margin: 'auto',
-                    }} className={containerColumnCenterStyles}>
+                    <Link 
+                      style={{
+                        width: '10%',
+                        display: 'flex',
+                        margin: 'auto',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                      }} 
+                      className={containerColumnCenterStyles}
+                      href="/perfil/direcciones/actualizar/[id]" 
+                      as={`/perfil/direcciones/actualizar/${item.id}`}
+                    >
                       <span style={{
                         fontSize: '0.6em',
                         color: '#314577',
                         cursor: 'pointer',
                         fontFamily: 'Poppins',
                       }}
-                      onClick={() => goAddressUpdate(item.address)}
                       >Editar</span>
-                    </div>
+                    </Link>
                 </div>
                   </>
                 ))}
@@ -276,14 +267,17 @@ export function AddressList() {
             }
 
             {entityOptions.length > 0 &&
-              <div
+              <Link
                 style={{
                   display: 'flex',
                   justifyContent: 'center',
+                  width: '100%',
+                  margin: 'auto',
+                  textDecoration: 'none',
+                  color: 'inherit',
                 }}
+                href={'/perfil/direcciones/agregar'}
               >
-
-              
                 <ButtonAppMobile 
                     title="Agregar Dirección"
                     containerStyles={{
@@ -293,7 +287,7 @@ export function AddressList() {
                       onClick: () => goAddressAdd()
                     }}
                 />
-              </div>
+              </Link>
             }
             
           </div>

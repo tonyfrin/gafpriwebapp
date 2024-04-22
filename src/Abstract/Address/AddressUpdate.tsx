@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { FiChevronLeft } from 'react-icons/fi';
@@ -6,6 +7,8 @@ import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp  } from '../Select/SelectApp';
 import { useTheme } from '../context/ThemeContext';
 import { Loading } from '../Loading';
+import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
+
 
 
 
@@ -119,15 +122,11 @@ const containerButtonCheckOutStyle = css`
     padding: 1em 0px;
 `
 
-interface Location {
-  latitude: number;
-  longitude: number;
-}
-
-export function AddressUpdate() {
-  const { useAddress, useUser, useProfile, useError } = useTheme();
+export function AddressUpdate({id}: {id: string | string[] | undefined}) {
+  const { useAddress, useUser, useProfile, useError, useLogin } = useTheme();
   const [location, setLocation] = useState<boolean>(false);
-  const address = useAddress.attributes.states.address;
+  const [address, setAddress] = useState<AddressAttributesReturn | null>(null);
+
 
   useEffect(() => {
     if(address){
@@ -147,6 +146,27 @@ export function AddressUpdate() {
       useAddress.attributes.actions.validationButton();
     }
   }, [ address, useAddress.attributes.states.address1, useAddress.attributes.states.address2, useAddress.attributes.states.city,]); // eslint-disable-line
+
+  useEffect(() => {
+    if(id && typeof id === 'string') {
+      
+    const fetchData = async () => {
+      try {
+        const data = await useAddress.api.actions.getAddress(id);
+        if(data && data.success){
+          setAddress(data.item);
+        } else{
+          useError.actions.changeError(['No se pudo obtener la dirección, intente de nuevo']);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } 
+    }
+
+    fetchData();
+  };
+}, [useLogin.data.states.token, id]); // eslint-disable-line react-hooks/exhaustive-deps
+
 
   if(!address) return(<Loading />);
 
@@ -197,10 +217,19 @@ export function AddressUpdate() {
                 margin: 'auto',
             }}> 
                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Actualiza dirección</h1>
-                <FiChevronLeft 
-                    className={arrowStyle}
-                    onClick={returnList}
-                />
+                <Link 
+                  href='/perfil/direcciones'
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    margin: 'auto 0px',
+                  }}
+                >
+                  <FiChevronLeft 
+                      className={arrowStyle}
+                      onClick={returnList}
+                  />
+                </Link>
             </div>
            
               <InputAppContainer 

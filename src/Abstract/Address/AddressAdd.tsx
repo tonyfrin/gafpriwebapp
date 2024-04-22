@@ -12,6 +12,7 @@ import { useTheme } from '../context/ThemeContext';
 import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
 import { Loading } from '../Loading';
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
+import Link from 'next/link';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -172,8 +173,11 @@ export function AddressAdd() {
     useAddress.attributes.actions.validationButton();
   }, [ useAddress.attributes.states.address1, useAddress.attributes.states.address2, useAddress.attributes.states.city, ]); // eslint-disable-line
 
-
-  
+  useEffect(() => {
+    if(useAddress.attributes.states.entityOptions.length > 0){
+      useAddress.attributes.actions.setEntityId(useAddress.attributes.states.entityOptions[0].value);
+    }
+  }, [useAddress.attributes.states.entityOptions])
 
   return (
     <> 
@@ -190,10 +194,19 @@ export function AddressAdd() {
                 margin: 'auto',
             }}> 
                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Nueva dirección</h1>
-                <FiChevronLeft 
-                    className={arrowStyle}
-                    onClick={returnList}
-                />
+                <Link 
+                  href='/perfil/direcciones'
+                  style={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                    margin: 'auto 0px',
+                  }}
+                >
+                  <FiChevronLeft 
+                      className={arrowStyle}
+                      onClick={returnList}
+                  />
+                </Link>
             </div>
 
               <div style={{

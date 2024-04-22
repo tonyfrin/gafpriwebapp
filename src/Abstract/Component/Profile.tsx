@@ -1,7 +1,7 @@
 import React, { use, useEffect, useState } from 'react';
 import { IoCartOutline } from 'react-icons/io5';
 import Link from 'next/link';
-import { LayoutApp } from './LayoutApp';
+import { LayoutAppProfile } from './LayoutAppProfile';
 import { css } from '@emotion/css';
 import { BoxCart } from '../Box/BoxCart';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
@@ -134,7 +134,7 @@ export function Profile() {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
               { useProfile.pages.states.isFetching ? <Loading /> :
                 <div>
@@ -166,35 +166,11 @@ export function Profile() {
                         <SuccessPassword />
                       </FadeIn>
                     }
-
-                    {
-                      useProfile.pages.states.isAddressList &&
-                      <FadeIn keyName='isAddressList' isVisible={useProfile.pages.states.isAddressList}>
-                        <AddressList />
-                      </FadeIn>
-                    }
-
-                    {
-                      useProfile.pages.states.isAddressAdd &&
-                      <FadeIn keyName='isAddressAdd' isVisible={useProfile.pages.states.isAddressAdd}>
-                        <AddressAdd />
-                      </FadeIn>
-                    }
-
-                    {
-                      useProfile.pages.states.isAddressUpdate &&
-                      <FadeIn keyName='isAddressUpdate' isVisible={useProfile.pages.states.isAddressUpdate}>
-                        <AddressUpdate />
-                      </FadeIn>
-                    }
-
-
-
                 
                 </div>
               }
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     </>
   );
 }

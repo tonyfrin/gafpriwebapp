@@ -5,6 +5,7 @@ import { useTheme } from '../context/ThemeContext';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { IoIosAddCircleOutline } from 'react-icons/io';
 import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
+import Link from 'next/link';
 
 const photoProfile = css`
     width: 100%;
@@ -50,14 +51,14 @@ export const InitProfile = () => {
     const { useLogin, useProfile } = useTheme();
 
    
-    const menu: {name: string, action: () => void}[]= [
+    const menu: {name: string, action?: () => void, href?: string;}[]= [
         {
             name: 'Pedidos',
             action: () => useProfile.pages.actions.onOrderList(),
         },
         {
             name: 'Direcciones',
-            action: () => useProfile.pages.actions.onAddressList(),
+            href: '/perfil/direcciones',
         },
         {
             name: 'Contraceña',
@@ -108,7 +109,42 @@ export const InitProfile = () => {
                     margin: '1em',
                 }}
             ></div>
-            {menu.map((item, index) => (
+            {menu.map((item, index) => 
+            
+            item.href ? 
+            (
+                
+                <Link 
+                    key={`menu-profile-${index}`}
+                    onClick={item.action}
+                    href={item.href}
+                    style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
+                    }}
+                >
+                    <div className={fila3}>
+                        <div style={{
+                        width: '80%',
+                        }}>
+                        <span className={priceTotalStyles}>{item.name}</span>
+                        </div>
+                        <div style={{
+                        width: '20%',
+                        }} className={containerColumnEndStyles}>
+                        <button
+                            
+                        >
+                            <IoIosAddCircleOutline style={{margin: 'auto', fontSize: '2em'}}/>
+                        </button>
+                        </div>
+                    </div>
+                </Link>
+            )
+
+            : 
+
+            (
                 <div 
                     key={`menu-profile-${index}`}
                     onClick={item.action}
@@ -130,7 +166,9 @@ export const InitProfile = () => {
                         </div>
                     </div>
                 </div>
-            ))}
+            )
+        
+        )}
         </div>
     )
 

@@ -40,13 +40,18 @@ export type LayoutAppProps = {
   containerProps?: React.HTMLAttributes<HTMLDivElement>;
 };
 
-export const LayoutApp = ({ 
+type options = {
+  value: string;
+  label: string;
+}
+
+export const LayoutAppProfile = ({ 
   children,
   containerStyles = {},
   containerProps = {},
 }: LayoutAppProps) => {
   const { className: containerClassName, ...restContainerProps } = containerProps;
-  const { useLogin, useCheckOut, useProfile, useWallet, useAddress} = useTheme();
+  const { useLogin, useCheckOut, useProfile, useWallet, useUser, useAddress} = useTheme();
   const [loading, setLoading] = useState(true); // Estado para controlar la carga
 
   const globalInfoReset = () => {
@@ -97,8 +102,6 @@ export const LayoutApp = ({
       }
   ]
 
-  const address = useAddress.attributes.states.addressList.length;
-
   return (
       <div className={cx(layoutContainerStyle(containerStyles), containerClassName)} {...restContainerProps}>
       <>
@@ -107,66 +110,7 @@ export const LayoutApp = ({
                 image: Logo,
             }}
         />
-        <main style={{ flexGrow: 1 }}>{loading ? (<Loading />) : address === 0 ?
-            <div
-                  style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      flexDirection: 'column',
-                      width: '90%',
-                      margin: '2em auto',
-                  }}
-            >
-                  <div>   
-                      <BiMap 
-                          style={{
-                              fontSize: '3em'
-                          }}
-                      />
-                  </div>
-                  <p
-                      style={{
-                          margin: '10px 0px 0px 0px',
-                          padding: '0px',
-                          fontSize: '0.7em',
-                          fontFamily: 'Poppins, sans-serif',
-                          textAlign: 'center'
-                      }}
-                  >No tienes direcciones agregadas.</p>
-                  <p
-                      style={{
-                          margin: '0px',
-                          padding: '0px',
-                          fontSize: '0.7em',
-                          fontFamily: 'Poppins, sans-serif',
-                          textAlign: 'center'
-                      }}
-                  >Para poder disfrutar de todos los servicios Gafpri agrega una dirección</p>
-                  <Link
-                    href='/perfil/direcciones/agregar'
-                    style={{
-                      textDecoration: 'none',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      width: '100%',
-                      margin: '1em auto',
-                    }}
-                  >
-                        <ButtonAppMobile 
-                              title='Agregar dirección'
-            
-                              containerStyles={{
-                                backgroundColor: '#314577',
-                              }}
-    
-                              contentStyles={{
-                                fontSize: '1.2em',
-                              }}
-                        />
-                  </Link>
-            </div>
-        : children}</main>
+        <main style={{ flexGrow: 1 }}>{loading ? (<Loading />) : children}</main>
         <MenuFooterApp items={menuItems}/>
         <MainFooter 
             siteName="Gafpri Store"

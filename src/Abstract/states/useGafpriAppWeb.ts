@@ -60,7 +60,7 @@ export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
     const useCart = useGafpriCart({useLogin});
     const useCheckOut = useGafpriCheckOut();
     const useUser = useGafpriUser({useLogin, siteOptions});
-    const useAddress = useGafpriAddress({useLogin});
+    const useAddress = useGafpriAddress({useLogin, apiUser: useUser.api});
     const useSites = useGafpriSites({useLogin});
     const useOrder = useGafpriOrder({useLogin, useCheckOut, siteOptions});
     const useProfile = useGafpriProfile();

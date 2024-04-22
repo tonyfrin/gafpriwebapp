@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { validationInput, generalValidationButtonNext } from '../../../helpers';
 import { AddressAttributesReturn } from './useGafpriApiAddress';
+import { UseGafpriApiUserReturn } from '../useGafpriApiUser';
+
+type AddressItem = {
+  id: string;
+  name: string;
+  fullAddress: string;
+  address: AddressAttributesReturn;
+}
 
 type state = {
     id: string;
@@ -20,6 +28,7 @@ type state = {
     cityOptions: { value: string; label: string }[];
     address: AddressAttributesReturn | null;
     entityOptions: { value: string; label: string }[];
+    addressList: AddressItem[];
 }
 
 type actions = {
@@ -45,9 +54,15 @@ export type UseGafpriAttributesAddressReturn = {
     actions: actions;
 }
 
+export type UseGafpriAttributesAddressProps = {
+  apiUser: UseGafpriApiUserReturn;
+}
 
 
-export const useGafpriAttributesAddress = (): UseGafpriAttributesAddressReturn => {
+
+export const useGafpriAttributesAddress = ({
+  apiUser
+}: UseGafpriAttributesAddressProps ): UseGafpriAttributesAddressReturn => {
     const [id, setId] = useState<string>('');
     const type = 'shipping';
     const [address1, setAddress1] = useState<string>('');
@@ -68,6 +83,10 @@ export const useGafpriAttributesAddress = (): UseGafpriAttributesAddressReturn =
     const [latitude, setLatitude] = useState<string>('');
     const [longitude, setLongitude] = useState<string>('');
     const [address, setAddress] = useState<AddressAttributesReturn | null>(null);
+    const [addressList, setAddressList] = useState<AddressItem[]>([]);
+
+
+    const user = apiUser.states.user;
 
     const resetInfo = (): void => {
         setId('');
@@ -81,7 +100,6 @@ export const useGafpriAttributesAddress = (): UseGafpriAttributesAddressReturn =
         setLatitude('');
         setLongitude('');  
         setAddress(null); 
-        setEntityOptions([]);
     }
 
     const validationAddress1 = (value: string) => {
@@ -159,6 +177,28 @@ export const useGafpriAttributesAddress = (): UseGafpriAttributesAddressReturn =
         }
     };
 
+    useEffect(() => {
+      if(user){
+        const items: AddressItem[] = [];
+        const options: { value: string; label: string }[] = [];
+        user.entity.map((entity) => {
+          options.push({value: entity.id, label: entity.lastName ? `${entity.name} ${entity.lastName}` : entity.name});
+          entity.address.map((item) => {
+            items.push({
+              id: item.id,
+              name: entity.lastName ? `${entity.name} ${entity.lastName}` : entity.name,
+              fullAddress: `${item.address1}, ${item.city}`,
+              address: item,
+            });
+            return null;
+          });
+          return null;
+        });
+        setAddressList(items);
+        setEntityOptions(options);
+      }
+    }, [user])
+
     const states = {
         id,
         type,
@@ -177,6 +217,7 @@ export const useGafpriAttributesAddress = (): UseGafpriAttributesAddressReturn =
         cityOptions,
         address,
         entityOptions,
+        addressList
     }
 
     const actions = {
