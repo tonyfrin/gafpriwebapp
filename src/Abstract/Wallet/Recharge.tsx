@@ -1,11 +1,11 @@
-import React from 'react';;
-import { LayoutApp } from '../Component/LayoutApp';
+import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { AmountRecharge } from './Recharge/AmountRecharge';
 import { InfoRecharge } from './Recharge/InfoRecharge';
 import { ConfirmationRecharge } from './Recharge/ConfirmationRecharge';
 import { SuccessRecharge } from './Recharge/SuccessRecharge';
 import { Loading } from '../Loading';
+import { LayoutAppProfile } from '../Component/LayoutAppProfile';
 
 
 export function Recharge() {
@@ -14,7 +14,7 @@ export function Recharge() {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
           {useWallet.pagesRecharge.states.isFetching ? <Loading /> : 
             <div>
@@ -28,7 +28,7 @@ export function Recharge() {
             </div>
           }
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     </>
   );
 }
