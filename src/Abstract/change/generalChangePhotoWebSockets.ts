@@ -38,7 +38,7 @@ export const generalChangePhotoWebSockets = async ({
   setPhoto,
   from,
 }: GeneralChangePhotoProps): Promise<void> => {
-    const ws = new WebSocket('ws://lit-cove-22933-f97494e6b56f.herokuapp.com');
+    const ws = new WebSocket('wss://lit-cove-22933-f97494e6b56f.herokuapp.com');
     const clientId = uuidv4();
   
     
