@@ -1,15 +1,14 @@
 // import axios, { AxiosRequestConfig } from 'axios';
 import { ChangeEvent } from 'react';
 import { getMimeTypeByExtension } from '../helpers';
-import { UPLOAD_PHOTO_ROUTE } from '../constants';
+import { v4 as uuidv4 } from 'uuid';
 
 export type GeneralChangePhotoProps = {
   e: ChangeEvent<HTMLInputElement>;
-  changeError: (valueError: string[]) => void;
   setSubmitting: (valueSubmitting: boolean) => void;
-  websocket: WebSocket; 
-  clientId: string;
   from: string;
+  setPhoto: (valuePhoto: string) => void;
+  changeError: (valueError: string[]) => void;
 };
 
 function arrayBufferToBase64(buffer: ArrayBuffer) {
@@ -34,13 +33,40 @@ function textToArrayBuffer(text: string): ArrayBuffer {
 
 export const generalChangePhotoWebSockets = async ({
   e,
-  changeError,
   setSubmitting,
-  websocket,
-  clientId,
-  from
+  changeError,
+  setPhoto,
+  from,
 }: GeneralChangePhotoProps): Promise<void> => {
-  console.log('e.target.files', e.target.files);
+    const ws = new WebSocket('ws://lit-cove-22933-f97494e6b56f.herokuapp.com');
+    const clientId = uuidv4();
+  
+    
+
+    ws.onmessage = (event) => {
+      const receivedData = JSON.parse(event.data);
+      console.log('receivedData', receivedData);
+      
+      if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === from) {
+        if(receivedData.success){
+          setPhoto(receivedData.data);
+          setSubmitting(false);
+        } else {
+          changeError([receivedData.data]);
+          setSubmitting(false);
+        }
+      } 
+    }; 
+  
+  ws.onerror = (error) => {
+    console.error('WebSocket error:', error);
+  };
+
+  ws.onclose = () => {
+    console.log('Disconnected from the WebSocket server');
+    // Intentar reconexión automáticamente después de cierto tiempo
+  };
+  
   const newFile = e.target.files && e.target.files[0];
 
   if (!newFile) return;
@@ -77,14 +103,19 @@ export const generalChangePhotoWebSockets = async ({
               const base64String = arrayBufferToBase64(arrayBuffer);
 
               const data = {
-                clientId: clientId,
+                clientId,
                 fileArrayBuffer: base64String,
                 from
               };
 
 
               // Convertir el objeto a JSON y enviarlo a través del WebSocket
-              websocket.send(JSON.stringify(data));
+              
+              ws.onopen = () => {
+                console.log('Connected to the WebSocket server');
+                ws.send(JSON.stringify(data));
+                ws.send('pong');
+              };
             } else{
               changeError(['Error al leer el archivo']);
               setSubmitting(false);
