@@ -44,7 +44,7 @@ export default function Home() {
     };
 
     fetchData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line
 
 
   return (

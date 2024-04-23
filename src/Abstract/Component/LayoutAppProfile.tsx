@@ -76,18 +76,18 @@ export const LayoutAppProfile = ({
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const menuItems= [
-      {
-          title: 'Tienda',
-          href: '/tienda',
-          icon: IoStorefrontOutline,
-          action: globalInfoReset
-      },
-      {
-          title: 'Carrito',
-          href: '/carrito',
-          icon: IoCartOutline,
-          action: globalInfoReset
-      },
+      // {
+      //     title: 'Tienda',
+      //     href: '/tienda',
+      //     icon: IoStorefrontOutline,
+      //     action: globalInfoReset
+      // },
+      // {
+      //     title: 'Carrito',
+      //     href: '/carrito',
+      //     icon: IoCartOutline,
+      //     action: globalInfoReset
+      // },
       {
           title: 'Billetera',
           href: '/billetera',

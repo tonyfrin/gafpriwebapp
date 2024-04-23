@@ -52,10 +52,10 @@ export const InitProfile = () => {
 
    
     const menu: {name: string, action?: () => void, href?: string;}[]= [
-        {
-            name: 'Pedidos',
-            action: () => useProfile.pages.actions.onOrderList(),
-        },
+        // {
+        //     name: 'Pedidos',
+        //     action: () => useProfile.pages.actions.onOrderList(),
+        // },
         {
             name: 'Direcciones',
             href: '/perfil/direcciones',

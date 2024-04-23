@@ -3,6 +3,7 @@ import { LayoutApp } from './LayoutApp';
 import { useTheme } from '../context/ThemeContext';
 import { Loading } from '../Loading';
 import { AddressList } from '../Address/AddressList';
+import { LayoutAppProfile } from './LayoutAppProfile';
 
 
 export function ListAddress() {
@@ -11,7 +12,7 @@ export function ListAddress() {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
               { useProfile.pages.states.isFetching ? <Loading /> :
                 <div>
@@ -21,7 +22,7 @@ export function ListAddress() {
                 </div>
               }
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     </>
   );
 }

@@ -156,16 +156,6 @@ export function AddressList() {
 
   items.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
-  const goAddressUpdate = (address: AddressAttributesReturn) => {
-    useAddress.attributes.actions.setId(address.id);
-    useAddress.attributes.actions.setAddress(address);
-    useProfile.pages.actions.onAddressUpdate();
-  }
-
-  const goAddressAdd = () => {
-    useProfile.pages.actions.onAddressAdd();
-  }
-
   return (
     <> 
           <div
@@ -173,20 +163,25 @@ export function AddressList() {
               marginBottom: '220px'
             }}
           >
-            <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                padding: '1em 0px',
-                width: '90%',
-                margin: 'auto',
-                borderBottom: '1px solid #e1e1e1'
-            }}> 
+            <Link 
+              style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '1em 0px',
+                  width: '90%',
+                  margin: 'auto',
+                  borderBottom: '1px solid #e1e1e1',
+                  textDecoration: 'none',
+                  color: 'inherit',
+              }}
+              href={'/perfil'}
+            > 
                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Direcciones</h1>
                 <FiChevronLeft 
                     className={arrowStyle}
                     onClick={useProfile.pages.actions.onInit}
                 />
-            </div>
+            </Link>
             
             {items.length === 0 ? 
             
@@ -282,9 +277,6 @@ export function AddressList() {
                     title="Agregar Dirección"
                     containerStyles={{
                       backgroundColor: '#314577'
-                    }}
-                    containerProps={{
-                      onClick: () => goAddressAdd()
                     }}
                 />
               </Link>

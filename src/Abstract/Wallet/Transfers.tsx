@@ -6,6 +6,7 @@ import { Beneficiary } from './Transfers/Beneficiary';
 import { AmountTransfert } from './Transfers/AmountTransfert';
 import { ConfirmationTransfers } from './Transfers/ConfirmationTransfers';
 import { SuccessTransfers } from './Transfers/SuccessTransfers';
+import { LayoutAppProfile } from '../Component/LayoutAppProfile';
 
 
 export function Transfers() {
@@ -14,7 +15,7 @@ export function Transfers() {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
          <div>
             {useWallet.pagesTransfers.states.isInit && <InitTransfers />}
@@ -28,7 +29,7 @@ export function Transfers() {
             { useWallet.pagesTransfers.states.isSuccess && <SuccessTransfers />}
          </div>
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     </>
   );
 }

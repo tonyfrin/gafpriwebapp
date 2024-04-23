@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { css } from '@emotion/css';
+import { useRouter } from 'next/router';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { FiChevronLeft } from 'react-icons/fi';
 import { InputAppContainer } from '../Input/InputAppContainer';
@@ -123,6 +124,7 @@ const containerButtonCheckOutStyle = css`
 `
 
 export function AddressUpdate({id}: {id: string | string[] | undefined}) {
+  const router = useRouter();
   const { useAddress, useUser, useProfile, useError, useLogin } = useTheme();
   const [location, setLocation] = useState<boolean>(false);
   const [address, setAddress] = useState<AddressAttributesReturn | null>(null);
@@ -140,6 +142,7 @@ export function AddressUpdate({id}: {id: string | string[] | undefined}) {
 
   useEffect(() => {
     if(address){
+      
       useAddress.attributes.actions.validationAddress1(address.address1);
       if(address.address2) useAddress.attributes.actions.validationAddress2(address.address2);
       useAddress.attributes.actions.validationCity(address.city);
@@ -149,7 +152,7 @@ export function AddressUpdate({id}: {id: string | string[] | undefined}) {
 
   useEffect(() => {
     if(id && typeof id === 'string') {
-      
+      useAddress.attributes.actions.setId(id);
     const fetchData = async () => {
       try {
         const data = await useAddress.api.actions.getAddress(id);
@@ -179,6 +182,7 @@ export function AddressUpdate({id}: {id: string | string[] | undefined}) {
             useUser.api.actions.setUser(data.item);
             useAddress.attributes.actions.resetInfo();
             useProfile.pages.actions.onAddressList();
+            router.push('/perfil/direcciones');
           } else{
             useError.actions.changeError(['No se pudo agregar la dirección, intente de nuevo']);
             useProfile.pages.actions.onAddressUpdate();

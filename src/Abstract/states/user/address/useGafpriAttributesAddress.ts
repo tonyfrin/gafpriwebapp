@@ -99,7 +99,6 @@ export const useGafpriAttributesAddress = ({
         setEntityId(''); 
         setLatitude('');
         setLongitude('');  
-        setAddress(null); 
     }
 
     const validationAddress1 = (value: string) => {

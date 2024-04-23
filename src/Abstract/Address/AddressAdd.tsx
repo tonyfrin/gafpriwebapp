@@ -1,7 +1,7 @@
 import React, {use, useEffect, useState} from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
-import { IoLocationOutline } from 'react-icons/io5';
+import { useRouter } from 'next/router';
 import { IoBicycleOutline } from 'react-icons/io5';
 import { FiChevronLeft } from 'react-icons/fi';
 import { IoIosAddCircleOutline } from 'react-icons/io';
@@ -132,6 +132,7 @@ interface Location {
 export function AddressAdd() {
   const { useAddress, useError, useUser, useProfile} = useTheme();
   const [location, setLocation] = useState<boolean>(false);
+  const router = useRouter();
 
   const changeLocation = () => {
     setLocation(true);
@@ -149,6 +150,7 @@ export function AddressAdd() {
             useUser.api.actions.setUser(data.item);
             useAddress.attributes.actions.resetInfo();
             useProfile.pages.actions.onAddressList();
+            router.push('/perfil/direcciones');
           } else{
             useError.actions.changeError(['No se pudo agregar la dirección, intente de nuevo']);
             useProfile.pages.actions.onAddressAdd();
@@ -177,7 +179,7 @@ export function AddressAdd() {
     if(useAddress.attributes.states.entityOptions.length > 0){
       useAddress.attributes.actions.setEntityId(useAddress.attributes.states.entityOptions[0].value);
     }
-  }, [useAddress.attributes.states.entityOptions])
+  }, [useAddress.attributes.states.entityOptions]); // eslint-disable-line
 
   return (
     <> 

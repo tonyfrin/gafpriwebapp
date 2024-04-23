@@ -1,18 +1,13 @@
 import React from 'react';
-import { LayoutApp } from './LayoutApp';
-import { useTheme } from '../context/ThemeContext';
-import { Loading } from '../Loading';
-import { AddressList } from '../Address/AddressList';
 import { AddressUpdate } from '../Address/AddressUpdate';
+import { LayoutAppProfile } from './LayoutAppProfile';
 
 
 export function UpdateAddress({id}: {id: string | string[] | undefined}) {
-  const { useProfile } = useTheme();
-
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
              
                 <div>
@@ -22,7 +17,7 @@ export function UpdateAddress({id}: {id: string | string[] | undefined}) {
                 </div>
              
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     </>
   );
 }

@@ -16,6 +16,7 @@ import { Orders } from '../Profile/Orders';
 import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
 import { InitWallet } from '../Wallet/InitWallet';
 import { EntityAttributesReturn } from '../states/user/useGafpriApiEntity';
+import { LayoutAppProfile } from './LayoutAppProfile';
 
 
 const mainStyles = css`
@@ -117,7 +118,7 @@ export function Wallet() {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
           <div>
 
@@ -125,7 +126,7 @@ export function Wallet() {
           
           </div>
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     </>
   );
 }

@@ -109,7 +109,7 @@ export function useGafpriDataLogin({
       changeCurrentUser(data.user);
       setIsLogin(true);
       setIsFetchingGlobal(false);
-      router.push('/tienda');
+      router.push('/billetera');
       attributes.actions.resetInfo();
     }
   };
@@ -169,7 +169,7 @@ export function useGafpriDataLogin({
       setIsLogin(true);
       setIsFetchingGlobal(false);
       attributes.actions.resetInfo();
-      router.push('/tienda');
+      router.push('/billetera');
     } else {
       setIsLogin(false);
       changeToken(null);
