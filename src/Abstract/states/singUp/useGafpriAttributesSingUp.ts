@@ -89,7 +89,56 @@ export type UseGafpriAttributesSingUpProps = {
 export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpProps): UseGafpriAttributesSingUpReturn {
   const socketRef = React.useRef<WebSocket | null>( null );
   const [clientId, setClientId] = useState<string>('');
-  const [websocket] = useState(() => connectToWebSocket(`wss://lit-cove-22933-f97494e6b56f.herokuapp.com`));
+  const connectWebSocket = () => {
+    const ws = new WebSocket('wss://lit-cove-22933-f97494e6b56f.herokuapp.com');
+  
+    ws.onopen = () => {
+      console.log('Connected to the WebSocket server');
+      ws.send('pong');
+      setReconnectTimeout(null);
+    };
+
+    ws.onmessage = (event) => {
+      const receivedData = JSON.parse(event.data);
+      console.log('receivedData', receivedData);
+      
+      if (receivedData.type === 'clientId') {
+        // Al recibir el ID del cliente desde el servidor
+        setClientId(receivedData.data);
+      } else if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === 'documentIdPhoto') {
+        if(receivedData.success){
+          setDocumentIdPhoto(receivedData.data);
+          setSubmittingDocumentId(false);
+        } else {
+          useError.actions.changeError([receivedData.data]);
+          setSubmittingDocumentId(false);
+        }
+      } else if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === 'userPhoto') {
+        if(receivedData.success){
+          setUserPhoto(receivedData.data);
+          setSubmittingUser(false);
+        } else {
+          useError.actions.changeError([receivedData.data]);
+          setSubmittingUser(false);
+        }
+      } 
+    }; 
+    
+    ws.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    ws.onclose = () => {
+      console.log('Disconnected from the WebSocket server');
+      // Intentar reconexión automáticamente después de cierto tiempo
+      const timeout = setTimeout(connectWebSocket, 3000); // Intentar reconexión después de 3 segundos
+      setReconnectTimeout(timeout);
+    };
+
+    socketRef.current = ws;
+    return ws;
+  }
+  const [websocket] = useState(() => connectWebSocket());
   const [email, setEmail] = useState<string>('');
   const [emailValid, setEmailValid] = useState<boolean>(false);
 
@@ -139,6 +188,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   const [userPhoto, setUserPhoto] = useState('');
   const [userPhotoValid, setUserPhotoValid] = useState(false);
   const [submittingUser, setSubmittingUser] = useState(false);
+
+  const [reconnectTimeout, setReconnectTimeout] = useState<NodeJS.Timeout | null>(null);
 
   const infoReset = () => {
     setEmail('');
@@ -444,61 +495,28 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
     });
   }
 
+  
+
   React.useEffect(() => {
-    if (!socketRef.current) {
-      const ws = new WebSocket('wss://lit-cove-22933-f97494e6b56f.herokuapp.com');
+     if(!socketRef.current){
+      connectWebSocket();
+     }
   
-      ws.onopen = () => {
-        console.log('Connected to the WebSocket server');
-        ws.send('pong');
+    
+      return () => {
+        if (socketRef.current) {
+          socketRef.current.close();
+          socketRef.current = null;
+        }
+        if (reconnectTimeout) {
+          clearTimeout(reconnectTimeout); // Limpiar el temporizador al desmontar el componente
+        }
       };
-  
-      ws.onmessage = (event) => {
-        const receivedData = JSON.parse(event.data);
-        console.log('receivedData', receivedData);
-        
-        if (receivedData.type === 'clientId') {
-          // Al recibir el ID del cliente desde el servidor
-          setClientId(receivedData.data);
-        } else if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === 'documentIdPhoto') {
-          if(receivedData.success){
-            setDocumentIdPhoto(receivedData.data);
-            setSubmittingDocumentId(false);
-          } else {
-            useError.actions.changeError([receivedData.data]);
-            setSubmittingDocumentId(false);
-          }
-        } else if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === 'userPhoto') {
-          if(receivedData.success){
-            setUserPhoto(receivedData.data);
-            setSubmittingUser(false);
-          } else {
-            useError.actions.changeError([receivedData.data]);
-            setSubmittingUser(false);
-          }
-        } 
-      }; 
-      
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error);
-      };
-  
-      ws.onclose = () => {
-        console.log('Disconnected from the WebSocket server');
-      };
-  
-      socketRef.current = ws;
-    }
-  
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close();
-        socketRef.current = null;
-      }
-    };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
   
 
+
+  
   
  
 
