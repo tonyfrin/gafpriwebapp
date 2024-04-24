@@ -53,6 +53,7 @@ export type WalletTransactionsAttributesReturn = {
     amount: string;
     change: string;
     status: string;
+    attachment: string | null;
     createdAt: string;
     walletAccount: WalletAccountAtrributesReturn;
 }

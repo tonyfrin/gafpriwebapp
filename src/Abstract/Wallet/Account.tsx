@@ -477,6 +477,17 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
                                                                         }}>{transaction.description}</span>
                                                                         
                                                                         <span className={cx(statusButtonStyles())}>Completado</span>
+                                                                        {transaction.attachment && 
+                                                                            <a 
+                                                                                href={transaction.attachment} 
+                                                                                className={cx(statusButtonStyles())}
+                                                                                style={{
+                                                                                    backgroundColor: '#07b2e7',
+                                                                                    textDecoration: 'none',
+                                                                                    color: '#fff',
+                                                                                }}
+                                                                                target="_blank"
+                                                                            >Capture</a>}
                                                                     </div>
                                                                     <span
                                                                         style={{
