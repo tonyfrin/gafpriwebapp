@@ -172,7 +172,7 @@ export function SuccessPassword() {
                     textAlign: 'center',
                     fontWeight: '600'
                 }}
-            >Contraceña actualizada.</p>
+            >Contraseña actualizada.</p>
             <p
                 style={{
                     margin: '0px',
@@ -181,7 +181,7 @@ export function SuccessPassword() {
                     fontFamily: 'Poppins, sans-serif',
                     textAlign: 'center'
                 }}
-            >Has cambiado con exito tu contraceña.</p>
+            >Has cambiado con exito tu contraseña.</p>
               <Link href="/perfil" style={{
                 textDecoration: 'none',
                 color: 'inherit',

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';;
 import { css } from '@emotion/css';
+import Link from 'next/link';
 import { useTheme } from '../../context/ThemeContext';
-import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { FiChevronLeft } from 'react-icons/fi';
 import { InputAppContainer } from '../../Input/InputAppContainer';
-import { WalletAccountAtrributesReturn, WalletBeneficiariesAttributesReturn } from '@/Abstract/states/wallet/useGafpriApiWalletAccount';
-import { Loading } from '@/Abstract/Loading';
-import { Error } from '@/Abstract/Error';
+import { WalletBeneficiariesAttributesReturn } from '../../states/wallet/useGafpriApiWalletAccount';
+import { Loading } from '../../Loading';
+import { Error } from '../../Error';
+import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
+import { formatPhoneNumber } from '../../helpers';
 
 
 const mainStyles = css`
@@ -137,7 +139,7 @@ type items = {
   email: string;
 }
 
-export function Beneficiary() {
+export function BeneficiaryZelle() {
   const { useWallet, siteOptions, useLogin, useError } = useTheme();
   const [beneficiaries, setBeneficiaries] = useState<WalletBeneficiariesAttributesReturn[]>([]);
   const [fetching, setFetching] = useState<boolean>(false);
@@ -154,35 +156,30 @@ export function Beneficiary() {
     }
   });
 
-  const itemsFilter: items[] = items.filter(item => {
-    if(item.email){
-      return item.email.includes(useWallet.attributesTransfers.states.email);
-    }
+  const itemsFilter: WalletBeneficiariesAttributesReturn[] = [] 
+  
+  beneficiaries.forEach(beneficiary => {
+
+
+
+      if ((beneficiary.email && beneficiary.email.toLowerCase().includes(useWallet.attributesTransfersZelle.states.findValue)) || 
+        (beneficiary.phone && beneficiary.phone.includes(useWallet.attributesTransfersZelle.states.findValue)) ||
+        (beneficiary.name && beneficiary.name.toLowerCase().includes(useWallet.attributesTransfersZelle.states.findValue))
+      ) {
+          itemsFilter.push(beneficiary);
+      }
   });
 
-  const next = async (email: string ) => {
-    try {
-        setFetching(true);
-        const data = await useWallet.account.actions.getWalletAccountByEmail(email);
-        if(data && data.success && data.item){
-            useWallet.attributesTransfers.actions.setBeneficiary(data.item);
-            useWallet.pagesTransfers.actions.onInfo();
-        } else{
-            useError.actions.changeError(['No se encontró el beneficiario', 'Por favor ingrese un correo electrónico válido']);
-        }
-    } catch (error) {
-        console.error('Error fetching data:', error);
-        useError.actions.changeError(['No se encontró el beneficiario', 'Por favor ingrese un correo electrónico válido']);
-    } finally {
-        setFetching(false);
-    }
+  const next = async (beneficiary: WalletBeneficiariesAttributesReturn) => {
+    useWallet.attributesTransfersZelle.actions.setBeneficiary(beneficiary);
+    useWallet.pagesTransfersZelle.actions.onAmount();
   }
 
     useEffect(() => {
           const fetchBeneficiaries = async () => {
             try {
                 setFetchBeneficiaries(true);
-                const data = await useWallet.account.actions.getBeneficiaries('wallet-email');
+                const data = await useWallet.account.actions.getBeneficiaries('zelle');
                 if(data && data.success && data.items){
                     setBeneficiaries(data.items);
                 } else{
@@ -215,16 +212,19 @@ export function Beneficiary() {
                     margin: 'auto',
                     borderBottom: '1px solid #e1e1e1'
                 }}> 
-                    <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Transferencia de Saldo</h1>
-                    <div style={{
-                      textDecoration: 'none',
-                      display: 'flex',
-                    }}>
+                    <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Transferencia Zelle</h1>
+                    <Link 
+                      style={{
+                        textDecoration: 'none',
+                        display: 'flex',
+                      }}
+                      href={'/billetera/enviar'}
+                    >
                     <FiChevronLeft 
                         className={arrowStyle}
-                        onClick={useWallet.pagesTransfers.actions.returnInit}
+                        onClick={useWallet.pagesTransfersZelle.actions.returnInit}
                     />
-                    </div>
+                    </Link>
                 </div>
                 <div style={{
                   margin: '1em 0px'
@@ -233,13 +233,13 @@ export function Beneficiary() {
                   textAlign: 'center',
                   padding: '0.3em',
                   fontSize: '1em',
-                }}>Elegir Beneficiario</h1></div>
+                }}>Buscar Beneficiario</h1></div>
                       <InputAppContainer 
                         inputProps={{
-                          placeholder: 'Correo Electrónico',
+                          placeholder: 'Email o Teléfono',
                           type: 'text',
-                          value: useWallet.attributesTransfers.states.email,
-                          onChange: (e) => useWallet.attributesTransfers.actions.setEmail(e.target.value.toLowerCase()),
+                          value: useWallet.attributesTransfersZelle.states.findValue,
+                          onChange: (e) => useWallet.attributesTransfersZelle.actions.setFindValue(e.target.value.toLowerCase()),
                         }}
                       />
                 </div>
@@ -277,7 +277,7 @@ export function Beneficiary() {
                         margin: '5px',
                         cursor: 'pointer'
                       }}
-                      onClick={() => next(item.email)}
+                      onClick={() => next(item)}
                       >
                         <div style={{
                           width: '40px',
@@ -307,64 +307,34 @@ export function Beneficiary() {
                           <span style={{
                             fontSize: '0.6em',
                             fontWeight: 400,
-                          }}>{item.email}</span>
+                          }}>{item.email ? item.email : formatPhoneNumber(`${item.phone}`)}</span>
                         </div>
                       </div>))}
 
-                      {itemsFilter && itemsFilter.length === 0 && useWallet.attributesTransfers.states.email &&
+                      
                         <div style={{
                           display: 'flex',
                           justifyContent: 'space-between',
-                          background: '#ebebeb',
+                          
                           padding: '5px',
                           borderRadius: '10px',
                           margin: '5px',
                           cursor: 'pointer'
                         }}
-                        onClick={() => next(useWallet.attributesTransfers.states.email)}
                         >
-                          <div style={{
-                            width: '40px',
-                            height: '40px',
-                            borderRadius: '100%',
-                            background: '#324d7f',
-                            margin: '0 10px',
-                            display: 'flex',
-                          }}>
-                            <span style={{
-                              color: '#FFF',
-                              fontSize: '1.2em',
-                              margin: 'auto',
-                              textTransform: 'uppercase',
-                            }}>+</span>
-                          </div>
-                          <div style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            textAlign: 'left',
-                            width: '80%'
-                          }}>
-                            <span style={{
-                              fontSize: '0.6em',
-                              fontWeight: 400,
-                            }}>{'Enviar saldo a:'}</span>
-                            <span style={{
-                              fontSize: '0.8em',
-                              fontWeight: 600,
-                              display: 'inline-block',
-                              maxWidth: '100%',
-                              whiteSpace: 'nowrap',
-                              textOverflow: 'ellipsis',
-                              overflow: 'hidden'
-                            }}>{`${useWallet.attributesTransfers.states.email}   >>`}</span>
-                            
-                          </div>
                           
+                          <ButtonAppMobile 
+                            title={'Agregar beneficiario'}
+                            contentStyles={{
+                              fontSize: '1em'
+                            }}
+                            containerProps={{
+                              onClick: () => useWallet.pagesTransfersZelle.actions.onBeneficiaryAdd()
+                            }}
+                            
+                          />
                         </div>
-                      
                     
-                    
-                    }
                     </>
                   }
 

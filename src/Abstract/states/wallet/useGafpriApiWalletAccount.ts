@@ -6,6 +6,7 @@ import { EntityAttributesReturn } from "../user/useGafpriApiEntity";
 import { UseGafpriAttributesRechargeReturn } from "./useGafpriAttributesRecharge";
 import { SiteOptions } from '../../config/gafpriConfig';
 import { UseGafpriAttributesTransfersReturn } from "./useGafpriAttributesTransfers";
+import { UseGafpriAttributesTransfersZelleReturn } from "./useGafpriAttributesTransfersZelle";
 
 export type WalletAccountAtrributesReturn = {
     postsId: string;
@@ -92,9 +93,11 @@ type actions = {
         limit: number,
         offset: number,
     ) => Promise<any>;
-    getBeneficiaries: () => Promise<DataItemsBeneficiariesReturn>;
+    getBeneficiaries: (type: string) => Promise<DataItemsBeneficiariesReturn>;
     getWalletAccountByEmail: (email: string) => Promise<DataItemReturn>; 
     addTransfer: () => Promise<any>;
+    addBeneficiaryZelle: () => Promise<any>;
+    addTransferZelle: () => Promise<any>;
 }
 
 export type UseGafpriApiWalletAccountReturn = {
@@ -106,10 +109,11 @@ export type UseGafpriApiWalletAccountProps = {
     attributesRecharge: UseGafpriAttributesRechargeReturn;
     siteOptions: SiteOptions;
     attributesTransfers: UseGafpriAttributesTransfersReturn;
+    attributesTransfersZelle: UseGafpriAttributesTransfersZelleReturn;
 }
 
 
-export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOptions, attributesTransfers}: UseGafpriApiWalletAccountProps): UseGafpriApiWalletAccountReturn  => {
+export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOptions, attributesTransfers, attributesTransfersZelle}: UseGafpriApiWalletAccountProps): UseGafpriApiWalletAccountReturn  => {
     
     const getWalletAccount = async (): Promise<any> => {
         try {
@@ -141,7 +145,6 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
         }
     }
 
-
     const addRecharge = async (): Promise<any> => {
         try {
             if(useLogin.data.states.token){
@@ -166,6 +169,7 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                                 change: attributesRecharge.states.amount,
                                 note: 'Recarga de saldo',
                                 nameSend: attributesRecharge.states.nameSend,
+                                transactionType: 'recharge',
                                 posts: {
                                     visibility: 'public',
                                 },
@@ -175,6 +179,50 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                                 type: 'deposit',
                                 transactionsType: 'recharge',
                                 amount: attributesRecharge.states.amount,
+                            }
+                        }]
+                    }
+                });
+                return data;
+            }
+        } catch (error) {
+            return error;
+        }
+    }
+
+    const addTransferZelle = async (): Promise<any> => {
+        try {
+            if(useLogin.data.states.token){
+                const data = await gafpriFetch({
+                    initMethod: 'POST',
+                    initRoute: PAYMENT_WALLET,
+                    initToken: { token: useLogin.data.states.token },
+                    initCredentials:{
+                        total: parseFloat(attributesTransfersZelle.states.amount),
+                        note: 'Transferencia de saldo por zelle',
+                        posts: {
+                            visibility: 'public',
+                        },
+                        paymentMethods: [{
+                            paymentMethods:{
+                                type: 'debit',
+                                methodType: 'wallet',
+                                paymentType: 'zelle',
+                                currenciesId: siteOptions.currencyId,
+                                amount: parseFloat(attributesTransfersZelle.states.amount),
+                                change: parseFloat(attributesTransfersZelle.states.amount),
+                                note: 'Transferencia de saldo por zelle',
+                                transactionType: 'transfer-zelle',
+                                walletBeneficiariesId: attributesTransfersZelle.states.beneficiary?.id,
+                                posts: {
+                                    visibility: 'public',
+                                },
+                            },
+                            walletTransactions: {
+                                walletAccountPostsId: attributesTransfersZelle.states.account?.id,
+                                type: 'debit',
+                                transactionsType: 'transfer-zelle',
+                                amount: parseFloat(attributesTransfersZelle.states.amount),
                             }
                         }]
                     }
@@ -210,6 +258,7 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                                     change: attributesTransfers.states.amount,
                                     nameSend: attributesTransfers.states.account?.name,
                                     note: 'Transferencia de saldo',
+                                    transactionType: 'transfer',
                                     posts: {
                                         visibility: 'public',
                                     },
@@ -231,6 +280,7 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                                     change: attributesTransfers.states.amount,
                                     nameSend: attributesTransfers.states.beneficiary?.entity.name,
                                     note: 'Transferencia de saldo',
+                                    transactionType: 'transfer',
                                     posts: {
                                         visibility: 'public',
                                     },
@@ -272,12 +322,12 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
         }
     }
 
-    const getBeneficiaries = async (): Promise<DataItemsBeneficiariesReturn> => {
+    const getBeneficiaries = async (type: string): Promise<DataItemsBeneficiariesReturn> => {
         try {
             if(useLogin.data.states.token){
                 const data = await gafpriFetch({
                     initMethod: 'GET',
-                    initRoute: `${WALLET_ACCOUNT_ROUTE}/beneficiaries`,
+                    initRoute: `${WALLET_ACCOUNT_ROUTE}/beneficiaries?type=${type}`,
                     initToken: { token: useLogin.data.states.token }
                 });
                 return data;
@@ -289,6 +339,36 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                 success: false,
                 error: 'Error en consola',
             };
+        }
+    }
+
+    const addBeneficiaryZelle = async (): Promise<any> => {
+        try {
+            if(useLogin.data.states.token){
+                const dataBeneficiary = {
+                    name: attributesTransfersZelle.states.name,
+                    type: 'zelle',
+                    status: 'active',
+                }
+        
+                const updateDataBeneficiary = {
+                    ...dataBeneficiary,
+                    ...attributesTransfersZelle.states.email !== '' ? { email: attributesTransfersZelle.states.email } : {},
+                    ...attributesTransfersZelle.states.phone !== '' ? { phone: attributesTransfersZelle.states.phone } : {},
+                }
+
+                const data = await gafpriFetch({
+                    initMethod: 'POST',
+                    initRoute: `${WALLET_ACCOUNT_ROUTE}/beneficiary`,
+                    initToken: { token: useLogin.data.states.token },
+                    initCredentials: updateDataBeneficiary
+                });
+                return data;
+            }
+        } catch (error) {
+            console.error(error);
+            return error;
+            
         }
     }
 
@@ -312,7 +392,6 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
         }
     }
 
-
     const actions = {
         getWalletAccount,
         addRecharge,
@@ -320,7 +399,9 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
         getWalletTransactionsByPostsId,
         getBeneficiaries,
         getWalletAccountByEmail,
-        addTransfer
+        addTransfer,
+        addBeneficiaryZelle,
+        addTransferZelle
     }
 
     return {

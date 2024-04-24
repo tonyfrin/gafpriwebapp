@@ -20,7 +20,7 @@ const arrowStyle = css`
 `
 
 export function InitTransfers() {
-  const { useWallet, siteOptions } = useTheme();
+  const { useWallet, siteOptions, useLogin } = useTheme();
 
   const email = ():void => {
     useWallet.attributesTransfers.actions.setAccount({
@@ -59,12 +59,26 @@ export function InitTransfers() {
                   textDecoration: 'none',
               }}>
                   <ButtonAppMobile 
-                      title="Enviar por Email"
+                      title="Billetera"
                       containerProps={{
                         onClick: email
                       }}
                   />
               </div>
+              {useLogin.data.states.currentUser?.role === 'Store' &&
+                <Link 
+                  href='/billetera/enviar/zelle' 
+                  style={{
+                    display: 'flex',
+                    margin: '1em',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <ButtonAppMobile 
+                      title="Zelle"
+                  />
+                </Link>
+              }
             
           
           

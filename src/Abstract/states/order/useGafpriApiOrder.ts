@@ -113,8 +113,6 @@ export function useGafpriApiOrder ({
             ]} : {},
         }
 
-        console.log('updateData', updateData);
-
 
         try {
             if(useLogin.data.states.token){

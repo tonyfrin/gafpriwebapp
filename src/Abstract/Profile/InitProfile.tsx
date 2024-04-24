@@ -61,7 +61,7 @@ export const InitProfile = () => {
             href: '/perfil/direcciones',
         },
         {
-            name: 'Contraceña',
+            name: 'Contraseña',
             action: () => useProfile.pages.actions.onPassword(),
         },
         {

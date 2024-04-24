@@ -48,6 +48,7 @@ type InputAppContainerProps = {
     inputProps: React.InputHTMLAttributes<HTMLInputElement>;
     description?: string;
     containerStyles?: InputAppContainerStylesProps;
+    title?: string;
 }
 
 
@@ -56,10 +57,19 @@ export const InputAppContainer = ({
     inputProps,
     description,
     containerStyles = {},
+    title,
 }: InputAppContainerProps) => {
     return (
         <>
             <div className={cx(inputAppContainerStyles(containerStyles))}>
+                {title && 
+                <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'flex-start',
+                        width: '85%',
+                    }}  
+                ><p className={inputAppTitleStyles}>{title}</p></div>}
                 <InputApp {...inputProps} />
                 {description && <p className={inputAppTitleStyles}>{description}</p>}
             </div>

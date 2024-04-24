@@ -1,7 +1,5 @@
 import { useState } from 'react';
-import { UseGafpriAttributesTransfersReturn } from './useGafpriAttributesTransfers';
-
-
+import { UseGafpriAttributesTransfersZelleReturn } from './useGafpriAttributesTransfersZelle';
 
 type states = {
     isBeneficiary: boolean;
@@ -19,18 +17,19 @@ type actions = {
     onCheck: () => void;
     onSuccess: () => void;
     onFetching: () => void;
+    returnInit: () => void;
 }
 
-export type UseGafpriPagesTransfersProps = {
-    attributesTransfers: UseGafpriAttributesTransfersReturn;
+export type UseGafpriPagesTranfersZelleProps = {
+    attributesTransfersZelle: UseGafpriAttributesTransfersZelleReturn;
 }
 
-export type UseGafpriPagesTransfersReturn = {states: states, actions: actions};
+export type UseGafpriPagesTransfersZelleReturn = {states: states, actions: actions};
 
-export const useGafpriPagesTransfers = ({
-    attributesTransfers
-}: UseGafpriPagesTransfersProps): UseGafpriPagesTransfersReturn => {
-    const [isBeneficiary, setIsBeneficiary] = useState<boolean>(false);
+export const useGafpriPagesTransfersZelle = ({
+    attributesTransfersZelle
+}: UseGafpriPagesTranfersZelleProps): UseGafpriPagesTransfersZelleReturn => {
+    const [isBeneficiary, setIsBeneficiary] = useState<boolean>(true);
     const [isBeneficiaryAdd, setIsBeneficiaryAdd] = useState<boolean>(false);
     const [isAmount, setIsAmount] = useState<boolean>(false);
     const [isCheck, setIsCheck] = useState<boolean>(false);
@@ -91,6 +90,11 @@ export const useGafpriPagesTransfers = ({
         setIsSuccess(false);
     }
 
+    const returnInit = (): void => {
+        attributesTransfersZelle.actions.infoReset();
+        onBeneficiary();
+    }
+
     const states: states = {
         isBeneficiary,
         isBeneficiaryAdd,
@@ -106,7 +110,8 @@ export const useGafpriPagesTransfers = ({
         onAmount,
         onCheck,
         onSuccess,
-        onFetching
+        onFetching,
+        returnInit
     }
 
 

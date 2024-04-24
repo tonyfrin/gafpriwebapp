@@ -73,7 +73,7 @@ export const LoginStep = ({
                 <InputAppContainer 
                     inputProps={{
                         type: 'password',
-                        placeholder: 'Contraceña',
+                        placeholder: 'Contraseña',
                         onChange: (e) => useLogin.attributes.actions.changePassword(e.target.value)
                     }}
                 />

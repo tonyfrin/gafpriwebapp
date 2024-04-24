@@ -50,11 +50,11 @@ export function Password() {
             useUser.attributes.actions.setNewPassword('');
             useProfile.pages.actions.onSuccessPassword();
         } else{
-            useError.actions.changeError(['Error al cambiar contraceña, intente de nuevo.']);
+            useError.actions.changeError(['Error al cambiar contraseña, intente de nuevo.']);
             useProfile.pages.actions.onPassword();
         }
     } catch (error) {
-        useError.actions.changeError(['Error al cambiar contraceña, intente de nuevo.']);
+        useError.actions.changeError(['Error al cambiar contraseña, intente de nuevo.']);
         useProfile.pages.actions.onPassword();
     }
   }
@@ -83,7 +83,7 @@ export function Password() {
                   borderBottom: '1px solid #e1e1e1',
                   
               }}> 
-                  <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Cambiar Contraceña</h1>
+                  <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Cambiar Contraseña</h1>
                   <div style={{
                     textDecoration: 'none',
                     display: 'flex',
@@ -106,11 +106,11 @@ export function Password() {
                         width: '81%',
                         margin: 'auto',
                         }}>
-                        <span className={textInfoTitleStyles}>Contraceña Actual</span>
+                        <span className={textInfoTitleStyles}>Contraseña Actual</span>
                         </div>
                         <InputAppContainer 
                             inputProps={{
-                                placeholder: 'Contraceña Actual',
+                                placeholder: 'Contraseña Actual',
                                 type: 'password',
                                 onChange: (e) => useUser.attributes.actions.setCurrentPassword(e.target.value)
                                 
@@ -130,11 +130,11 @@ export function Password() {
                         width: '81%',
                         margin: 'auto',
                         }}>
-                        <span className={textInfoTitleStyles}>Nueva contraceña</span>
+                        <span className={textInfoTitleStyles}>Nueva contraseña</span>
                         </div>
                         <InputAppContainer 
                             inputProps={{
-                                placeholder: 'Nueva contraceña',
+                                placeholder: 'Nueva contraseña',
                                 type: 'password',
                                 onChange: (e) => useUser.attributes.actions.setNewPassword(e.target.value),
                             }}
