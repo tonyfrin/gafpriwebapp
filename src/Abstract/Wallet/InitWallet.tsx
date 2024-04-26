@@ -1,15 +1,15 @@
 import React from 'react';
 import { css } from '@emotion/css';
 import { useTheme } from '../context/ThemeContext';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import Link from 'next/link';
 import { WalletAccountAtrributesReturn } from '../states/wallet/useGafpriApiWalletAccount';
 import { decimalFormatPriceConverter } from '../helpers';
-import { EntityAttributesReturn } from '../states/user/useGafpriApiEntity';
 import { Loading } from '../Loading';
 import { EmptyWallet } from './EmptyWallet';
-
-
+import { IoStorefrontOutline } from 'react-icons/io5';
+import { WalletButton } from '../Button/WalletButton';
+import { RiRefund2Line } from 'react-icons/ri';
+import { IoPaperPlaneOutline } from 'react-icons/io5';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -17,16 +17,6 @@ const title1AppStyles = css`
   margin: 0;
   font-family: 'Poppins', sans-serif;
   text-align: left;
-`
-
-const containerButtonCheckOutStyle = css`
-    position: fixed;
-    bottom: 63px;
-    left: 0;
-    right: 0;
-    z-index: 998;
-    display: flex;
-    background-color: #ececec;
 `
 
 export const InitWallet = () => {
@@ -200,40 +190,28 @@ export const InitWallet = () => {
                                 )
                             })}
                         </div>
-                    </div>
-                    <div className={containerButtonCheckOutStyle}>
-                        <Link href='/billetera/recarga' style={{
-                            textDecoration: 'none',
-                            width: '45%',
-                            margin: 'auto',
-                        }}>
-                        <ButtonAppMobile 
-                            title="Recargar"
-                            containerStyles={{
-                                width: '100%'
+                        <div
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center'
                             }}
-                            contentStyles={{
-                                fontSize: '1.2em',
-                                padding: '0.9em',
-                            }}
-                        />
-                        </Link>
-                        <Link href='/billetera/enviar' style={{
-                            textDecoration: 'none',
-                            width: '45%',
-                            margin: 'auto',
-                        }}>
-                        <ButtonAppMobile 
-                            title="Enviar"
-                            containerStyles={{
-                                width: '100%'
-                            }}
-                            contentStyles={{
-                                fontSize: '1.2em',
-                                padding: '0.9em',
-                            }}
-                        />
-                        </Link>
+                        >
+                            <WalletButton 
+                                href='/billetera/tiendas'
+                                Icon={IoStorefrontOutline}
+                                title='Tiendas'
+                            />
+                             <WalletButton 
+                                href='/billetera/recarga'
+                                Icon={RiRefund2Line}
+                                title='Recargar'
+                            />
+                            <WalletButton 
+                                href='/billetera/enviar'
+                                Icon={IoPaperPlaneOutline}
+                                title='Enviar'
+                            />
+                        </div>
                     </div>
                 </>
             )}

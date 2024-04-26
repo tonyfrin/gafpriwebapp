@@ -14,6 +14,7 @@ type SitesEntityAttributesReturn = {
 export type SitesAttributesReturn = {
     id: string;
     name: string;
+    tradename: string;
     documentIndex: string;
     documentNumber: string;
     address1: string;

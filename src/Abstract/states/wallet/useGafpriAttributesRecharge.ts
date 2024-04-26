@@ -30,7 +30,7 @@ export type UseGafpriAttributesRechargeReturn = {states: states, actions: action
 export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn  => {
     const [paymentType, setPaymentType] = useState<string>('');
     const paymentTypeOptions: {label: string, value: string}[] = [
-        {label: '', value: ''},
+        {label: 'Seleccione metodo (Zelle o Paypal)', value: ''},
         {label: 'Zelle', value: 'zelle'},
         {label: 'Paypal', value: 'paypal'},
     ];
