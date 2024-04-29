@@ -289,7 +289,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   //Change
 
   const changeEmail = (value: string) => {
-    validationEmail(value);
+    const newValue = value.toLowerCase();
+    validationEmail(newValue);
     setEmail(value);
   }
 
