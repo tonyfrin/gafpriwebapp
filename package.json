@@ -1,6 +1,6 @@
 {
   "name": "gafpriappweb",
-  "version": "0.1.49",
+  "version": "0.1.50",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -25,7 +25,8 @@
     "react-select": "^5.8.0",
     "react-swipeable": "^7.0.1",
     "stream": "^0.0.2",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "gafprilibui": "git+ssh://git@github.com:tonyfrin/gafprilibui.git"
   },
   "devDependencies": {
     "@types/busboy": "^1.5.3",

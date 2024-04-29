@@ -90,8 +90,6 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
         }
     }
 
-    console.log('count', transactionsCompletedCount, transactionsCompleted.length, transactionsCompletedOffset);
-
 
     const getMoreTransactionsCompleted = async (id: string) => {
         try {

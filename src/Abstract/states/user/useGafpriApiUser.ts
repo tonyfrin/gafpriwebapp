@@ -36,6 +36,7 @@ type Actions = {
     userCancel: (id: string) => Promise<any>;
     changePassword: () => Promise<any>; 
     setUser: (value: UserAttributesReturn | null) => void;
+    getUserByEmail: (email: string) => Promise<any>;
 }
 
 export type UseGafpriApiUserReturn = {
@@ -161,6 +162,21 @@ export function useGafpriApiUser({
         }
     }
 
+    const getUserByEmail = async (email: string): Promise<any> => {
+      try {
+        if(useLogin.data.states.token){
+          const data = await gafpriFetch({
+            initMethod: 'GET',
+            initRoute: `${USER_ROUTE}/email/${email}`,
+            initToken: { token: useLogin.data.states.token }
+          });
+          return data;
+        }
+      } catch (error) {
+        return error;
+      }
+  };
+
     useEffect(() => {
         const fetchDataUser = async () => {
             setUserIsReady(false);
@@ -185,7 +201,8 @@ export function useGafpriApiUser({
         userAproval,
         userCancel,
         changePassword,
-        setUser
+        setUser,
+        getUserByEmail
     }
 
     return {

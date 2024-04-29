@@ -3,16 +3,12 @@ import { cx, css } from '@emotion/css';
 import { IoWalletOutline } from 'react-icons/io5';
 import { IoStorefrontOutline } from 'react-icons/io5';
 import { IoPersonOutline } from 'react-icons/io5';
-import { IoCartOutline } from 'react-icons/io5';
 import { MainFooter } from '../Footer/Footer';
 import Logo from '../assets/img/logo-blanco.png';
 import { AppHeader } from '../Header/AppHeader';
 import { MenuFooterApp } from '../Menu/MenuFooterApp';
 import { useTheme } from '../context/ThemeContext';
 import { Loading } from '../Loading';
-import { BiMap } from 'react-icons/bi';
-import Link from 'next/link';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 
 type LayoutContainerStyleProps = {
   display?: string;
@@ -51,7 +47,7 @@ export const LayoutAppProfile = ({
   containerProps = {},
 }: LayoutAppProps) => {
   const { className: containerClassName, ...restContainerProps } = containerProps;
-  const { useLogin, useCheckOut, useProfile, useWallet, useUser, useAddress} = useTheme();
+  const { useLogin, useCheckOut, useProfile, useWallet, useSites} = useTheme();
   const [loading, setLoading] = useState(true); // Estado para controlar la carga
 
   const globalInfoReset = () => {
@@ -75,51 +71,63 @@ export const LayoutAppProfile = ({
     fetchData();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const menuItems= [
-      // {
-      //     title: 'Tienda',
-      //     href: '/tienda',
-      //     icon: IoStorefrontOutline,
-      //     action: globalInfoReset
-      // },
-      // {
-      //     title: 'Carrito',
-      //     href: '/carrito',
-      //     icon: IoCartOutline,
-      //     action: globalInfoReset
-      // },
+  let menuItems = [];
+
+  if(useSites.api.states.sitesIsReady && useSites.api.states.mySites && useSites.api.states.mySites?.length > 0){
+
+    menuItems= [
+        {
+            title: 'Billetera',
+            href: '/billetera',
+            icon: IoWalletOutline,
+        },
+        {
+          title: 'Mis Tiendas',
+          href: '/mis-tiendas',
+          icon: IoStorefrontOutline,
+        },
+        {
+            title: 'Perfil',
+            href: '/perfil',
+            icon: IoPersonOutline,
+        },
+    ]
+
+  } else {
+    menuItems= [
       {
           title: 'Billetera',
           href: '/billetera',
           icon: IoWalletOutline,
-          action: globalInfoReset
       },
       {
           title: 'Perfil',
           href: '/perfil',
           icon: IoPersonOutline,
-          action: globalInfoReset
-      }
-  ]
+      },
+    ]
+  }
 
   return (
       <div className={cx(layoutContainerStyle(containerStyles), containerClassName)} {...restContainerProps}>
-      <>
-      <AppHeader
-            props={{
-                image: Logo,
-            }}
-        />
-        <main style={{ flexGrow: 1 }}>{loading ? (<Loading />) : children}</main>
-        <MenuFooterApp items={menuItems}/>
-        <MainFooter 
-            siteName="Gafpri Store"
-            isLogin={false}
-            styles={{
-              position: 'relative',
-            }}
-        />
+      {!useSites.api.states.sitesIsReady ? <Loading /> :
+       <>
+        <AppHeader
+              props={{
+                  image: Logo,
+              }}
+          />
+          <main style={{ flexGrow: 1 }}>{loading ? (<Loading />) : children}</main>
+          <MenuFooterApp items={menuItems}/>
+          <MainFooter 
+              siteName="Gafpri Store"
+              isLogin={false}
+              styles={{
+                position: 'relative',
+              }}
+          />
         </> 
+        }
       </div>
   );
 };
