@@ -10,7 +10,7 @@ export default function Login() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if (useLogin.data.states.isLogin) {
-        router.push('/tienda');
+        router.push('/billetera');
       }
     }
   }, [router]); // eslint-disable-line react-hooks/exhaustive-deps

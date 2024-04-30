@@ -144,8 +144,6 @@ export function AddressList() {
 
   const user = useUser.api.states.user;
 
-  console.log('user', user);
-
   if(!user){
     return null;
   }

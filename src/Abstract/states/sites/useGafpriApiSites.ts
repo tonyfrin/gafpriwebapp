@@ -175,7 +175,7 @@ export const useGafpriApiSites = ({
           try {
             setSitesIsReady(false);
             const data = await getSites();
-            console.log('data', data);
+            
             if(data && data.success){
               setSites(data.data.items);
             } else {

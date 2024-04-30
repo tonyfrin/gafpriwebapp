@@ -129,7 +129,7 @@ export function InitCheckOut({
     if(useCheckOut.attributes.actions.validationButtonNext()){
       useCheckOut.pages.actions.onFetching();
       const data = await useOrder.api.actions.createOrder();
-      console.log(data);
+      
       if(data && data.success){
         
         setCart(null);

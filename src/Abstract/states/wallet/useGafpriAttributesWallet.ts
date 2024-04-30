@@ -1,4 +1,4 @@
-import React, { useState,  useEffect } from 'react';
+import { useState,  useEffect } from 'react';
 import { EntityAttributesReturn } from '../user/useGafpriApiEntity';
 import { WalletAccountAtrributesReturn } from './useGafpriApiWalletAccount';
 import { UseGafpriUserReturn } from '../user/useGafpriUser';
@@ -13,8 +13,8 @@ type states ={
 }
 
 type actions = {
-    setEntities: (entities: EntityAttributesReturn[]) => void;
-    setWalletAccount: (walletAccount: WalletAccountAtrributesReturn[]) => void;
+    setEntities: (_entities: EntityAttributesReturn[]) => void;
+    setWalletAccount: (_walletAccount: WalletAccountAtrributesReturn[]) => void;
     infoReset: () => void;
 }
 

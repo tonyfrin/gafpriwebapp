@@ -133,7 +133,7 @@ export function AddressAdd() {
   const [location, setLocation] = useState<boolean>(false);
 
   const labelEntity = useAddress.attributes.states.entityOptions.find(option => option.value === useAddress.attributes.states.entityId)?.label || 'Selecciona una entidad';
-  console.log('labelEntity', labelEntity);
+  
   const add = async () => {
     if(useAddress.attributes.actions.validationButton()){
       useCheckOut.pages.actions.onFetching();

@@ -126,7 +126,7 @@ export const Recharge = ({id}: {id: string | string[] | undefined}) => {
                 try {
                     setIsReadyRecharge(false);
                     const data = await usePaymentMethods.api.actions.getWalletPendingByPostsId(id);
-                    console.log(data);
+                   
                     if(data && data.success){
                         setRecharge(data.item);
                         

@@ -101,7 +101,7 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
     useEffect(() => {
             const fetchRechargePending = async () => {
                 if(site){
-                    console.log('site', site);
+                    
                     try {
                         setIsReadyRechargePending(false);
                         const data = await usePaymentMethods.api.actions.getWalletTransactionsByWAPostsId(
@@ -153,7 +153,7 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
                             margin: 'auto',
                         }}> 
                             <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Lista de Recargas por Aprobar</h1>
-                            <Link href='/' style={{
+                            <Link href={`/mis-tiendas/tienda/${id}`} style={{
                                 textDecoration: 'none',
                                 display: 'flex',
                                 }}>

@@ -150,7 +150,7 @@ export function ConfirmationTransfers() {
       if(data && data.success){
         useWallet.pagesTransfers.actions.onSuccess();
       } else{
-        console.log(data);
+   
         useError.actions.changeError([data.message]);
       }
     } catch (error) {

@@ -148,7 +148,7 @@ const photoProfile = css`
 `
 
 export function MySiteEmployeesList({id}: {id: string | string[] | undefined}) {
-  const { useProfile, useSites, useError } = useTheme();
+  const { useProfile, useSites, useError, useLogin } = useTheme();
   const [fetching, setFetching] = React.useState<boolean>(false);
   const router = useRouter();
 
@@ -160,6 +160,8 @@ export function MySiteEmployeesList({id}: {id: string | string[] | undefined}) {
   if(!site){
     return null;
   }
+
+  const owner = `${site?.sitesEntity[0].entity.userId}` === `${useLogin.data.states.currentUser?.id}`;
 
   const items: items[] = site.sitesEmployees.map((item) => {
     return {
@@ -190,162 +192,164 @@ export function MySiteEmployeesList({id}: {id: string | string[] | undefined}) {
 }
 
   return (
-    <> 
-
-      {fetching || !useSites.api.states.mySitesIsReady ? <Loading /> : 
-        <>
-         {useSites.api.states.mySites && useSites.api.states.mySites.length > 0 ?
-          <div
-            style={{
-              marginBottom: '220px'
-            }}
-          >
-            <Link 
-              style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  padding: '1em 0px',
-                  width: '90%',
-                  margin: 'auto',
-                  borderBottom: '1px solid #e1e1e1',
-                  textDecoration: 'none',
-                  color: 'inherit',
-              }}
-              href={'/perfil'}
-            > 
-                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Autorizados</h1>
-                <FiChevronLeft 
-                    className={arrowStyle}
-                    onClick={useProfile.pages.actions.onInit}
-                />
-            </Link>
+    <>
+      {owner ?
+        <> 
+        {fetching || !useSites.api.states.mySitesIsReady ? <Loading /> : 
+          <>
+          {useSites.api.states.mySites && useSites.api.states.mySites.length > 0 ?
             <div
+              style={{
+                marginBottom: '220px'
+              }}
+            >
+              <Link 
                 style={{
                     display: 'flex',
-                    justifyContent: 'center',
-                    overflow: 'hidden',
-                    width: '100px',
-                    height: '100px',
-                    margin: '2em auto'
+                    justifyContent: 'space-between',
+                    padding: '1em 0px',
+                    width: '90%',
+                    margin: 'auto',
+                    borderBottom: '1px solid #e1e1e1',
+                    textDecoration: 'none',
+                    color: 'inherit',
                 }}
-            >
-                <Image 
-                    src='https://categorygafpri.s3.us-east-2.amazonaws.com/store-default.jpg' 
-                    alt="profile" width={200} height={200} 
-                    className={photoProfile}
-                />
-            </div>
-            <div>
-                <h1 style={{
-                    textAlign: 'center',
-                    fontFamily: 'Poppins',
-                    fontSize: '1.2em',
-                    margin: '0.5em 0',
-                }}>
-                    {`${site?.tradename}`}
-                </h1>
-            </div>
-            <div
-                style={{
-                    margin: '1em',
-                    borderBottom: '1px solid #e1e1e1'
-                }}
-            ></div>
-            
-            
-            {items.length === 0 ? 
-            
-                <div
-                    style={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                        width: '90%',
-                        margin: '2em auto',
-                    }}
-                >
-                    <div>   
-                        <IoPersonOutline 
-                            style={{
-                                fontSize: '3em'
-                            }}
-                        />
-                    </div>
-                    <p
-                        style={{
-                            margin: '10px 0px 0px 0px',
-                            padding: '0px',
-                            fontSize: '0.7em',
-                            fontFamily: 'Poppins, sans-serif',
-                            textAlign: 'center'
-                        }}
-                    >No tienes personas autorizadas para esta tienda.</p>
-                </div>
-            
-            :
-              <>
-                {items.map((item, index) => (
-                
-                  <div className={fila3} key={`address-${index}`}>
-                    <div style={{
-                      width: '80%',
-                      display: 'flex',
-                      flexDirection: 'column',
-                    }} className={containerColumnCenterStyles}>
-                      <span className={priceStyles} style={{fontWeight: 600}}>{item.name}</span>
-                      <span className={priceStyles}>{item.email}</span>
-                    </div>
-                    <div 
-                      style={{
-                        width: '10%',
-                        display: 'flex',
-                        margin: 'auto',
-                        textDecoration: 'none',
-                        color: 'inherit',
-                      }} 
-                      className={containerColumnCenterStyles}
-                      onClick={() => removeEmployees(item.id)}
-                    >
-                      <span style={{
-                        fontSize: '0.6em',
-                        color: '#314577',
-                        cursor: 'pointer',
-                        fontFamily: 'Poppins',
-                      }}
-                      >Eliminar</span>
-                    </div>
-                </div>
-                  
-                ))}
-              </>
-            }
-
-           
-              <Link
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  width: '100%',
-                  margin: '2em auto',
-                  textDecoration: 'none',
-                  color: 'inherit',
-                }}
-                href={'/mis-tiendas/tienda/empleados/agregar/[id]'}
-                as={`/mis-tiendas/tienda/empleados/agregar/${id}`}
-              >
-                <ButtonAppMobile 
-                    title="Agregar Autorizado"
-                    containerStyles={{
-                      backgroundColor: '#314577'
-                    }}
-                />
+                href={`/mis-tiendas/tienda/${id}`}
+              > 
+                  <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Autorizados</h1>
+                  <FiChevronLeft 
+                      className={arrowStyle}
+                      onClick={useProfile.pages.actions.onInit}
+                  />
               </Link>
+              <div
+                  style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      overflow: 'hidden',
+                      width: '100px',
+                      height: '100px',
+                      margin: '2em auto'
+                  }}
+              >
+                  <Image 
+                      src='https://categorygafpri.s3.us-east-2.amazonaws.com/store-default.jpg' 
+                      alt="profile" width={200} height={200} 
+                      className={photoProfile}
+                  />
+              </div>
+              <div>
+                  <h1 style={{
+                      textAlign: 'center',
+                      fontFamily: 'Poppins',
+                      fontSize: '1.2em',
+                      margin: '0.5em 0',
+                  }}>
+                      {`${site?.tradename}`}
+                  </h1>
+              </div>
+              <div
+                  style={{
+                      margin: '1em',
+                      borderBottom: '1px solid #e1e1e1'
+                  }}
+              ></div>
+              
+              
+              {items.length === 0 ? 
+              
+                  <div
+                      style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          flexDirection: 'column',
+                          width: '90%',
+                          margin: '2em auto',
+                      }}
+                  >
+                      <div>   
+                          <IoPersonOutline 
+                              style={{
+                                  fontSize: '3em'
+                              }}
+                          />
+                      </div>
+                      <p
+                          style={{
+                              margin: '10px 0px 0px 0px',
+                              padding: '0px',
+                              fontSize: '0.7em',
+                              fontFamily: 'Poppins, sans-serif',
+                              textAlign: 'center'
+                          }}
+                      >No tienes personas autorizadas para esta tienda.</p>
+                  </div>
+              
+              :
+                <>
+                  {items.map((item, index) => (
+                  
+                    <div className={fila3} key={`address-${index}`}>
+                      <div style={{
+                        width: '80%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                      }} className={containerColumnCenterStyles}>
+                        <span className={priceStyles} style={{fontWeight: 600}}>{item.name}</span>
+                        <span className={priceStyles}>{item.email}</span>
+                      </div>
+                      <div 
+                        style={{
+                          width: '10%',
+                          display: 'flex',
+                          margin: 'auto',
+                          textDecoration: 'none',
+                          color: 'inherit',
+                        }} 
+                        className={containerColumnCenterStyles}
+                        onClick={() => removeEmployees(item.id)}
+                      >
+                        <span style={{
+                          fontSize: '0.6em',
+                          color: '#314577',
+                          cursor: 'pointer',
+                          fontFamily: 'Poppins',
+                        }}
+                        >Eliminar</span>
+                      </div>
+                  </div>
+                    
+                  ))}
+                </>
+              }
+
             
-          </div>
-          : <MySitesEmpty />}
-        </>
-      }
+                <Link
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    width: '100%',
+                    margin: '2em auto',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                  href={'/mis-tiendas/tienda/empleados/agregar/[id]'}
+                  as={`/mis-tiendas/tienda/empleados/agregar/${id}`}
+                >
+                  <ButtonAppMobile 
+                      title="Agregar Autorizado"
+                      containerStyles={{
+                        backgroundColor: '#314577'
+                      }}
+                  />
+                </Link>
+              
+            </div>
+            : <MySitesEmpty />}
+          </>
+        }
+      </>  : <MySitesEmpty />}
     </>
   );
 }

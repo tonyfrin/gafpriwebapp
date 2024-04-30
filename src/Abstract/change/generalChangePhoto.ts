@@ -18,12 +18,9 @@ export const generalChangePhoto = async ({
   setPhoto,
   validation,
 }: GeneralChangePhotoProps): Promise<void> => {
-  console.log('e.target.files', e.target.files);
   const newFile = e.target.files && e.target.files[0];
 
   if (!newFile) return;
-
-  console.log('newFile', newFile);
 
   // Obtén el tipo MIME en función de la extensión del archivo
   const mimeType = getMimeTypeByExtension(newFile.name);
@@ -38,8 +35,6 @@ export const generalChangePhoto = async ({
   formData.append('file', newFile);
   formData.append('fileName', newFile.name);
   formData.append('mimeType', mimeType);
-
-  console.log('formData', formData.get('file'));
 
   if(formData.get('file') === null) {
     changeError([

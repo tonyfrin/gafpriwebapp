@@ -156,7 +156,7 @@ export function BeneficiaryZelleAdd() {
         try{
           useWallet.pagesTransfersZelle.actions.onFetching();
           const data = await useWallet.account.actions.addBeneficiaryZelle();
-          console.log(data);
+      
           if(data && data.success) {
             useWallet.attributesTransfersZelle.actions.setBeneficiary(data.item);
             useWallet.pagesTransfersZelle.actions.onAmount();

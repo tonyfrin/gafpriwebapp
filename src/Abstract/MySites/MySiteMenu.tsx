@@ -49,19 +49,17 @@ const containerColumnEndStyles = css`
 
 
 export const MySiteMenu = ({id}: {id: string | string[] | undefined}) => {
-    const { useSites } = useTheme();
+    const { useSites, useLogin } = useTheme();
 
     if(id && typeof id !== 'string') { return <Loading />}
 
     
     const site = id && typeof id === 'string' ? useSites.api.actions.getMySiteById(id) : null;
 
+    const owner = `${site?.sitesEntity[0].entity.userId}` === `${useLogin.data.states.currentUser?.id}`;
+
    
-    const menu: {name: string, action?: () => void, href?: string;}[]= [
-        {
-            name: 'Empleados/Autorizados',
-            href: `/mis-tiendas/tienda/empleados/list/${id}`,
-        },
+    let menu: {name: string, action?: () => void, href?: string;}[]= [
         {
             name: 'Recargar Billetera',
             href: `/mis-tiendas/tienda/recarga/${id}`,
@@ -71,6 +69,23 @@ export const MySiteMenu = ({id}: {id: string | string[] | undefined}) => {
             href: `/mis-tiendas/tienda/actividad-recarga/${id}`,
         },
     ]
+
+    if(owner) {
+        menu = [
+            {
+                name: 'Empleados/Autorizados',
+                href: `/mis-tiendas/tienda/empleados/list/${id}`,
+            },
+            {
+                name: 'Recargar Billetera',
+                href: `/mis-tiendas/tienda/recarga/${id}`,
+            },
+            {
+                name: 'Actividad de Recargas',
+                href: `/mis-tiendas/tienda/actividad-recarga/${id}`,
+            },
+        ]
+    }
 
     return (
         <div style={{

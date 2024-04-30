@@ -14,6 +14,7 @@ import { SelectApp } from '../Select/SelectApp';
 import { BUTTON_NEXT_INPUT } from 'gafprilibui';
 import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
 import { useRouter } from 'next/router';
+import { MySitesEmpty } from './MySitesEmpty';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -79,7 +80,7 @@ const containerColumnEndStyles = css`
 
 
 export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
-    const { useSites, useUser, useError } = useTheme();
+    const { useSites, useUser, useError, useLogin } = useTheme();
     const router = useRouter();
     const [user, setUser] = useState<UserAttributesReturn | null>(null);
     const [emailUser, setEmailUser] = useState<string>('');
@@ -106,6 +107,8 @@ export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
     }, [id, useSites.api.states.mySites]); // eslint-disable-line
 
     if(id && typeof id !== 'string') { return <Loading />}
+
+    const owner = `${site?.sitesEntity[0].entity.userId}` === `${useLogin.data.states.currentUser?.id}`;
 
     const getUser = async (event: KeyboardEvent) => {
         if (event.key === "Enter" && emailUser !== '') {
@@ -155,164 +158,170 @@ export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
     
 
     return (
-        <div style={{
-            display: 'flex',
-            flexDirection: 'column',
-            margin: '1em auto 100px auto',
-        }}>
-            {fetching || site === null ? <Loading /> :
-            <>
-                <div style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        padding: '1em 0px',
-                        width: '90%',
-                        margin: 'auto',
-                        borderBottom: '1px solid #e1e1e1'
-                    }}> 
-                        <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Agregar Autorizado</h1>
-                        <Link
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                        }}
-                        href='/'
-                        >
-                        <FiChevronLeft 
-                            className={arrowStyle}
-                        />
-                        </Link>
-                </div>
-                
-                <div>
-                    <div
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            overflow: 'hidden',
-                            width: '100px',
-                            height: '100px',
-                            margin: '1em auto 0px auto'
-                        }}
-                    >
-                        <Image 
-                            src='https://categorygafpri.s3.us-east-2.amazonaws.com/store-default.jpg' 
-                            alt="profile" width={200} height={200} 
-                            className={photoProfile}
-                        />
-                    </div>
-                    <div>
-                        <h1 style={{
-                            textAlign: 'center',
-                            fontFamily: 'Poppins',
-                            fontSize: '1.2em',
-                            margin: '0.5em 0',
-                        }}>
-                            {`${site?.tradename}`}
-                        </h1>
-                    </div>
-                    <div 
-                            style={{
-                                margin: 'auto',
-                                padding: '0px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            {fetchingUser ? 
-                            <Loading 
-                                mainStyles={{
-                                    padding: '0px',
-                                }}
-                                divStyle={{
-                                    width: '40px',
-                                    height: '40px',
-                                }}
-                            /> 
-                            
-                            :  user ?
-                                <>
-                                        <div 
-                                            style={{
-                                                width: '80%',
-                                                margin: 'auto',
-                                            }}
-                                        >
-                                            <span className={textInfoTitleStyles}>Usuario Agregado</span>
-                                        </div>
-                                        <InputAppContainer 
-                                            inputProps={{
-                                                value: `${user.name} ${user.lastName ? user.lastName : ''}`,
-                                                type: 'Text',
-                                                readOnly: true,
-                                            }}
-                                            containerStyles={{
-                                            customStyles: 'width: 95%; margin: auto;'
-                                            }}
-                                        />
-                                </> : 
+        <>
+            {owner ?
 
-                                <>
-                                    <div 
-                                        style={{
-                                            width: '80%',
-                                            margin: 'auto',
+                <div style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    margin: '1em auto 100px auto',
+                }}>
+                    {fetching || site === null ? <Loading /> :
+                    <>
+                        <div style={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                padding: '1em 0px',
+                                width: '90%',
+                                margin: 'auto',
+                                borderBottom: '1px solid #e1e1e1'
+                            }}> 
+                                <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Agregar Autorizado</h1>
+                                <Link
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    alignItems: 'center',
+                                }}
+                                href={`/mis-tiendas/tienda/empleados/list/${id}`}
+                                >
+                                <FiChevronLeft 
+                                    className={arrowStyle}
+                                />
+                                </Link>
+                        </div>
+                        
+                        <div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    overflow: 'hidden',
+                                    width: '100px',
+                                    height: '100px',
+                                    margin: '1em auto 0px auto'
+                                }}
+                            >
+                                <Image 
+                                    src='https://categorygafpri.s3.us-east-2.amazonaws.com/store-default.jpg' 
+                                    alt="profile" width={200} height={200} 
+                                    className={photoProfile}
+                                />
+                            </div>
+                            <div>
+                                <h1 style={{
+                                    textAlign: 'center',
+                                    fontFamily: 'Poppins',
+                                    fontSize: '1.2em',
+                                    margin: '0.5em 0',
+                                }}>
+                                    {`${site?.tradename}`}
+                                </h1>
+                            </div>
+                            <div 
+                                    style={{
+                                        margin: 'auto',
+                                        padding: '0px',
+                                        display: 'flex',
+                                        flexDirection: 'column',
+                                    }}
+                                >
+                                    {fetchingUser ? 
+                                    <Loading 
+                                        mainStyles={{
+                                            padding: '0px',
                                         }}
-                                    >
-                                        <span className={textInfoTitleStyles}>Email del usuario</span>
+                                        divStyle={{
+                                            width: '40px',
+                                            height: '40px',
+                                        }}
+                                    /> 
+                                    
+                                    :  user ?
+                                        <>
+                                                <div 
+                                                    style={{
+                                                        width: '80%',
+                                                        margin: 'auto',
+                                                    }}
+                                                >
+                                                    <span className={textInfoTitleStyles}>Usuario Agregado</span>
+                                                </div>
+                                                <InputAppContainer 
+                                                    inputProps={{
+                                                        value: `${user.name} ${user.lastName ? user.lastName : ''}`,
+                                                        type: 'Text',
+                                                        readOnly: true,
+                                                    }}
+                                                    containerStyles={{
+                                                    customStyles: 'width: 95%; margin: auto;'
+                                                    }}
+                                                />
+                                        </> : 
+
+                                        <>
+                                            <div 
+                                                style={{
+                                                    width: '80%',
+                                                    margin: 'auto',
+                                                }}
+                                            >
+                                                <span className={textInfoTitleStyles}>Email del usuario</span>
+                                            </div>
+                                            <InputAppContainer 
+                                                inputProps={{
+                                                    placeholder: 'Email del usuario',
+                                                    onChange: (event) => setEmailUser(event.target.value),
+                                                    type: 'Text',
+                                                    onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => getUser(e),
+                                                    
+                                                }}
+                                                containerStyles={{
+                                                customStyles: 'width: 95%; margin: auto;'
+                                                }}
+                                            />
+                                        </>
+                                    }
+                                </div>
+                                <div style={{
+                                    margin: 'auto',
+                                    padding: '0px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    width: '95%'
+                                    }}>
+                                    <div style={{
+                                        width: '85%',
+                                        margin: 'auto',
+                                    }}>
+                                        <span className={textInfoTitleStyles}>Tipo de recarga</span>
                                     </div>
-                                    <InputAppContainer 
-                                        inputProps={{
-                                            placeholder: 'Email del usuario',
-                                            onChange: (event) => setEmailUser(event.target.value),
-                                            type: 'Text',
-                                            onKeyDown: (e: KeyboardEvent<HTMLInputElement>) => getUser(e),
-                                            
-                                        }}
-                                        containerStyles={{
-                                        customStyles: 'width: 95%; margin: auto;'
+                                    <SelectApp
+                                        options={useSites.attributes.states.permissionsOptions}
+                                        value={label}
+                                        onChange={(e) => useSites.attributes.actions.changePermissions(e)}
+                                    />
+                                </div>
+                                <div style={{
+                                    display: 'flex',
+                                    margin: '1em auto',
+                                    textDecoration: 'none',
+                                }}>
+                                    <ButtonAppMobile 
+                                        title="Autorizar"
+                                        containerProps={{
+                                            id: `${BUTTON_NEXT_INPUT}sites-employees`,
+                                            onClick: () => add(),
                                         }}
                                     />
-                                </>
-                            }
+                                </div>
                         </div>
-                        <div style={{
-                            margin: 'auto',
-                            padding: '0px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            width: '95%'
-                            }}>
-                            <div style={{
-                                width: '85%',
-                                margin: 'auto',
-                            }}>
-                                <span className={textInfoTitleStyles}>Tipo de recarga</span>
-                            </div>
-                            <SelectApp
-                                options={useSites.attributes.states.permissionsOptions}
-                                value={label}
-                                onChange={(e) => useSites.attributes.actions.changePermissions(e)}
-                            />
-                        </div>
-                        <div style={{
-                            display: 'flex',
-                            margin: '1em auto',
-                            textDecoration: 'none',
-                        }}>
-                            <ButtonAppMobile 
-                                title="Autorizar"
-                                containerProps={{
-                                    id: `${BUTTON_NEXT_INPUT}sites-employees`,
-                                    onClick: () => add(),
-                                }}
-                            />
-                        </div>
+                    
+                    </>}
                 </div>
-            
-            </>}
-        </div>
+                : <MySitesEmpty />
+            }
+        </>
     )
 
 }

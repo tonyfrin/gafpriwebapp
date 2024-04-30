@@ -45,7 +45,6 @@ export const generalChangePhotoWebSockets = async ({
 
     ws.onmessage = (event) => {
       const receivedData = JSON.parse(event.data);
-      console.log('receivedData', receivedData);
       
       if (receivedData.model === 'image' && receivedData.action === 'create' && receivedData.from === from) {
         if(receivedData.success){
@@ -70,8 +69,6 @@ export const generalChangePhotoWebSockets = async ({
   const newFile = e.target.files && e.target.files[0];
 
   if (!newFile) return;
-
-  console.log('newFile', newFile);
 
   // Obtén el tipo MIME en función de la extensión del archivo
   const mimeType = getMimeTypeByExtension(newFile.name);

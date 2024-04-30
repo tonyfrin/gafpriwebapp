@@ -155,7 +155,7 @@ export function AmountTransfert() {
     });
   });
 
-  console.log('accounts', accounts);
+
 
   const accountOptions = accounts.map((account) => {
     return { value: account.id, label: account.name };

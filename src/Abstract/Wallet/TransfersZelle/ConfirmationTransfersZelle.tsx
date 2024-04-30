@@ -148,7 +148,7 @@ export function ConfirmationTransfersZelle() {
       if(data && data.success){
         useWallet.pagesTransfersZelle.actions.onSuccess();
       } else{
-        console.log(data);
+   
         useError.actions.changeError([data.message]);
         useWallet.pagesTransfersZelle.actions.onCheck();
       }
