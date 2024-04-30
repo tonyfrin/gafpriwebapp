@@ -23,6 +23,7 @@ type actions = {
     setNumber: (number: string) => void;
     validationInfoButton: () => boolean;
     setWalletAccountPostsId: (walletAccountPostsId: string) => void;
+    validationAmountMySiteButton: () => boolean;
 }
 
 export type UseGafpriAttributesRechargeReturn = {states: states, actions: actions};
@@ -79,6 +80,18 @@ export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn 
         return valid;
     }
 
+    const validationAmountMySiteButton = (): boolean => {
+        const valid = generalValidationButtonNext({
+            validations: [
+                parseFloat(amount) > 0,
+                paymentType !== '',
+            ],
+            inputId: 'amount-recharge-my-site-button',
+        })
+        return valid;
+    }
+
+
     const infoReset = (): void => {
         setPaymentType('');
         setAmount('');
@@ -95,7 +108,7 @@ export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn 
     }, [paymentType, amount]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const states = { paymentType, amount, paymentTypeOptions, commission, total, commissionRate, nameSend, number, walletAccountPostsId};
-    const actions = { setPaymentType, setAmount, infoReset, validationAmountButton, setNameSend, setNumber, validationInfoButton, setWalletAccountPostsId};
+    const actions = { setPaymentType, setAmount, infoReset, validationAmountButton, setNameSend, setNumber, validationInfoButton, setWalletAccountPostsId, validationAmountMySiteButton};
 
     return { states, actions };
 

@@ -62,6 +62,14 @@ export const MySiteMenu = ({id}: {id: string | string[] | undefined}) => {
             name: 'Empleados/Autorizados',
             href: `/mis-tiendas/tienda/empleados/list/${id}`,
         },
+        {
+            name: 'Recargar Billetera',
+            href: `/mis-tiendas/tienda/recarga/${id}`,
+        },
+        {
+            name: 'Actividad de Recargas',
+            href: `/mis-tiendas/tienda/actividad-recarga/${id}`,
+        },
     ]
 
     return (

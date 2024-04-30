@@ -20,7 +20,7 @@ const arrowStyle = css`
 `
 
 export function InitTransfers() {
-  const { useWallet, siteOptions, useLogin } = useTheme();
+  const { useWallet } = useTheme();
 
   const email = ():void => {
     useWallet.attributesTransfers.actions.setAccount({
@@ -65,7 +65,7 @@ export function InitTransfers() {
                       }}
                   />
               </div>
-              {useLogin.data.states.currentUser?.role === 'Store' &&
+              
                 <Link 
                   href='/billetera/enviar/zelle' 
                   style={{
@@ -78,7 +78,7 @@ export function InitTransfers() {
                       title="Zelle"
                   />
                 </Link>
-              }
+              
             
           
           

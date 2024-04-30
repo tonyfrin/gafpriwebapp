@@ -2,12 +2,12 @@ import React from 'react';
 import { css } from '@emotion/css';
 import Link from 'next/link';
 import { IconType } from "react-icons";
+import { useTheme } from '../context/ThemeContext';
 
 type Items = {
     title: string;
     href: string;
     icon: IconType;
-    action?: () => void;
 }
 
 const linkStyle = css`
@@ -37,6 +37,7 @@ type ButtonFooterAppProps = {
 export const ButtonFooterApp = ({
     items
 }: ButtonFooterAppProps) => {
+    const { actions } = useTheme();
 
     return (
        
@@ -44,7 +45,7 @@ export const ButtonFooterApp = ({
              { items.length > 0 && items.map((item, index) => (
                 <Link href={item.href} className={linkStyle} key={`button-fotter-${index}`}>
                     <button className={iconButtonStyle}
-                        onClick={item.action}
+                        onClick={actions.globalResetInfo}
                     >
                         <div>
                             {item.icon && <item.icon className={inconStyle}/>}

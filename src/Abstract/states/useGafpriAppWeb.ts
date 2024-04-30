@@ -52,7 +52,7 @@ export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
     const [isFetchingGlobal, setIsFetchingGlobal] = useState<boolean>(false);
 
     const globalResetInfo = (): void => {
-        
+        useWallet.actions.globalResetInfo();
     }
     const useError = useGafpriError();
     const useLogin = useGafpriLogin({ setIsFetchingGlobal, globalResetInfo, useError});

@@ -137,8 +137,6 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   const [userPhotoValid, setUserPhotoValid] = useState(false);
   const [submittingUser, setSubmittingUser] = useState(false);
 
-  const [reconnectTimeout, setReconnectTimeout] = useState<NodeJS.Timeout | null>(null);
-
   const infoReset = () => {
     setEmail('');
     setEmailValid(false);

@@ -39,6 +39,13 @@
     getWalletPendingByPostsId: (
         postsId: string,
     ) => Promise<DataItemReturn | null >;
+    getWalletTransactionsByWAPostsId: (
+        limit: number,
+        offset: number,
+        transactionType: string,
+        walletAccountPostsId: string,
+        sitesId?: string,
+    ) => Promise<DataReturn | null >;
  }
 
  export type UseGafpriApiPaymentMethodsReturn = {
@@ -90,9 +97,37 @@
         }
     }
 
+    const getWalletTransactionsByWAPostsId = async (
+        limit: number,
+        offset: number,
+        transactionType: string,
+        walletAccountPostsId: string,
+        sitesId?: string,
+    ): Promise<DataReturn | null > => {
+        let route = `${PAYMENT_METHODS_ROUTE}/wallet-app?walletTransactions=true&walletAccountPostsId=${walletAccountPostsId}&transactionType=${transactionType}&limit=${limit}&offset=${offset}&orderBy=postsId&order=DESC&methodType=wallet`;
+        if(sitesId){
+            route = `${route}&sitesId=${sitesId}`;
+        }
+
+        try {
+            if(useLogin.data.states.token){
+                const data: DataReturn = await gafpriFetch({
+                    initMethod: 'GET',
+                    initRoute: route,
+                    initToken: { token: useLogin.data.states.token }
+                });
+                return data;
+            }
+            return null;
+        } catch (error) {
+            return null;
+        }
+    }
+
     const actions = {
         getWalletPending,
-        getWalletPendingByPostsId
+        getWalletPendingByPostsId,
+        getWalletTransactionsByWAPostsId
     }
 
     return {
