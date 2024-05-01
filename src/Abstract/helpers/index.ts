@@ -1,4 +1,6 @@
+import moment from 'moment-timezone';
 import { API_URL } from '../constants';
+
 
 export const addClass = (element: string, className: string): void => {
     const input = document.getElementById(element);
@@ -239,3 +241,17 @@ export const connectToWebSocket = (websocketUrl: string): WebSocket => {
 
   return websocket;
 };
+
+export const ucfirst = (str: string): string => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
+
+export const formatDateVzla = (date: string): string => {
+  const dateMoment = moment(date);
+
+  const dateVenezuela = dateMoment.tz('America/Caracas');
+ 
+  const dateFormat = dateVenezuela.format('DD/MM/YYYY h:mm a');
+
+  return dateFormat;
+}

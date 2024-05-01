@@ -1,12 +1,12 @@
 import React from 'react';
-import { LayoutAdmin } from './LayoutAdmin';
 import { Recharge } from '../Wallet/Recharge/Recharge';
+import { LayoutAppProfile } from './LayoutAppProfile';
 
 export function WalletRechargeDetails({id}: {id: string | string[] | undefined}) {
 
   return (
     <>
-      <LayoutAdmin>
+      <LayoutAppProfile>
         <>
           <div>
 
@@ -14,7 +14,7 @@ export function WalletRechargeDetails({id}: {id: string | string[] | undefined})
           
           </div>
         </>
-      </LayoutAdmin>
+      </LayoutAppProfile>
     </>
   );
 }

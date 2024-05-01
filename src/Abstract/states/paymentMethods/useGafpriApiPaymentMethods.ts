@@ -18,7 +18,7 @@
     change: string;
     note: string;
     posts: PostsAttributesReturn;
-    walletTransaction: WalletTransactionsAttributesReturn[];
+    walletTransactions: WalletTransactionsAttributesReturn[];
  }
 
  type DataReturn = {

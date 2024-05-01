@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Link from 'next/link';
-import { css } from '@emotion/css'
+import { css, cx } from '@emotion/css'
 import { FiChevronLeft } from 'react-icons/fi';
-import { scrollToTop } from '../../helpers'
 import { useTheme } from '../../context/ThemeContext';
 import { Loading } from '../../Loading';
-import { InputAppContainer } from '../../Input/InputAppContainer';
-import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { Error } from '../../Error';
 import { PaymentMethodsAttributesReturn } from '../../states/paymentMethods/useGafpriApiPaymentMethods';
+import { ucfirst, formatDateVzla, decimalFormatPriceConverter } from '../../helpers';
 
 const arrowStyle = css`
     font-size: 1.5rem;
@@ -25,47 +22,32 @@ const title1AppStyles = css`
   text-align: left;
 `
 
-const textInfoTitleStyles = css`
-  font-size: 0.6em;
-  font-weight: 400;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-  text-align: left;
-  color: #9e9e9e;
+const statusButtonStyles = (color?: string, backgroundColor?: string) => css`
+    width: fit-content;
+    font-size: 0.8em;
+    margin: 0.6rem 0px 0px 0px;
+    line-height: 1rem;
+    font-weight: 600;
+    max-width: 18rem;
+    overflow: hidden;
+    word-break: break-word;
+    text-transform: none;
+    -webkit-line-clamp: 2;
+    display: -webkit-inline-box;
+    -webkit-box-orient: vertical;
+    height: auto;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: ${color || 'rgb(255, 255, 255)'};
+    background-color: ${backgroundColor || 'rgb(15, 133, 20)'};
 `
 
 export const Recharge = ({id}: {id: string | string[] | undefined}) => {
     const router = useRouter();
-    const { useLogin, useError, usePaymentMethods } = useTheme();
+    const { useLogin, useError, usePaymentMethods, siteOptions} = useTheme();
     const [isReadyRecharge, setIsReadyRecharge] = useState<boolean>(false);
     const [recharge, setRecharge] = useState<PaymentMethodsAttributesReturn | null>(null);
     const [fetching, setFetching] = useState<boolean>(false);
-
-    const aproval = async () => {
-        if(id && typeof id === 'string') {
-            scrollToTop();
-            try {
-               
-            } catch (error) {
-                
-            } finally {
-               
-            }
-        }
-    }
-
-    const cancel = async () => {
-        if(id && typeof id === 'string') {
-            scrollToTop();
-            try {
-            
-            } catch (error) {
-                
-            } finally {
-                
-            }
-        }
-    }
 
     useEffect(() => {
         if(id && typeof id === 'string') {
@@ -93,6 +75,53 @@ export const Recharge = ({id}: {id: string | string[] | undefined}) => {
       
     }, [useLogin.data.states.token]); // eslint-disable-line react-hooks/exhaustive-deps
 
+    const back = () => {
+        router.back();
+    }
+
+    if(!recharge){
+        return null;
+    }
+
+    const titleStatus = recharge.posts.status === 'pending' ? 'Pendiente' : 
+                        recharge.posts.status === 'canceled' ? 'Rechazado' : 
+                        recharge.posts.status === 'completed' ? 'Procesado' : '';
+        
+    const backgroundColorStatus =   recharge.posts.status === 'pending' ? 'rgb(230, 224, 217)' : 
+                                    recharge.posts.status === 'canceled' ? '#c12429' : 
+                                    recharge.posts.status === 'completed' ? 'rgb(15, 133, 20)' : '';
+
+    const colorStatus =     recharge.posts.status === 'pending' ? 'rgb(0, 20, 53)' :
+                            recharge.posts.status === 'canceled' ? '#fff' : 
+                            recharge.posts.status === 'completed' ? '#fff' : '';
+
+    let comission = 0;
+    let returnComission = 0;
+    let totalComission = 0;
+
+    let rechargeAmount = 0;
+    let returnRechargeAmount = 0;
+    let totalRecharge = 0;
+
+    recharge.walletTransactions.map((transaction) => {
+        if(transaction.transactionType === 'comission'){
+            comission = parseFloat(transaction.amount);
+        } else if(transaction.transactionType === 'return' && transaction.type === 'deposit'){
+            returnComission = parseFloat(transaction.amount);
+        } else if(transaction.transactionType === 'return' && transaction.type === 'debit'){
+            returnRechargeAmount = parseFloat(transaction.amount);
+        } else if(transaction.transactionType === 'recharge'){
+            rechargeAmount = parseFloat(transaction.amount);
+        }
+        return null;
+    })
+
+    totalComission = comission - returnComission;
+    totalRecharge = recharge.posts.status === 'pending' ? 0 : rechargeAmount - returnRechargeAmount;
+
+
+
+
     return (
         <>
             <div 
@@ -103,7 +132,7 @@ export const Recharge = ({id}: {id: string | string[] | undefined}) => {
             <Error 
                 error={useError.states.error}
             />
-                {fetching || !isReadyRecharge || recharge === null ? <Loading /> :
+                {!id || fetching || !isReadyRecharge || recharge === null ? <Loading /> :
                     <>
                         <div style={{
                             display: 'flex',
@@ -112,76 +141,220 @@ export const Recharge = ({id}: {id: string | string[] | undefined}) => {
                             width: '90%',
                             margin: 'auto',
                         }}> 
-                            <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Recarga</h1>
-                            <Link href='/users/pending' style={{
-                                textDecoration: 'none',
-                                display: 'flex',
-                                }}>
+                            <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Detalles de Recarga</h1>
+                            <div 
+                                style={{
+                                    textDecoration: 'none',
+                                    display: 'flex',
+                                }}
+                                onClick={back}
+                            >
                                 <FiChevronLeft 
                                     className={arrowStyle}
                                 />
-                            </Link>
+                            </div>
                         </div>
                         
                         <div>
-                            <div style={{
-                                margin: 'auto',
-                                padding: '0px',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                }}>
-                                    <div style={{
-                                    width: '80%',
-                                    margin: 'auto',
-                                    }}>
-                                    <span className={textInfoTitleStyles}>Fecha de transacción</span>
-                                    </div>
-                                    <InputAppContainer 
-                                        inputProps={{
-                                            
-                                            type: 'date',
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    margin: '0.7em auto',
+                                    width: '90%',
+                                    
+                                }}
+                            >
+                                <span className={cx(statusButtonStyles(colorStatus, backgroundColorStatus))}>{titleStatus}</span>
+                            </div>
+                            <div
+                                style={{
+                                    border: '0.5px solid #ebebeb',
+                                    borderRadius: '15px',
+                                    margin: '0px auto 2% auto',
+                                    backgroundColor: '#fff',
+                                    fontSize: '0.8em',
+                                    textDecoration: 'none',
+                                    color: 'inherit',
+                                    width: '90%',
+                                    padding: '0.5em',
+                                }}
+                            >
+                                <div 
+                                    style={{
+                                        margin: '0.5em 0px',
+                                    }}
+                                >
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        Método de Recarga: 
+                                    </span>
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontWeight: 600,
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        {ucfirst(recharge?.paymentType)}
+                                    </span>
+                                </div>
+                                <div 
+                                    style={{
+                                        margin: '0.5em 0px',
+                                    }}
+                                >
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        Realizado por:
+                                    </span>
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontWeight: 600,
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        {recharge?.nameSend}
+                                    </span>
+                                </div>
+                                <div 
+                                    style={{
+                                        margin: '0.5em 0px',
+                                    }}
+                                >
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        Confirmación:
+                                    </span>
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontWeight: 600,
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        {recharge?.number}
+                                    </span>
+                                </div>
+                                <div 
+                                    style={{
+                                        margin: '0.5em 0px',
+                                    }}
+                                >
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        Fecha:
+                                    </span>
+                                    <span 
+                                        style={{
+                                            padding: '0.5em', 
+                                            fontWeight: 600,
+                                            fontFamily: "'Poppins', sans-serif",
+                                        }}
+                                    >
+                                        {recharge?.posts.createdAt ? formatDateVzla(recharge?.posts.createdAt) : ''}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
 
-                                            
-                                        }}
-                                        containerStyles={{
-                                        customStyles: 'width: 95%; margin: auto;'
-                                        }}
-                                    />
-                            </div>
-                            
-                            <div 
-                                style={{
-                                    margin: 'auto',
-                                    padding: '0px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
+                        <div 
+                            style={{
+                            backgroundColor: '#ececec',
+                            margin: '1em auto',
+                            padding: '0.45em',
+                            borderRadius: '15px',
+                            fontFamily: "'Poppins', sans-serif",
+                            fontSize: '0.8em',
+                            width: '90%',
+                            }}
+                        >
+                            <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        margin: '1em auto',
+                                        padding: '1em',
+                                    
+                                    }}
                             >
-                                <ButtonAppMobile 
-                                    title="Aprobar"
-                                    containerProps={{
-                                        onClick: aproval,
+                                    <span >Monto de Solicitud de Recarga: </span>
+                                    <span 
+                                        style={{
+                                            fontWeight: '600'
+                                        }}
+                                    >
+                                        {decimalFormatPriceConverter(
+                                            recharge?.change || 0,
+                                            siteOptions.DECIMAL_NUMBERS,
+                                            siteOptions.CURRENCY_SYMBOL,
+                                            siteOptions.CURRENCY_LOCATION
+                                        )}
+                                    </span>
+                            </div>     
+                            <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        margin: '1em auto',
+                                        padding: '1em',
+                                    
                                     }}
-                                />
-                            </div>
-                            <div 
-                                style={{
-                                    margin: 'auto',
-                                    padding: '0px',
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                }}
                             >
-                                <ButtonAppMobile 
-                                    title="Cancelar"
-                                    containerStyles={{
-                                        backgroundColor: '#C12422',
+                                    <span >Comisión: </span>
+                                    <span 
+                                        style={{
+                                            fontWeight: '600'
+                                        }}
+                                    >
+                                        {decimalFormatPriceConverter(
+                                            totalComission || 0,
+                                            siteOptions.DECIMAL_NUMBERS,
+                                            siteOptions.CURRENCY_SYMBOL,
+                                            siteOptions.CURRENCY_LOCATION
+                                        )}
+                                    </span>
+                            </div>     
+                            <div
+                                    style={{
+                                        display: 'flex',
+                                        justifyContent: 'space-between',
+                                        margin: '1em auto',
+                                        padding: '1em',
+                                    
                                     }}
-                                    containerProps={{
-                                        onClick: cancel,
-                                    }}
-                                />
-                            </div>
+                            >
+                                    <span >Total recarga en cuenta: </span>
+                                    <span 
+                                        style={{
+                                            fontWeight: '600'
+                                        }}
+                                    >
+                                        {decimalFormatPriceConverter(
+                                            totalRecharge || 0,
+                                            siteOptions.DECIMAL_NUMBERS,
+                                            siteOptions.CURRENCY_SYMBOL,
+                                            siteOptions.CURRENCY_LOCATION
+                                        )}
+                                    </span>
+                            </div>     
                         </div>
                     </>
                 } 

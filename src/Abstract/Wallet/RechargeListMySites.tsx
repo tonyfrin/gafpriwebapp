@@ -169,9 +169,9 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
                                     <h1 style={{textAlign: 'left', padding: '0.3em', width: '95%', margin: 'auto', fontSize: '0.7em'}} className={title1AppStyles}>Recargas</h1>
                                         
                                         {rechargePending.length > 0 ? rechargePending.map((payment, index) => { 
-                                                const titleStatus = payment.posts.status === 'pending' ? 'Pendiente' : 
-                                                                    payment.posts.status === 'canceled' ? 'Rechazado' : 
-                                                                    payment.posts.status === 'completed' ? 'Procesado' : '';
+                                            const titleStatus = payment.posts.status === 'pending' ? 'Pendiente' : 
+                                                                payment.posts.status === 'canceled' ? 'Rechazado' : 
+                                                                payment.posts.status === 'completed' ? 'Procesado' : '';
                                                 
                                             const backgroundColorStatus =   payment.posts.status === 'pending' ? 'rgb(230, 224, 217)' : 
                                                                             payment.posts.status === 'canceled' ? '#c12429' : 
@@ -190,16 +190,18 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
                                                                     borderRadius: '15px',
                                                                     margin: '0px 0px 2% 0px',
                                                                     backgroundColor: '#fff',
-                                                                    fontSize: '0.8em'
+                                                                    fontSize: '0.8em',
+                                                                    textDecoration: 'none',
+                                                                    color: 'inherit'
                                                                 }}
                                                                 key={index}
                                                             >
-                                                                <div
-                                                                    
+                                                                <Link
+                                                                     href={`/billetera/recarga/[id]`} as={`/billetera/recarga/${payment.postsId}`}
                                                                     style={{
                                                                         textDecoration: 'none',
                                                                         color: 'inherit',
-                                                                        margin: '0px'
+                                                                        margin: '0px',
                                                                     }}
                                                                 >
                                                                     <div
@@ -253,7 +255,7 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
                                                                             siteOptions.CURRENCY_LOCATION
                                                                         )}</span>
                                                                     </div>
-                                                                </div>
+                                                                </Link>
                                                             </div>
                                                             
                                                         </>
