@@ -5,7 +5,7 @@ import { InputAppContainer } from '../../Input/InputAppContainer';
 import { ButtonEditInfo } from '../../Button/ButtonEditInfo';
 import { useTheme } from '../../context/ThemeContext';
 import { Loading } from '../../Loading';
-import { Error } from '@/Abstract/Error';
+import { Error } from '../../Error';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;

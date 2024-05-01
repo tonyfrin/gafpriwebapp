@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { cx, css } from '@emotion/css';
-import { useRouter } from 'next/router';
 import { useTheme } from '../context/ThemeContext';
 import { MainFooter } from '../Footer/Footer';
 import Logo from '../assets/img/logo-blanco.png';

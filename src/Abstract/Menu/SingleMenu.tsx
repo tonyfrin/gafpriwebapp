@@ -39,8 +39,6 @@ const singleMenuContentLink = css`
     }
 `;
 
-
-
 const singleMenuContentTitle = css`
     justify-content: flex-start;
     align-items: center;

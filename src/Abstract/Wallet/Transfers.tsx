@@ -1,5 +1,4 @@
-import React, { use } from 'react';;
-import { LayoutApp } from '../Component/LayoutApp';
+import React from 'react';;
 import { useTheme } from '../context/ThemeContext';
 import { InitTransfers } from './Transfers/InitTransfers';
 import { Beneficiary } from './Transfers/Beneficiary';

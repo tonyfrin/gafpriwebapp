@@ -1,7 +1,6 @@
 import React from 'react';
 import { cx, css } from '@emotion/css';
 import { LogoAppContainer, LogoProps } from '../Logo/LogoAppContainer';
-import { SingleMenu } from '../Menu/SingleMenu';
 
 type style = {
   headerClass?: string;

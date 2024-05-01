@@ -1,4 +1,3 @@
-import {useEffect, useState} from 'react';
 import { EMAIL_CHECK_ROUTE, USER_ROUTE } from '../../constants';
 import { gafpriFetch } from '../../helpers';
 import { UseGafpriAttributesSingUpReturn } from './useGafpriAttributesSingUp';

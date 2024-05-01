@@ -1,8 +1,8 @@
 import React from 'react';
 import { css } from '@emotion/css';
-import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import Link from 'next/link';
-import { useTheme } from '@/Abstract/context/ThemeContext';
+import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
+import { useTheme } from '../../context/ThemeContext';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;

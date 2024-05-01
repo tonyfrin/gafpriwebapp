@@ -1,10 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import { css } from '@emotion/css';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { FiChevronLeft } from 'react-icons/fi';
-import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
-import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
-import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 import { useTheme } from '../context/ThemeContext';
 import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
 import { formatPhoneNumber } from '../helpers';
@@ -17,26 +13,6 @@ const title1AppStyles = css`
   margin: 0;
   font-family: 'Poppins', sans-serif;
   text-align: left;
-`
-
-const containerBottonCheckOutStyle = css`
-  display: flex;
-  padding: 1em;
-`
-
-const buttonCheckOut = css`
-  border: 1px solid #000;
-  border-radius: 10px;
-  padding: 1em;
-  font-family: 'Poppins', sans-serif;
-  font-size: 1em;
-  font-weight: 600;
-  color: #1f2024;
-  width: 40%;
-  margin: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `
 
 const fila3 = css`
@@ -66,13 +42,6 @@ const containerColumnCenterStyles = css`
   flex-direction: column;
   justify-content: flex-end;
   text-align: left;
-`
-
-const containerColumnEndStyles = css`
-  display: flex;
-  justify-content: flex-end;
-  text-align: left;
-  align-items: flex-start;
 `
 
 const arrowStyle = css`
@@ -109,22 +78,8 @@ const checkboxStyles = css`
   }
 `;
 
-const containerButtonCheckOutStyle = css`
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 996;
-    display: flex;
-    flex-direction: column;
-    background-color: #f9f9f9;
-    box-shadow: 0 0 6px 0 #20212447;
-    padding: 1em 0px;
-`
-
 export function StoreList() {
   const { useCheckOut, useSites } = useTheme();
-
 
   const items = useSites.api.states.sites;
   items?.sort((a, b) => parseInt(a.id) - parseInt(b.id));

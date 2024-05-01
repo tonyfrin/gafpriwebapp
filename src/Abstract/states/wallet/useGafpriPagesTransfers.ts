@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { UseGafpriAttributesTransfersReturn } from './useGafpriAttributesTransfers';
 
-
-
 type states = {
     isInit: boolean;
     isCode: boolean;

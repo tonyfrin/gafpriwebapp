@@ -15,17 +15,6 @@ const paginaOpcionesStyles = (open: boolean) => css`
   z-index: 998;
 `;
 
-const contentStyles = css`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 20px;
-  width: 60%;
-  max-height: 80vh;
-  overflow-y: auto;
-`;
-
 const buttonStyles = css`
   position: absolute;
   top: 87px;

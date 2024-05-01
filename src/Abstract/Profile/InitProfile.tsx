@@ -1,11 +1,10 @@
 import React from 'react';
-import { css, cx } from '@emotion/css';
+import { css } from '@emotion/css';
+import { IoIosAddCircleOutline } from 'react-icons/io';
+import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '../context/ThemeContext';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
-import Link from 'next/link';
+
 
 const photoProfile = css`
     width: 100%;
@@ -29,13 +28,6 @@ const priceTotalStyles = css`
   font-family: 'Poppins', sans-serif;
 `
 
-const priceStyles = css`
-  font-size: 0.8em;
-  font-weight: 400;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-`
-
 
 const containerColumnEndStyles = css`
   display: flex;
@@ -45,17 +37,11 @@ const containerColumnEndStyles = css`
 `
 
 
-
-
 export const InitProfile = () => {
     const { useLogin, useProfile } = useTheme();
 
    
     const menu: {name: string, action?: () => void, href?: string;}[]= [
-        // {
-        //     name: 'Pedidos',
-        //     action: () => useProfile.pages.actions.onOrderList(),
-        // },
         {
             name: 'Direcciones',
             href: '/perfil/direcciones',
@@ -68,8 +54,6 @@ export const InitProfile = () => {
             name: 'Cerrar sesion',
             action: () => useLogin.data.actions.logout(),
         }
-        
-
     ]
 
     return (

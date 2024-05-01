@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
-import { InputPhotoCamera } from '../../Input/InputPhotoCamera';
 import { useTheme } from '../../context/ThemeContext'
 import { PhotoForm } from '@/Abstract/Form/PhotoForm';
 import { Error } from '@/Abstract/Error';

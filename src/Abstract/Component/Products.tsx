@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { css } from '@emotion/css';
 import { useTheme } from '../context/ThemeContext';
 import { LayoutApp } from './LayoutApp';
-import { css } from '@emotion/css';
 import { Product } from '../Product/Product';
 import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';
 import { Loading } from '../Loading';
@@ -10,7 +9,6 @@ import { Loading } from '../Loading';
 const mainStyles = css`
   margin-bottom: 100px;
 `
-
 
 export function Products({id}: {id: string | string[] | undefined}) {
   const [fetching, setFetching] = useState<boolean>(true);

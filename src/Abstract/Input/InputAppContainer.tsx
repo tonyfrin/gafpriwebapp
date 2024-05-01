@@ -31,19 +31,6 @@ const inputAppTitleStyles = css`
     text-align: center;
 `
 
-const loginContainerStyles = css`
-    position: fixed;
-    bottom: 10%;
-    left: 0;
-    right: 0;
-    z-index: 996;
-`;
-
-const loginContentStyles = css`
-    display: flex;
-    flex-direction: column;
-`;
-
 type InputAppContainerProps = {
     inputProps: React.InputHTMLAttributes<HTMLInputElement>;
     description?: string;

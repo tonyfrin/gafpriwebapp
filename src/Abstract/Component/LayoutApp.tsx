@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cx, css } from '@emotion/css';
+import Link from 'next/link';
+import { BiMap } from 'react-icons/bi';
 import { IoWalletOutline } from 'react-icons/io5';
 import { IoStorefrontOutline } from 'react-icons/io5';
 import { IoPersonOutline } from 'react-icons/io5';
@@ -10,8 +12,6 @@ import { AppHeader } from '../Header/AppHeader';
 import { MenuFooterApp } from '../Menu/MenuFooterApp';
 import { useTheme } from '../context/ThemeContext';
 import { Loading } from '../Loading';
-import { BiMap } from 'react-icons/bi';
-import Link from 'next/link';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 
 type LayoutContainerStyleProps = {

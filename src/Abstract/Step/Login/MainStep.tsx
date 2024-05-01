@@ -1,5 +1,7 @@
 import React from 'react';
 import { css } from '@emotion/css';
+import { FiChevronLeft } from 'react-icons/fi';
+import Link from 'next/link';
 import { EmailStep } from './EmailStep';
 import { EmailCheckStep } from './EmailCheckStep';
 import { PhoneStep } from './PhoneStep';
@@ -10,11 +12,9 @@ import { FinalStep } from './FinalStep';
 import { FadeIn } from '../../Fade/FadeIn';
 import { LegalPhotoStep } from './LegalPhotoStep';
 import { ProgressBar } from '../../Bar/ProgressBar';
-import { FiChevronLeft } from 'react-icons/fi';
-import Link from 'next/link';
 import { useTheme } from '../../context/ThemeContext';
-import { Loading } from '@/Abstract/Loading';
-import { LayoutLogin } from '@/Abstract/Component/LayoutLogin';
+import { Loading } from '../../Loading';
+import { LayoutLogin } from '../../Component/LayoutLogin';
 
 const progressBarContainerStyles = css`
     display: flex;

@@ -1,13 +1,12 @@
 import React from 'react';
 import { css } from '@emotion/css';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import Image from 'next/image';
-import { InputApp } from '../Input/InputApp';
+import Link from 'next/link';
 import { Select } from '../Select/Select';
 import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
 import { useTheme } from '../context/ThemeContext';
 import { decimalFormatPriceConverter } from '../helpers';
-import Link from 'next/link';
+
 
 const sectionStyles = css`
   margin-bottom: 150px;
@@ -99,24 +98,14 @@ const contentOptionsStyles = css`
   justify-content: space-between;
 `
 
-
-type Items = {
-  title: string;
-  description?: string;
-  img: string;
-  href: string;
-}
-
 type BoxCartProps = {
   cart: CartAttributesReturn;
-  buttonProps?: boolean;
   setFetching: (value: boolean) => void;
   setCart: (value: CartAttributesReturn) => void;
 }
 
 export function BoxCart({
   cart,
-  buttonProps = true,
   setFetching,
   setCart,
 }: BoxCartProps) {

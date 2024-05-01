@@ -22,13 +22,6 @@ const title1AppStyles = css`
   text-align: left;
 `
 
-const amountTitleAppStyles = css`
-  font-size: 1.1em;
-  padding: 0.9em;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-`
-
 const statusButtonStyles = (color?: string, backgroundColor?: string) => css`
     width: fit-content;
     font-size: 0.7em;

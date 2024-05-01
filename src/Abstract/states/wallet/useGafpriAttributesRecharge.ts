@@ -1,6 +1,6 @@
-import { generalValidationButtonNext } from '@/Abstract/helpers';
-import { parse } from 'path';
-import React, {useState, useEffect }from 'react';
+import {useState, useEffect }from 'react';
+import { generalValidationButtonNext } from '../../helpers';
+
 
 type states = {
     paymentType: string;

@@ -2,7 +2,7 @@ import { gafpriFetch } from '../../helpers';
 import {
   PRODUCTS_ROUTE,
 } from '../../constants';
-import { UseGafpriErrorReturn, ErrorResponseProps, CustomErrorResponseProps } from '../useGafpriError';
+import { UseGafpriErrorReturn } from '../useGafpriError';
 import { UseGafpriLoginReturn } from '../login/useGafpriLogin';
 import { GeneralAttribute } from '../../Product/Product';
 import { CategoryAttributesReturn } from '../category/useGafpriApiCategory';

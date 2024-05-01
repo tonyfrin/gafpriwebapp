@@ -1,5 +1,4 @@
 import React from 'react';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { css, cx } from '@emotion/css';
 
 type ButtonAppMobileConatinerStylesProps = {

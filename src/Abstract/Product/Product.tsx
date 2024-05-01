@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
-import { useTheme } from '../context/ThemeContext';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useTheme } from '../context/ThemeContext';
 import { AttributeTable } from '../Table/AttributeTable';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';

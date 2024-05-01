@@ -1,12 +1,13 @@
 import React from 'react';
 import { css } from '@emotion/css';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 import { FiChevronLeft } from 'react-icons/fi';
+import Link from 'next/link';
 import { useTheme } from '../context/ThemeContext';
 import { formatPhoneNumber } from '../helpers';
-import Link from 'next/link';
 import { Loading } from '../Loading';
 import { MySitesEmpty } from './MySitesEmpty';
-import { IoIosAddCircleOutline } from 'react-icons/io';
+
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -50,34 +51,6 @@ const arrowStyle = css`
     color: #314577;
     margin: auto 0px;
 `
-
-const checkboxStyles = css`
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #aaa;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-
-  &:checked {
-    border-color: #000;
-    background-color: #000;
-  }
-
-  &:checked::after {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #fff;
-    margin: 2px;
-  }
-`;
 
 const containerColumnEndStyles = css`
   display: flex;

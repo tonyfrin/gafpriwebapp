@@ -4,8 +4,6 @@ import { Loading, LoadingProps } from '../Loading';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import NextImage from 'next/image';
 
-
-
 export type PhotoFormProps = {
   formId: string;
   photo: string | null;

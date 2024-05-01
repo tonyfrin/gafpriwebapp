@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cx, css } from '@emotion/css';
 import { IoWalletOutline } from 'react-icons/io5';
-import { IoStorefrontOutline } from 'react-icons/io5';
 import { IoPersonOutline } from 'react-icons/io5';
-import { IoCartOutline } from 'react-icons/io5';
 import { MainFooter } from '../Footer/Footer';
 import Logo from '../assets/img/logo-blanco.png';
 import { AppHeader } from '../Header/AppHeader';

@@ -1,4 +1,4 @@
-import React, { use } from 'react';
+import React from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { Loading } from '../Loading';
 import { LayoutAppProfile } from './LayoutAppProfile';

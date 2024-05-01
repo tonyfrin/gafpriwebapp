@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
-import { ButtonAppMobile } from '../Button/ButtonAppMobile';
+import { IoIosAddCircleOutline } from 'react-icons/io';
 import { IoLocationOutline } from 'react-icons/io5';
 import { IoBicycleOutline } from 'react-icons/io5';
+import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { useTheme } from '../context/ThemeContext';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { UseGafpriCheckOutReturn } from '../states/checkout/useGafpriCheckOut';
 import { FadeIn } from '../Fade/FadeIn';
 import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
 import { decimalFormatPriceConverter } from '../helpers';
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
-import { AddressAttributesReturn } from '../states/user/address/useGafpriApiAddress';
 import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
 
 const title1AppStyles = css`

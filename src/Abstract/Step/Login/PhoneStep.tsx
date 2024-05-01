@@ -25,21 +25,6 @@ const loginContentStyles = css`
     flex-direction: column;
 `;
 
-const options = [
-    { value: '1', label: '+58' },
-]
-
-const selectStyles = css`
-    width: 90%;
-    margin: auto;
-    font-family: 'Poppins', sans-serif;
-
-    ::placeholder {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 600;
-    }
-`
-
 
 
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { gafpriFetch } from '../../helpers';
 import { TYPE_DOCUMENT_ID_ROUTE } from '../../constants';
 

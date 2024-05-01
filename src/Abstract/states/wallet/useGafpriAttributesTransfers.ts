@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { WalletAccountAtrributesReturn } from './useGafpriApiWalletAccount';
 
 type account = {
@@ -22,11 +22,7 @@ type actions = {
     setAmount: (amount: string) => void;
 }
 
-
-
 export type UseGafpriAttributesTransfersReturn = {states: states, actions: actions};
-
-
 
 export const useGafpriAttributesTransfers = (): UseGafpriAttributesTransfersReturn => {
     const [email, setEmail] = useState('');
@@ -40,8 +36,6 @@ export const useGafpriAttributesTransfers = (): UseGafpriAttributesTransfersRetu
         setAccount(null);
         setAmount('');
     }
-
-    
 
     const states = { email, beneficiary, account, amount };
 

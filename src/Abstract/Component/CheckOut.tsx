@@ -1,18 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { css } from '@emotion/css';
+import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useTheme } from '../context/ThemeContext';
 import { InitCheckOut } from '../CheckOut/InitCheckOut';
-import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { AddressList } from '../CheckOut/AddressList';
 import { AddressAdd } from '../CheckOut/AddressAdd';
 import { PaymentMethod } from '../CheckOut/PaymentMethod';
 import { Summary } from '../CheckOut/Summary';
-import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 import { Loading } from '../Loading';
 import { AddressUpdate } from '../CheckOut/AddressUpdate';
 import { FadeIn } from '../Fade/FadeIn';
 import { StoreList } from '../CheckOut/StoreList';
-import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
 import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
 import { Final } from '../CheckOut/Final';
 

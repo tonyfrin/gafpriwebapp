@@ -1,5 +1,4 @@
 import React from 'react';
-import { LayoutApp } from './LayoutApp';
 import { useTheme } from '../context/ThemeContext';
 import { Loading } from '../Loading';
 import { AddressList } from '../Address/AddressList';

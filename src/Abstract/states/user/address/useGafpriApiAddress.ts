@@ -1,4 +1,3 @@
-import React from 'react';
 import { gafpriFetch } from '../../../helpers';
 import { ADDRESS_ROUTE } from '../../../constants';
 import { UseGafpriLoginReturn } from '../../login/useGafpriLogin';

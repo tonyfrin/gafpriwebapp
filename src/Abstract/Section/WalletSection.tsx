@@ -2,8 +2,6 @@ import React from "react";
 import { css } from '@emotion/css';
 import Image from "next/image";
 import WalletBanner from '../assets/img/fondo-wallet.jpg';
-import { ButtonAppMobile } from "../Button/ButtonAppMobile";
-import Link from "next/link";
 
 const serviceSectionContainer = css`
     width: 100%;

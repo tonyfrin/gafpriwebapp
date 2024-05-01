@@ -1,19 +1,16 @@
 import React, { useState, KeyboardEvent, useEffect } from 'react';
-import { css, cx } from '@emotion/css';
+import { css } from '@emotion/css';
 import Image from 'next/image';
+import { BUTTON_NEXT_INPUT } from 'gafprilibui';
+import { useRouter } from 'next/router';
+import { FiChevronLeft } from 'react-icons/fi';
 import { useTheme } from '../context/ThemeContext';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
-import { IoIosAddCircleOutline } from 'react-icons/io';
-import { OrderAttributesReturn } from '../states/order/useGafpriApiOrder';
-import Link from 'next/link';
 import { Loading } from '../Loading';
-import { FiChevronLeft } from 'react-icons/fi';
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 import { InputAppContainer } from '../Input/InputAppContainer';
 import { SelectApp } from '../Select/SelectApp';
-import { BUTTON_NEXT_INPUT } from 'gafprilibui';
 import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
-import { useRouter } from 'next/router';
 import { MySitesEmpty } from './MySitesEmpty';
 
 const title1AppStyles = css`
@@ -45,39 +42,6 @@ const photoProfile = css`
     object-fit: cover;
     border-radius: 100%;
 `
-
-const fila3 = css`
-  display: flex;
-  width: 90%;
-  margin: auto;
-  border-bottom: 1px solid #e1e1e1;
-  padding: 1em 0px;
-`
-
-const priceTotalStyles = css`
-  font-size: 0.8em;
-  font-weight: 600;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-`
-
-const priceStyles = css`
-  font-size: 0.8em;
-  font-weight: 400;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-`
-
-
-const containerColumnEndStyles = css`
-  display: flex;
-  justify-content: flex-end;
-  text-align: left;
-  align-items: flex-start;
-`
-
-
-
 
 export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
     const { useSites, useUser, useError, useLogin } = useTheme();
@@ -156,6 +120,9 @@ export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
 
     const label = useSites.attributes.states.permissionsOptions.find((item) => item.value === useSites.attributes.states.permissions)?.label || 'Seleccione una opción';
     
+    const back = () => {
+        router.back();
+    }
 
     return (
         <>
@@ -177,18 +144,18 @@ export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
                                 borderBottom: '1px solid #e1e1e1'
                             }}> 
                                 <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Agregar Autorizado</h1>
-                                <Link
+                                <div
                                 style={{
                                     display: 'flex',
                                     justifyContent: 'center',
                                     alignItems: 'center',
                                 }}
-                                href={`/mis-tiendas/tienda/empleados/list/${id}`}
+                                onClick={back}
                                 >
                                 <FiChevronLeft 
                                     className={arrowStyle}
                                 />
-                                </Link>
+                                </div>
                         </div>
                         
                         <div>

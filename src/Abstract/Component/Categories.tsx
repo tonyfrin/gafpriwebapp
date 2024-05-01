@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutApp } from './LayoutApp';
 import { css } from '@emotion/css';
+import { LayoutApp } from './LayoutApp';
 import { ProductList } from '../List/ProductList';
 import { useTheme } from '../context/ThemeContext';
 import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';
@@ -18,8 +18,6 @@ const title1AppStyles = css`
 const mainStyles = css`
   margin-bottom: 100px;
 `
-
-
 
 export function Categories({id}: {id: string | string[] | undefined}) {
   const { useProducts, useLogin } = useTheme();

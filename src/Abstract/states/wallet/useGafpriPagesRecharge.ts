@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { UseGafpriAttributesRechargeReturn } from './useGafpriAttributesRecharge';
 
-
 type states = {
     isInit: boolean;
     isInfo: boolean;

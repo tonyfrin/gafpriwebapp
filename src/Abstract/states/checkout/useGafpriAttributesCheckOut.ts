@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { generalValidationButtonNext } from '../../helpers';
 import { siteOptions } from '../../config/gafpriConfig';
 import { UseGafpriPagesCheckOutReturn } from './useGafpriPagesCheckOut';

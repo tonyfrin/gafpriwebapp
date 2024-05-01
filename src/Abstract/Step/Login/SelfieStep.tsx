@@ -30,8 +30,6 @@ const containerInput = css`
     margin: 20px auto;
     display: flex;
 `
-    
-
 
 export const SelfieStep = () => {
     const { useSingUp, useError } = useTheme();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { WalletBeneficiariesAttributesReturn } from './useGafpriApiWalletAccount';
-import { generalValidationButtonNext } from '@/Abstract/helpers';
+import { generalValidationButtonNext } from '../../helpers';
 
 type account = {
     id: string;

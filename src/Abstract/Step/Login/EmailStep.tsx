@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { useTheme } from '../../context/ThemeContext';
-import { Error } from '@/Abstract/Error';
+import { Error } from '../../Error';
 
 
 

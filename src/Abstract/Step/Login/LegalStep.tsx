@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
-import Select from 'react-select';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { useTheme } from '../../context/ThemeContext';
-import { SelectApp } from '@/Abstract/Select/SelectApp';
-import { Loading } from '@/Abstract/Loading';
+import { SelectApp } from '../../Select/SelectApp';
+import { Loading } from '../../Loading';
 
 
 const buttonAppMobileContentStyles = css`
@@ -31,17 +30,6 @@ const loginContentStyles = css`
 
 const containerInput = css`
     margin: 20px auto;
-`
-
-const selectStyles = css`
-    width: 90%;
-    margin: auto;
-    font-family: 'Poppins', sans-serif;
-
-    ::placeholder {
-        font-family: 'Poppins', sans-serif;
-        font-weight: 600;
-    }
 `
 
 

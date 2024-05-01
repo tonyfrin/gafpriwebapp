@@ -6,8 +6,6 @@ import { LayoutLogin } from './LayoutLogin';
 export const LoginForm = () => {
   const { useLogin } = useTheme();
 
-  
-
   return (
     <>
      <LayoutLogin
