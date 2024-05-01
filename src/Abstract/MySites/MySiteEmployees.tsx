@@ -185,6 +185,31 @@ export const MySiteEmployees = ({id}: {id: string | string[] | undefined}) => {
                                     {`${site?.tradename}`}
                                 </h1>
                             </div>
+                            <div
+                                style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                }}
+                            >
+                                <span style={{
+                                    textAlign: 'center',
+                                    fontFamily: 'Poppins',
+                                    fontSize: '0.8em',
+                                    fontWeight: 400,
+                                    margin: '0.5em 0',
+                                }}>
+                                    Billetera No:
+                                </span>
+                                <span style={{
+                                    textAlign: 'center',
+                                    fontFamily: 'Poppins',
+                                    fontSize: '0.8em',
+                                    fontWeight: 600,
+                                    margin: '0.5em',
+                                }}>
+                                    {site?.sitesEntity[0].entity.walletAccount[0].id}
+                                </span>
+                            </div>
                             <div 
                                     style={{
                                         margin: 'auto',

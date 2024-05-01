@@ -6,6 +6,7 @@ import { InputAppContainer } from '../../Input/InputAppContainer';
 import { WalletBeneficiariesAttributesReturn } from '../../states/wallet/useGafpriApiWalletAccount';
 import { Loading } from '../../Loading';
 import { Error } from '../../Error';
+import { formatPhoneNumber } from '@/Abstract/helpers';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -23,7 +24,7 @@ const arrowStyle = css`
 
 type items = {
   name: string;
-  email: string;
+  value: string;
 }
 
 export function Beneficiary() {
@@ -35,24 +36,58 @@ export function Beneficiary() {
   const items: items[] = [];
 
   beneficiaries.map((item) => {
-    if(item.email !== null && item.name !== null && item.email !== '' && item.name !== '' && item.email !== undefined && item.name !== undefined){
+    if(item.email){
       items.push({
         name: item.name,
-        email: item.email,
+        value: item.email,
       });
-    }
+    } else if(item.phone){
+      items.push({
+        name: item.name,
+        value: item.phone,
+      });
+    } else if(item.accountNumber)
+    items.push({
+      name: item.name,
+      value: item.accountNumber,
+    });
   });
 
-  const itemsFilter: items[] = items.filter(item => {
-    if(item.email){
-      return item.email.includes(useWallet.attributesTransfers.states.email);
-    }
+  const itemsFilter: WalletBeneficiariesAttributesReturn[] = [] 
+  
+  beneficiaries.forEach(beneficiary => {
+      if ((beneficiary.email && beneficiary.email.toLowerCase().includes(useWallet.attributesTransfers.states.email)) || 
+        (beneficiary.phone && beneficiary.phone.includes(useWallet.attributesTransfers.states.email)) ||
+        (beneficiary.accountNumber && beneficiary.accountNumber.includes(useWallet.attributesTransfers.states.email)) ||
+        (beneficiary.name && beneficiary.name.toLowerCase().includes(useWallet.attributesTransfers.states.email))
+      ) {
+          itemsFilter.push(beneficiary);
+      }
   });
 
-  const next = async (email: string ) => {
+  const next = async (beneficiary: WalletBeneficiariesAttributesReturn) => {
     try {
         setFetching(true);
-        const data = await useWallet.account.actions.getWalletAccountByEmail(email);
+        const value = beneficiary?.email ? beneficiary.email : beneficiary.phone ? beneficiary.phone : beneficiary.accountNumber ? beneficiary.accountNumber : '';
+        const data = await useWallet.account.actions.getWalletAccountByEmail(value);
+        if(data && data.success && data.item){
+            useWallet.attributesTransfers.actions.setBeneficiary(data.item);
+            useWallet.pagesTransfers.actions.onInfo();
+        } else{
+            useError.actions.changeError(['No se encontró el beneficiario', 'Por favor ingrese un correo electrónico válido']);
+        }
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        useError.actions.changeError(['No se encontró el beneficiario', 'Por favor ingrese un correo electrónico válido']);
+    } finally {
+        setFetching(false);
+    }
+  }
+
+  const nextAdd = async (value: string) => {
+    try {
+        setFetching(true);
+        const data = await useWallet.account.actions.getWalletAccountByEmail(value);
         if(data && data.success && data.item){
             useWallet.attributesTransfers.actions.setBeneficiary(data.item);
             useWallet.pagesTransfers.actions.onInfo();
@@ -71,7 +106,7 @@ export function Beneficiary() {
           const fetchBeneficiaries = async () => {
             try {
                 setFetchBeneficiaries(true);
-                const data = await useWallet.account.actions.getBeneficiaries('wallet-email');
+                const data = await useWallet.account.actions.getBeneficiaries('wallet');
                 if(data && data.success && data.items){
                     setBeneficiaries(data.items);
                 } else{
@@ -125,7 +160,7 @@ export function Beneficiary() {
                 }}>Elegir Beneficiario</h1></div>
                       <InputAppContainer 
                         inputProps={{
-                          placeholder: 'Correo Electrónico',
+                          placeholder: 'Correo, Teléfono o Cuenta',
                           type: 'text',
                           value: useWallet.attributesTransfers.states.email,
                           onChange: (e) => useWallet.attributesTransfers.actions.setEmail(e.target.value.toLowerCase()),
@@ -166,7 +201,7 @@ export function Beneficiary() {
                         margin: '5px',
                         cursor: 'pointer'
                       }}
-                      onClick={() => next(item.email)}
+                      onClick={() => next(item)}
                       >
                         <div style={{
                           width: '40px',
@@ -196,7 +231,7 @@ export function Beneficiary() {
                           <span style={{
                             fontSize: '0.6em',
                             fontWeight: 400,
-                          }}>{item.email}</span>
+                          }}>{item.email ? item.email : item.phone ? formatPhoneNumber(item.phone) : item.accountNumber ? item.accountNumber : ''}</span>
                         </div>
                       </div>))}
 
@@ -210,7 +245,7 @@ export function Beneficiary() {
                           margin: '5px',
                           cursor: 'pointer'
                         }}
-                        onClick={() => next(useWallet.attributesTransfers.states.email)}
+                        onClick={() => nextAdd(useWallet.attributesTransfers.states.email)}
                         >
                           <div style={{
                             width: '40px',
