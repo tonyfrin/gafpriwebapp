@@ -75,7 +75,7 @@ export const EmailStep = ({
                 inputProps={{
                     type: 'email',
                     placeholder: 'ejemplo@ejemplo.com',
-                    onChange: (e) => useSingUp.attributes.actions.changeEmail(e.target.value)
+                    onChange: (e) => useSingUp.attributes.actions.changeEmail(e.target.value.toLowerCase())
                 }}
                 description="Te enviaremos un codigo de verificación"
             />
