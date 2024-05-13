@@ -169,17 +169,18 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
                                     <h1 style={{textAlign: 'left', padding: '0.3em', width: '95%', margin: 'auto', fontSize: '0.7em'}} className={title1AppStyles}>Recargas</h1>
                                         
                                         {rechargePending.length > 0 ? rechargePending.map((payment, index) => { 
+                                            console.log(payment);
                                             const titleStatus = payment.posts.status === 'pending' ? 'Pendiente' : 
                                                                 payment.posts.status === 'canceled' ? 'Rechazado' : 
-                                                                payment.posts.status === 'completed' ? 'Procesado' : '';
+                                                                payment.posts.status === 'complete' ? 'Procesado' : '';
                                                 
                                             const backgroundColorStatus =   payment.posts.status === 'pending' ? 'rgb(230, 224, 217)' : 
                                                                             payment.posts.status === 'canceled' ? '#c12429' : 
-                                                                            payment.posts.status === 'completed' ? 'rgb(15, 133, 20)' : '';
+                                                                            payment.posts.status === 'complete' ? 'rgb(15, 133, 20)' : '';
 
                                             const colorStatus =     payment.posts.status === 'pending' ? 'rgb(0, 20, 53)' :
                                                                     payment.posts.status === 'canceled' ? '#fff' : 
-                                                                    payment.posts.status === 'completed' ? '#fff' : '';
+                                                                    payment.posts.status === 'complete' ? '#fff' : '';
                                                 
 
                                                 return (
