@@ -16,6 +16,8 @@ type actions = {
     setEntities: (_entities: EntityAttributesReturn[]) => void;
     setWalletAccount: (_walletAccount: WalletAccountAtrributesReturn[]) => void;
     infoReset: () => void;
+    getEntities: () => Promise<void>;
+    getWalletAccount: () => Promise<void>;
 }
 
 export type UseGafpriAttributesWalletReturn = {
@@ -40,42 +42,41 @@ export const useGafpriAttributesWallet = ({useUser, account, useLogin}: UseGafpr
         
     }
 
+    const getEntities = async (): Promise<void> => {
+      try {
+        setEntityIsReady(false);
+        const data = await useUser.apiEntity.actions.getEntity();
+        if(data && data.success){
+          setEntities(data.items);
+        } else {
+          setEntities([]);
+          setEntityIsReady(true);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setEntityIsReady(true);
+      }
+    }
+
+    const getWalletAccount = async (): Promise<void> => {
+      try {
+        setWalletAccountIsReady(false);
+        const data = await account.actions.getWalletAccount();
+        if(data && data.success){
+          setWalletAccount(data.items);
+        } else {
+          setWalletAccount([]);
+          setWalletAccountIsReady(true);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setWalletAccountIsReady(true);
+      }
+    }
+
     useEffect(() => {
-      
-        const getEntities = async () => {
-          try {
-            setEntityIsReady(false);
-            const data = await useUser.apiEntity.actions.getEntity();
-            if(data && data.success){
-              setEntities(data.items);
-            } else {
-              setEntities([]);
-              setEntityIsReady(true);
-            }
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          } finally {
-            setEntityIsReady(true);
-          }
-        }
-    
-        const getWalletAccount = async () => {
-          try {
-            setWalletAccountIsReady(false);
-            const data = await account.actions.getWalletAccount();
-            if(data && data.success){
-              setWalletAccount(data.items);
-            } else {
-              setWalletAccount([]);
-              setWalletAccountIsReady(true);
-            }
-          } catch (error) {
-            console.error('Error fetching data:', error);
-          } finally {
-            setWalletAccountIsReady(true);
-          }
-        }
-    
       getEntities();
       getWalletAccount();
     }, [useLogin.data.states.token]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -93,7 +94,9 @@ export const useGafpriAttributesWallet = ({useUser, account, useLogin}: UseGafpr
     const actions: actions = {
         setEntities,
         setWalletAccount,
-        infoReset
+        infoReset,
+        getEntities,
+        getWalletAccount
     }
 
     return {

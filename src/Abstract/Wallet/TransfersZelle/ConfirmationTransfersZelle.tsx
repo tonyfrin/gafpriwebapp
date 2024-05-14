@@ -45,6 +45,8 @@ export function ConfirmationTransfersZelle() {
       useWallet.pagesTransfersZelle.actions.onFetching();
       const data = await useWallet.account.actions.addTransferZelle();
       if(data && data.success){
+        await useWallet.attributes.actions.getWalletAccount();
+        await useWallet.attributes.actions.getEntities();
         useWallet.pagesTransfersZelle.actions.onSuccess();
       } else{
    

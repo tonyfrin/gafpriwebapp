@@ -37,6 +37,8 @@ export function ConfirmationRecharge() {
       useWallet.pagesRecharge.actions.onFetching();
       const data = await useWallet.account.actions.addRecharge();
       if(data && data.success){
+        await useWallet.attributes.actions.getWalletAccount();
+        await useWallet.attributes.actions.getEntities();
         useWallet.pagesRecharge.actions.onSuccess();
       } else{
         useWallet.pagesRecharge.actions.returnInit();
