@@ -4,7 +4,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 import Link from 'next/link';
 import { useTheme } from '../../context/ThemeContext';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
-import { decimalFormatPriceConverter } from '../../helpers';
+import { decimalFormatPriceConverter, formatPhoneNumber } from '../../helpers';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -118,7 +118,7 @@ export function SuccessTransfers() {
                     <span style={{
                       fontSize: '0.6em',
                       fontWeight: 400,
-                    }}>{useWallet.attributesTransfers.states.beneficiary?.email}</span>
+                    }}>{useWallet.attributesTransfers.states.beneficiary?.email ? useWallet.attributesTransfers.states.beneficiary.email : useWallet.attributesTransfers.states.beneficiary?.phone ? formatPhoneNumber(useWallet.attributesTransfers.states.beneficiary.phone) : useWallet.attributesTransfers.states.beneficiary?.id ? useWallet.attributesTransfers.states.beneficiary?.id : ''}</span>
                   </div>
                   </div>
                   

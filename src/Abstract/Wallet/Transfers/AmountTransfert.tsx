@@ -5,7 +5,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { SelectApp } from '../../Select/SelectApp';
-import { decimalFormatPriceConverter } from '../../helpers';
+import { decimalFormatPriceConverter, formatPhoneNumber } from '../../helpers';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -177,7 +177,7 @@ export function AmountTransfert() {
               margin: 'auto',
             }}
           >
-            <h1 style={{textAlign: 'center', padding: '0.3em', fontSize: '0.8em', fontWeight: 600}} className={title1AppStyles}>{useWallet.attributesTransfers.states.beneficiary?.email}</h1>
+            <h1 style={{textAlign: 'center', padding: '0.3em', fontSize: '0.8em', fontWeight: 600}} className={title1AppStyles}>{useWallet.attributesTransfers.states.beneficiary?.email ? useWallet.attributesTransfers.states.beneficiary.email : useWallet.attributesTransfers.states.beneficiary?.phone ? formatPhoneNumber(useWallet.attributesTransfers.states.beneficiary.phone) : useWallet.attributesTransfers.states.beneficiary?.id ? useWallet.attributesTransfers.states.beneficiary?.id : ''}</h1>
           </div>
           <div style={{
                 margin: 'auto',
