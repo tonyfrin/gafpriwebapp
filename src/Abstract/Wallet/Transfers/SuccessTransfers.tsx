@@ -120,6 +120,18 @@ export function SuccessTransfers() {
                       fontWeight: 400,
                     }}>{useWallet.attributesTransfers.states.beneficiary?.email ? useWallet.attributesTransfers.states.beneficiary.email : useWallet.attributesTransfers.states.beneficiary?.phone ? formatPhoneNumber(useWallet.attributesTransfers.states.beneficiary.phone) : useWallet.attributesTransfers.states.beneficiary?.id ? useWallet.attributesTransfers.states.beneficiary?.id : ''}</span>
                   </div>
+                </div>
+                <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        width: '85%',
+                        margin: '2em auto',
+                        textAlign: 'center'
+                      
+                      }}
+                  >
+                      <span className={textResumeStyles} style={{fontWeight: '600', fontSize: '1em', textAlign: 'center'}}>{`Confirmación #${useWallet.attributesTransfers.states.number}`}</span>
                   </div>
                   
                   

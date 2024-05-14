@@ -44,6 +44,7 @@ export function ConfirmationTransfers() {
       setFetching(true);
       const data = await useWallet.account.actions.addTransfer();
       if(data && data.success){
+        useWallet.attributesTransfers.actions.setNumber(data.item.postsId);
         await useWallet.attributes.actions.getWalletAccount();
         await useWallet.attributes.actions.getEntities();
         useWallet.pagesTransfers.actions.onSuccess();
