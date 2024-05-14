@@ -2,7 +2,7 @@ import React from 'react';
 import { css } from '@emotion/css';
 import { useTheme } from '../../context/ThemeContext';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
-import { decimalFormatPriceConverter, formatPhoneNumber } from '../../helpers';
+import { decimalFormatPriceConverter, formatPhoneNumber, scrollToTop } from '../../helpers';
 import { FiChevronLeft } from 'react-icons/fi';
 import { Loading } from '../../Loading';
 import { Error } from '../../Error';
@@ -59,6 +59,7 @@ export function ConfirmationTransfersZelle() {
       useWallet.pagesTransfersZelle.actions.onCheck();
     } finally {
       setFetching(false);
+      scrollToTop();
     }
   }
   

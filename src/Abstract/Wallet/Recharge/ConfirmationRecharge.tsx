@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import { FiChevronLeft } from 'react-icons/fi';
 import { useTheme } from '../../context/ThemeContext';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
-import { decimalFormatPriceConverter } from '../../helpers';
+import { decimalFormatPriceConverter, scrollToTop } from '../../helpers';
 import { Error } from '../../Error';
 
 const title1AppStyles = css`
@@ -37,6 +37,7 @@ export function ConfirmationRecharge() {
       useWallet.pagesRecharge.actions.onFetching();
       const data = await useWallet.account.actions.addRecharge();
       if(data && data.success){
+        scrollToTop();
         await useWallet.attributes.actions.getWalletAccount();
         await useWallet.attributes.actions.getEntities();
         useWallet.pagesRecharge.actions.onSuccess();

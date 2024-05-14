@@ -3,7 +3,7 @@ import { css } from '@emotion/css';
 import { FiChevronLeft } from 'react-icons/fi';
 import { useTheme } from '../../context/ThemeContext';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
-import { decimalFormatPriceConverter, formatPhoneNumber } from '../../helpers';
+import { decimalFormatPriceConverter, formatPhoneNumber, scrollToTop } from '../../helpers';
 import { Loading } from '../../Loading';
 import { Error } from '../../Error';
 
@@ -44,6 +44,7 @@ export function ConfirmationTransfers() {
       setFetching(true);
       const data = await useWallet.account.actions.addTransfer();
       if(data && data.success){
+        scrollToTop();
         useWallet.attributesTransfers.actions.setNumber(data.item.postsId);
         await useWallet.attributes.actions.getWalletAccount();
         await useWallet.attributes.actions.getEntities();
