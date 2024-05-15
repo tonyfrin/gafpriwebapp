@@ -246,6 +246,17 @@ export function AmountRechargeMySite({id}: {id: string | string[] | undefined}) 
                         onChange: (e) => useWallet.attributesRecharge.actions.setAmount(e.target.value)
                       }}
                     />
+                    <InputAppContainer 
+                      inputProps={{
+                        placeholder: 'Nota interna (opcional)',
+                        type: 'text',
+                        value: useWallet.attributesRecharge.states.note,
+                        onChange: (e) => useWallet.attributesRecharge.actions.changeNote(e.target.value)
+                      }}
+                      containerStyles={{
+                        margin: '1em auto'
+                      }}
+                    />
                   <div
                     style={{
                       display: 'flex',

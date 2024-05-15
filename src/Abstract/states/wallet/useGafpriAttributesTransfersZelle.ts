@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { truncarTexto } from 'gafprilibui';
 import { WalletBeneficiariesAttributesReturn } from './useGafpriApiWalletAccount';
 import { generalValidationButtonNext } from '../../helpers';
 
@@ -16,6 +17,7 @@ type states = {
     phone: string;
     name: string;
     findValue: string;
+    note: string;
 }
 
 type actions = {
@@ -29,6 +31,7 @@ type actions = {
     validationButtonBeneficiaryAdd:() => boolean;
     setFindValue: (findValue: string) => void;
     validationButtonAmount: () => boolean;
+    changeNote: (value: string) => void;
 }
 
 
@@ -45,6 +48,7 @@ export const useGafpriAttributesTransfersZelle = (): UseGafpriAttributesTransfer
     const [account, setAccount] = useState<account | null>(null);
     const [amount, setAmount] = useState<string>('');
     const [findValue, setFindValue] = useState<string>('');
+    const [note, setNote] = useState<string>('');
 
     const validationButtonBeneficiaryAdd = (): boolean => {
         return generalValidationButtonNext({
@@ -75,11 +79,16 @@ export const useGafpriAttributesTransfersZelle = (): UseGafpriAttributesTransfer
         setAmount('');
         setPhone('');
         setFindValue('');
+        setNote('');
     }
 
-    const states = { email, beneficiary, account, amount, phone, name, findValue };
+    const changeNote = (value: string): void => {
+        setNote(truncarTexto(value, 100));
+    }
 
-    const actions = { setEmail, infoReset, setBeneficiary, setAccount, setAmount, setPhone, setName, validationButtonBeneficiaryAdd, setFindValue, validationButtonAmount };
+    const states = { email, beneficiary, account, amount, phone, name, findValue, note };
+
+    const actions = { setEmail, infoReset, setBeneficiary, setAccount, setAmount, setPhone, setName, validationButtonBeneficiaryAdd, setFindValue, validationButtonAmount, changeNote };
 
     return { states, actions };
 

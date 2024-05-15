@@ -215,7 +215,21 @@ export function AmountTransfert() {
                     )}</span>
                   }
                 </div>
+                
             </div>
+            <InputAppContainer 
+                      inputProps={{
+                        placeholder: 'Nota interna (opcional)',
+                        type: 'text',
+                        value: useWallet.attributesTransfers.states.note,
+                        onChange: (e) => useWallet.attributesTransfers.actions.changeNote(e.target.value)
+                      }}
+                      containerStyles={{
+                        customStyles: `
+                        width: 95%; 
+                        margin: 1em auto;`
+                      }}
+                />
         </div>
         <div className={containerButtonCheckOutStyle}>
             <ButtonAppMobile 

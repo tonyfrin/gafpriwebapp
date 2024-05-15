@@ -155,7 +155,7 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                     initToken: { token: useLogin.data.states.token },
                     initCredentials:{
                         total: attributesRecharge.states.amount,
-                        note: 'Recarga de saldo',
+                        note: attributesRecharge.states.note,
                         posts: {
                             visibility: 'public',
                         },
@@ -200,7 +200,7 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                     initToken: { token: useLogin.data.states.token },
                     initCredentials:{
                         total: parseFloat(attributesTransfersZelle.states.amount),
-                        note: 'Transferencia de saldo por zelle',
+                        note: attributesTransfersZelle.states.note,
                         posts: {
                             visibility: 'public',
                         },
@@ -244,7 +244,7 @@ export const useGafpriApiWalletAccount = ({useLogin, attributesRecharge, siteOpt
                     initToken: { token: useLogin.data.states.token },
                     initCredentials:{
                         total: attributesTransfers.states.amount,
-                        note: 'Transferencia de saldo',
+                        note: attributesTransfers.states.note,
                         posts: {
                             visibility: 'public',
                         },

@@ -1,4 +1,5 @@
 import {useState, useEffect }from 'react';
+import { truncarTexto } from 'gafprilibui';
 import { generalValidationButtonNext } from '../../helpers';
 
 
@@ -12,6 +13,7 @@ type states = {
     nameSend: string;
     number: string;
     walletAccountPostsId: string;
+    note: string;
 }
 
 type actions = {
@@ -24,6 +26,7 @@ type actions = {
     validationInfoButton: () => boolean;
     setWalletAccountPostsId: (walletAccountPostsId: string) => void;
     validationAmountMySiteButton: () => boolean;
+    changeNote: (note: string) => void;
 }
 
 export type UseGafpriAttributesRechargeReturn = {states: states, actions: actions};
@@ -42,6 +45,7 @@ export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn 
     const [nameSend, setNameSend] = useState<string>('');
     const [number, setNumber] = useState<string>('');
     const [walletAccountPostsId, setWalletAccountPostsId] = useState<string>('');
+    const [note, setNote] = useState<string>('');
 
     const changeTotal = (): void => {
         if (paymentType === 'zelle') {
@@ -55,6 +59,10 @@ export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn 
             setCommission(newCommission);
             setTotal(newTotal);
         }
+    }
+
+    const changeNote = (value: string): void => {
+        setNote(truncarTexto(value, 100));
     }
 
     const validationAmountButton = (): boolean => {
@@ -101,14 +109,15 @@ export const useGafpriAttributesRecharge = ():UseGafpriAttributesRechargeReturn 
         setNameSend('');
         setNumber('');
         setWalletAccountPostsId('');
+        setNote('');
     }
 
     useEffect(() => {
         changeTotal();
     }, [paymentType, amount]); // eslint-disable-line react-hooks/exhaustive-deps
 
-    const states = { paymentType, amount, paymentTypeOptions, commission, total, commissionRate, nameSend, number, walletAccountPostsId};
-    const actions = { setPaymentType, setAmount, infoReset, validationAmountButton, setNameSend, setNumber, validationInfoButton, setWalletAccountPostsId, validationAmountMySiteButton};
+    const states = { paymentType, amount, paymentTypeOptions, commission, total, commissionRate, nameSend, number, walletAccountPostsId, note};
+    const actions = { setPaymentType, setAmount, infoReset, validationAmountButton, setNameSend, setNumber, validationInfoButton, setWalletAccountPostsId, validationAmountMySiteButton, changeNote};
 
     return { states, actions };
 

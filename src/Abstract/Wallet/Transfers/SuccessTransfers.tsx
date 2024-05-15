@@ -133,6 +133,31 @@ export function SuccessTransfers() {
                   >
                       <span className={textResumeStyles} style={{fontWeight: '600', fontSize: '1em', textAlign: 'center'}}>{`Confirmación #${useWallet.attributesTransfers.states.number}`}</span>
                   </div>
+                  <div
+                    style={{
+                      margin: '2em auto 0px auto',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <span
+                      style={{
+                        textAlign: 'center',
+                        color: '#000',
+                        fontSize: '0.7em',
+                        fontWeight: 400,
+                      }}
+                    >Nota:</span>
+                    <span
+                      style={{
+                        textAlign: 'center',
+                        color: '#000',
+                        fontSize: '0.7em',
+                        fontWeight: 400,
+                      }}
+                    >{useWallet.attributesTransfers.states.note}</span>
+                  </div>
                   
                   
 

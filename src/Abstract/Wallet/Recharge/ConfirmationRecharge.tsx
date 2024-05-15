@@ -199,6 +199,19 @@ export function ConfirmationRecharge() {
                   <span className={textResumeStyles}>Cuenta a recargar: </span>
                   <span className={textResumeStyles} style={{fontWeight: '600'}}>{currentAccount?.name}</span>
                 </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '85%',
+                    margin: '2em auto',
+
+                  
+                  }}
+                >
+                  <span className={textResumeStyles} style={{width: '30%'}}>Nota interna: </span>
+                  <span className={textResumeStyles} style={{fontWeight: '600', width: '70%'}}>{useWallet.attributesRecharge.states.note}</span>
+                </div>
               </div>
               <div><h1 className={title1AppStyles} style={{textAlign: 'center'}}>¿La información es correcta?</h1></div>
 

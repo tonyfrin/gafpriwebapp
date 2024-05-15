@@ -201,6 +201,31 @@ export function ConfirmationTransfers() {
                               siteOptions.CURRENCY_LOCATION
                             )}</span>
                           </div>
+                          <div
+                            style={{
+                              margin: '2em auto 0px auto',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              flexDirection: 'column',
+                            }}
+                          >
+                            <span
+                              style={{
+                                textAlign: 'center',
+                                color: '#000',
+                                fontSize: '0.7em',
+                                fontWeight: 400,
+                              }}
+                            >Nota:</span>
+                            <span
+                              style={{
+                                textAlign: 'center',
+                                color: '#000',
+                                fontSize: '0.7em',
+                                fontWeight: 400,
+                              }}
+                            >{useWallet.attributesTransfers.states.note}</span>
+                          </div>
 
                       <div style={{
                           display: 'flex',

@@ -142,7 +142,19 @@ export function AmountTransfertZelle() {
               margin: auto;`
             }}
           />
-          
+          <InputAppContainer 
+                inputProps={{
+                  placeholder: 'Nota interna (opcional)',
+                  type: 'text',
+                  value: useWallet.attributesTransfersZelle.states.note,
+                  onChange: (e) => useWallet.attributesTransfersZelle.actions.changeNote(e.target.value)
+                }}
+                containerStyles={{
+                  customStyles: `
+                  width: 95%; 
+                  margin: 1em auto;`
+                }}
+          />
           <div
             style={{
               margin: '0.5em auto',
@@ -241,7 +253,7 @@ export function AmountTransfertZelle() {
                     padding: '0.9em',
                 }}
                 containerProps={{
-                  onClick: () => useWallet.pagesTransfers.actions.returnInit()
+                  onClick: () => useWallet.pagesTransfersZelle.actions.returnInit()
                 
                 }}
             />

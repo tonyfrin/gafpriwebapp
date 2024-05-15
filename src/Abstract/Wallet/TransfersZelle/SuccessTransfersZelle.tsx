@@ -130,6 +130,31 @@ export function SuccessTransfersZelle() {
                   </div>
                 </div>
                 <div
+                            style={{
+                              margin: '2em auto 0px auto',
+                              display: 'flex',
+                              justifyContent: 'center',
+                              flexDirection: 'column',
+                            }}
+                          >
+                            <span
+                              style={{
+                                textAlign: 'center',
+                                color: '#000',
+                                fontSize: '0.7em',
+                                fontWeight: 400,
+                              }}
+                            >Nota Interna:</span>
+                            <span
+                              style={{
+                                textAlign: 'center',
+                                color: '#000',
+                                fontSize: '0.7em',
+                                fontWeight: 400,
+                              }}
+                            >{useWallet.attributesTransfersZelle.states.note}</span>
+                          </div>
+                <div
                       style={{
                         margin: '2em auto 0.5em',
                       }}
@@ -141,7 +166,7 @@ export function SuccessTransfersZelle() {
                         margin: '0.5em auto',
                       }}
                     >
-                      <h1 style={{textAlign: 'center', padding: '0.3em', fontSize: '0.8em', fontWeight: 400}} className={title1AppStyles}><span style={{fontWeight: 600}}>Nota: </span>Las transferencias Zelle se completan en el horario comprendido de 8:00am a 6:00pm de lunes a sabado.</h1>
+                      <h1 style={{textAlign: 'center', padding: '0.3em', fontSize: '0.8em', fontWeight: 400}} className={title1AppStyles}><span style={{fontWeight: 600}}>Importante: </span>Las transferencias Zelle se completan en el horario comprendido de 8:00am a 6:00pm de lunes a sabado.</h1>
                 </div>
                   
                   
