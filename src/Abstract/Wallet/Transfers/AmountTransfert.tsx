@@ -101,17 +101,17 @@ export function AmountTransfert() {
                     textDecoration: 'none',
                     display: 'flex',
                   }}>
-                  <FiChevronLeft 
-                      className={arrowStyle}
-                      onClick={returnToBeneficiary}
-                  />
+                    <FiChevronLeft 
+                        className={arrowStyle}
+                        onClick={returnToBeneficiary}
+                    />
                   </div>
-              </div>
-          <div
+        </div>
+        <div
           style={{
             display: 'flex',
             flexDirection: 'column',
-            margin: '1em 0px',
+            margin: '1em 0px 400px 0px',
           }}
         >
           <div
@@ -218,18 +218,18 @@ export function AmountTransfert() {
                 
             </div>
             <InputAppContainer 
-                      inputProps={{
-                        placeholder: 'Nota interna (opcional)',
-                        type: 'text',
-                        value: useWallet.attributesTransfers.states.note,
-                        onChange: (e) => useWallet.attributesTransfers.actions.changeNote(e.target.value)
-                      }}
-                      containerStyles={{
-                        customStyles: `
-                        width: 95%; 
-                        margin: 1em auto;`
-                      }}
-                />
+                  inputProps={{
+                    placeholder: 'Nota interna (opcional)',
+                    type: 'text',
+                    value: useWallet.attributesTransfers.states.note,
+                    onChange: (e) => useWallet.attributesTransfers.actions.changeNote(e.target.value)
+                  }}
+                  containerStyles={{
+                    customStyles: `
+                    width: 95%; 
+                    margin: 1em auto;`
+                  }}
+            />
         </div>
         <div className={containerButtonCheckOutStyle}>
             <ButtonAppMobile 

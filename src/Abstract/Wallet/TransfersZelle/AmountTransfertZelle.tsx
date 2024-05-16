@@ -118,7 +118,7 @@ export function AmountTransfertZelle() {
           style={{
             display: 'flex',
             flexDirection: 'column',
-            margin: '1em 0px',
+            margin: '1em 0px 400px 0px',
           }}
         >
           <div
