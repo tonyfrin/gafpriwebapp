@@ -59,9 +59,11 @@ type Actions = {
     getSites: () => Promise<any>;
     getMySites: () => Promise<any>;
     getMySiteById: (id: string) => SitesAttributesReturn | null;
+    getSiteById: (id: string) => SitesAttributesReturn | null;
     addEmployees: (sitesId: string) => Promise<any>;
     deleteEmployees: (employessId: string) => Promise<any>;
     handleUpdatedMySites: (itemUpdate: SitesAttributesReturn) => void;
+    
 }
 
 export type UseGafpriApiSitesReturn = {
@@ -117,6 +119,10 @@ export const useGafpriApiSites = ({
 
     function getMySiteById(id: string): SitesAttributesReturn | null {
       return mySites?.find((item) => `${item.id}` === `${id}`) || null;
+    }
+
+    function getSiteById(id: string): SitesAttributesReturn | null {
+      return sites?.find((item) => `${item.id}` === `${id}`) || null;
     }
 
     const addEmployees = async (sitesId: string): Promise<any> => {
@@ -217,7 +223,8 @@ export const useGafpriApiSites = ({
         getMySiteById,
         addEmployees,
         deleteEmployees,
-        handleUpdatedMySites
+        handleUpdatedMySites,
+        getSiteById
     }
 
     const states = {

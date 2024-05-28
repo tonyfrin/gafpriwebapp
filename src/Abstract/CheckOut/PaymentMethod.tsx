@@ -58,7 +58,7 @@ export function PaymentMethod() {
                 />
             </div>
 
-            <div style={{
+            {/* <div style={{
               display: 'flex',
               margin: 'auto',
             }}>
@@ -76,7 +76,7 @@ export function PaymentMethod() {
                 }}
               />
 
-            </div>
+            </div> */}
             {walletAccount && walletAccount.length > 0 && 
             
               walletAccount.map((item, index) => (

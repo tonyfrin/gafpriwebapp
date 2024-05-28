@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { cx, css } from '@emotion/css';
-import { IoWalletOutline } from 'react-icons/io5';
-import { IoStorefrontOutline } from 'react-icons/io5';
-import { IoPersonOutline } from 'react-icons/io5';
+import { IoWalletOutline, IoPersonOutline, IoStorefrontOutline, IoCartOutline } from 'react-icons/io5';
+import { AiOutlineHome } from 'react-icons/ai';
 import { MainFooter } from '../Footer/Footer';
 import Logo from '../assets/img/logo-blanco.png';
 import { AppHeader } from '../Header/AppHeader';
@@ -76,6 +75,16 @@ export const LayoutAppProfile = ({
   if(useSites.api.states.sitesIsReady && useSites.api.states.mySites && useSites.api.states.mySites?.length > 0){
 
     menuItems= [
+        {
+          title: 'Inicio',
+          href: '/inicio',
+          icon: AiOutlineHome,
+        },
+        {
+          title: 'Carrito',
+          href: '/carrito',
+          icon: IoCartOutline,
+        },
         {
             title: 'Billetera',
             href: '/billetera',

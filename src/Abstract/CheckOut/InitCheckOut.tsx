@@ -10,6 +10,7 @@ import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
 import { decimalFormatPriceConverter } from '../helpers';
 import { UserAttributesReturn } from '../states/user/useGafpriApiUser';
 import { SitesAttributesReturn } from '../states/sites/useGafpriApiSites';
+import Link from 'next/link';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -87,7 +88,7 @@ export function InitCheckOut({
     sites,
     setCart
 }: InitCheckOutProps) {
-  const { useCheckOut, siteOptions, useOrder } = useTheme();
+  const { useCheckOut, siteOptions, useOrder, useWallet } = useTheme();
 
   let selectAddress: string | null = null;
   let selectSites: string | null = null;
@@ -124,18 +125,21 @@ export function InitCheckOut({
   }, [useCheckOut.attributes.states.shippingType, useCheckOut.attributes.states.addressId, useCheckOut.attributes.states.paymentMethod, useCheckOut.attributes.states.sitesId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const addOrder = async () => {
-    if(useCheckOut.attributes.actions.validationButtonNext()){
+    if(useCheckOut.attributes.actions.validationButtonNext() && useCheckOut.attributes.states.customerWalletAccount){
       useCheckOut.pages.actions.onFetching();
       const data = await useOrder.api.actions.createOrder();
       
       if(data && data.success){
-        
+        await useWallet.attributes.actions.getWalletAccount();
+        await useWallet.attributes.actions.getEntities();
         setCart(null);
         useCheckOut.attributes.actions.infoReset();
         useCheckOut.pages.actions.onFinal();
+      } else{
+        useCheckOut.pages.actions.onError();
       }
     }
-  }
+  } 
 
   return (
     <> 
@@ -244,7 +248,49 @@ export function InitCheckOut({
                   <span className={priceStyles} style={{
                     color: '#c12429',
                   }}>Seleccionar pago</span>
-                  : <span className={priceStyles}>{useCheckOut.attributes.states.paymentMethod === 'cash' ? 'Efectivo' : 'Billetera Gafpri'}</span>}
+                  : <span className={priceStyles}>{useCheckOut.attributes.states.paymentMethod === 'cash' ? 'Efectivo' : 
+                  useCheckOut.attributes.states?.customerWalletAccount && parseFloat(useCheckOut.attributes.states.customerWalletAccount.available) >=  useCheckOut.attributes.states.total ?
+                  `${useCheckOut.attributes.states?.customerWalletAccount.name} | ${decimalFormatPriceConverter(
+                    useCheckOut.attributes.states.customerWalletAccount.available || 0,
+                    siteOptions.DECIMAL_NUMBERS,
+                    siteOptions.CURRENCY_SYMBOL,
+                    siteOptions.CURRENCY_LOCATION
+                  )}` : useCheckOut.attributes.states?.customerWalletAccount ? 
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                  <span style={{
+                    color: '#c12429',
+                  }}>No tienes saldo suficiente en tu billetera {useCheckOut.attributes.states?.customerWalletAccount.name} | {decimalFormatPriceConverter(
+                    useCheckOut.attributes.states.customerWalletAccount.available || 0,
+                    siteOptions.DECIMAL_NUMBERS,
+                    siteOptions.CURRENCY_SYMBOL,
+                    siteOptions.CURRENCY_LOCATION
+                  )}</span> 
+                    <Link href="/billetera/recarga" style={{ textDecoration: 'none', color: 'inherit'}}>
+                      <ButtonAppMobile 
+                        title='Recargar'
+                        containerStyles={{
+                          width: 'fit-content',
+                          margin: '20px auto 0px auto',
+                          borderRadius: '5px',
+                        }}
+                        contentStyles={{
+                          fontSize: '0.9em',
+                          padding: '0.5em',
+                          custom: `
+                            font-weight: 500;
+                          `
+                        }}
+                      /> 
+                    </Link>
+                  </div>: 
+                  
+                  ''}</span>}
                 </div>
                 <div style={{
                   width: '20%',

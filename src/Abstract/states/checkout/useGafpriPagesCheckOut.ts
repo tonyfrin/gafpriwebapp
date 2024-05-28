@@ -11,6 +11,7 @@ type State = {
     isPaymentList: boolean;
     isSummary: boolean;
     isFinal: boolean;
+    isError: boolean;
 };
 
 type Actions = {
@@ -23,6 +24,7 @@ type Actions = {
     onFinal: () => void;
     onStoreList: () => void;
     onAddressUpdate: () => void;
+    onError: () => void;
 };
 
 
@@ -42,6 +44,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
   const [isPaymentList, setIsPaymentList] = useState<boolean>(false);
   const [isSummary, setIsSummary] = useState<boolean>(false);
   const [isFinal, setIsFinal] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const onFetching = () => {
     setIsFetching(true);
@@ -53,6 +56,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onInit = () => {
@@ -65,6 +69,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onStoreList = () => {
@@ -77,6 +82,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onAddressList = () => {
@@ -89,6 +95,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onAddressAdd = () => {
@@ -101,6 +108,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onAddressUpdate = () => {
@@ -113,6 +121,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onPaymentList = () => {
@@ -125,6 +134,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(true);
     setIsSummary(false);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onSummary = () => {
@@ -137,6 +147,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(true);
     setIsFinal(false);
+    setIsError(false);
   }
 
   const onFinal = () => {
@@ -149,7 +160,23 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     setIsPaymentList(false);
     setIsSummary(false);
     setIsFinal(true);
+    setIsError(false);
   }
+
+  const onError = () => {
+    setIsFetching(false);
+    setIsInit(false);
+    setIsStoreList(false);
+    setIsAddressList(false);
+    setIsAddressAdd(false);
+    setIsAddressUpdate(false);
+    setIsPaymentList(false);
+    setIsSummary(false);
+    setIsFinal(false);
+    setIsError(true);
+  }
+
+
 
    /**
    * Export
@@ -167,6 +194,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     isFinal,
     isStoreList,
     isAddressUpdate,
+    isError,
   };
 
   const actions = {
@@ -179,6 +207,7 @@ export function useGafpriPagesCheckOut(): UseGafpriPagesCheckOutReturn {
     onFinal,
     onStoreList,
     onAddressUpdate,
+    onError,
   };
 
   return {

@@ -79,14 +79,22 @@ const checkboxStyles = css`
 `;
 
 export function StoreList() {
-  const { useCheckOut, useSites } = useTheme();
+  const { useCheckOut, useSites, siteOptions } = useTheme();
 
-  const items = useSites.api.states.sites;
+  const items: SitesAttributesReturn[] = [];
+  const sites = useSites.api.states.sites;
+
+  sites?.forEach((site) => {
+    if(`${site.id}` !== `${siteOptions.id}`){
+        items.push(site);
+    }
+  });
+
+
   items?.sort((a, b) => parseInt(a.id) - parseInt(b.id));
 
   const selectSites = (site: SitesAttributesReturn) => {
     useCheckOut.attributes.actions.setSitesId(site.id);
-    useCheckOut.attributes.actions.setSitesWalletAccount(site.sitesEntity[0].entity.walletAccount[0]);
     useCheckOut.pages.actions.onInit();
   }
 
@@ -150,10 +158,12 @@ export function StoreList() {
                     display: 'flex',
                     flexDirection: 'column',
                   }} className={containerColumnCenterStyles}>
-                    <span className={priceTotalStyles}>{item.name}</span>
+                    <span className={priceTotalStyles}>{item.tradename}</span>
                     <span className={priceStyles}>
-                      {`Dirección: ${item.address1} ${item.address2} ${item.city}`}</span>
-                    {item.phone && <span className={priceStyles}>{formatPhoneNumber(item.phone || '')}</span>}
+                      {`${item.address1} ${item.address2}`}</span>
+                      <span className={priceStyles}>
+                      {item.city}</span>
+                    {item.phone && <a href={`tel:+58${item.phone}`} className={priceStyles} style={{ textDecoration: 'none', color: '#07b2e7', fontWeight: 600}}>{formatPhoneNumber(item.phone || '')}</a>}
                   </div>
               </div>
                 </>

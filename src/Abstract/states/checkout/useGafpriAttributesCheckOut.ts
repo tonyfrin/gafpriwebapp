@@ -26,7 +26,7 @@ type Actions = {
     setSitesWalletAccount: (walletAccount: WalletAccountAtrributesReturn | null) => void;
     setCustomerWalletAccount: (walletAccount: WalletAccountAtrributesReturn | null) => void;
     setTotal: (total: number) => void;
-    infoReset: () => void;
+    infoReset: () => void; 
 }
 
 export type UseGafpriAttributesCheckOutReturn = {
@@ -65,7 +65,8 @@ export function useGafpriAttributesCheckOut({usePages}: UseGafpriApiAttributesCh
         validations: [
             shippingType !== '',
             (addressId !== '' || sitesId !== ''),
-            paymentMethod !== ''
+            paymentMethod !== '',
+            customerWalletAccount !== null && parseFloat(customerWalletAccount.balance) >= total,
         ],
         inputId: 'gs-button-purchase'
        })

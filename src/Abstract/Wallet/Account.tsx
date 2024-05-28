@@ -74,7 +74,7 @@ export const Account = ({id}: {id: string | string[] | undefined}) => {
     const transactionsCompletedPush = (transactions: WalletTransactionsAttributesReturn[]) => {
         setTransactionsCompleted([...transactionsCompleted, ...transactions]);
     }
-
+ 
     const getMoreTransactionsPending = async (id: string) => {
         try {
             setFetchingPendingMore(true);

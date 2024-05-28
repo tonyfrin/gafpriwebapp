@@ -53,6 +53,8 @@ export const useGafpriAppWeb = (): UseGafpriAppWebReturn => {
 
     const globalResetInfo = (): void => {
         useWallet.actions.globalResetInfo();
+        useCheckOut.actions.globalResetInfo();
+        useProfile.pages.actions.infoReset();
     }
     const useError = useGafpriError();
     const useLogin = useGafpriLogin({ setIsFetchingGlobal, globalResetInfo, useError});

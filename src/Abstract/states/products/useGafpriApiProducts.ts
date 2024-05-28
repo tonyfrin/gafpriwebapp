@@ -50,6 +50,15 @@ export type ProductsAttributesReturn = {
 
 };
 
+interface QueryOptions {
+  limit: string,
+  orderBy?: string,
+  order?: 'ASC' | 'DESC',
+  offset?: string,
+  categoryId?: string,
+  search?: string,
+}
+
 type dataGetAll = {
   data : {
     items?: ProductsAttributesReturn[], 
@@ -66,10 +75,8 @@ type dataGetById = {
 
 type Actions = {
   getProductsAll: (
-    setItems: (items: ProductsAttributesReturn[]) => void,
-    offset: number,
-    setOffset: (offset: number) => void,
-  ) => Promise<void>;
+    options: QueryOptions
+  ) => Promise<any>;
   getProductById: (
     postsId: string,
     setItem: (item: ProductsAttributesReturn) => void,
@@ -97,29 +104,27 @@ export function useGafpriApiProducts({
 }: UseGafpriProductsProps): UseGafpriApiProductsReturn {
 
   const getProductsAll = async (
-    setItems: (items: ProductsAttributesReturn[]) => void,
-    offset: number,
-    setOffset: (offset: number) => void,
-  ): Promise<void> => {
-    const limit = 2;
+    options: QueryOptions,
+  ): Promise<any> => {
     try {
-      const success = (data: dataGetAll) => {
-        if(data.success){
-          if(data && data.data.items) setItems(data.data.items);
-          setOffset(offset + limit);
-        }
-        
-      }
+
+      let rute = `${PRODUCTS_ROUTE}?limit=${options.limit}`;
+      if(options.orderBy) rute = rute.concat(`&orderBy=${options.orderBy}`);
+      if(options.order) rute = rute.concat(`&order=${options.order}`);
+      if(options.offset) rute = rute.concat(`&offset=${options.offset}`);
+      if(options.categoryId) rute = rute.concat(`&categoryId=${options.categoryId}`);
+      if(options.search) rute = rute.concat(`&search=${options.search}`);
+
       if(useLogin.data.states.token){
-        gafpriFetch<dataGetAll>({
+        const data = await gafpriFetch({
           initMethod: 'GET',
-          initRoute: `${PRODUCTS_ROUTE}?limit=${limit}&orderBy=name&order=ASC&offset=${offset}`,
-          initToken: { token: useLogin.data.states.token },
-          functionSuccess: success as (data: dataGetAll) => void,
+          initRoute: rute,
+          initToken: { token: useLogin.data.states.token }
         });
+        return data;
       }
     } catch (error) {
-      console.error('Error fetching data:', error);
+      return error;
     }
   };
 

@@ -18,7 +18,7 @@ const title1AppStyles = css`
 `
 
 
-export function Final() {
+export function OrderError() {
 
   return (
     <>
@@ -42,7 +42,7 @@ export function Final() {
                     display: 'flex',
                     justifyContent: 'center',
                   }}>
-                      <h1 className={title1AppStyles}>Gracias por su compra</h1>
+                      <h1 className={title1AppStyles}>No pudimos procesar su compra, por favor vuelva a intentarlo.</h1>
                   </div>
                     <Link href="/inicio" style={{
                       textDecoration: 'none',
@@ -51,7 +51,7 @@ export function Final() {
                       justifyContent: 'center',
                     }}>
                       <ButtonAppMobile 
-                        title="Volver a la tienda"
+                        title="Regresar a la tienda"
                       />
                     </Link>
                 </div>

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { css, cx } from '@emotion/css';
 import { useRouter } from 'next/router';
+import { FiChevronLeft } from 'react-icons/fi';
 import Image from 'next/image';
 import { useTheme } from '../context/ThemeContext';
 import { AttributeTable } from '../Table/AttributeTable';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
 import { ProductsAttributesReturn } from '../states/products/useGafpriApiProducts';
 import { Loading } from '../Loading';
+import { BoxCategoryProductsApp } from '../Box/BoxCategoryProductsApp';
 
 export interface GeneralAttribute {
   name: string;
@@ -86,6 +88,12 @@ const priceStyles = css`
     font-size: 1em;
     font-weight: 700;
     margin: 0.5em 0px;
+`
+
+const arrowStyle = css`
+    font-size: 1.5rem;
+    color: #314577;
+    margin: auto 0px;
 `
 
 const productos = css`
@@ -185,7 +193,28 @@ export const Product = ({ item }: ProductProps) => {
 
   return (
     <div className={containerStyles}>
-        <h1 className={title1AppStyles}>{item.publicName}</h1>
+        <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  padding: '1em 0px',
+                  width: '90%',
+                  margin: 'auto',
+                  borderBottom: '1px solid #e1e1e1'
+              }}> 
+                  <h1 style={{textAlign: 'center', padding: '0.3em'}} className={title1AppStyles}>Producto</h1>
+                  <div
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                    }}
+                  >
+                    <FiChevronLeft 
+                        className={arrowStyle}
+                        onClick={() => router.back()}
+                    />
+                  </div>
+              </div>
         <div className={producto}>
             <div className={contentProductStyles}>
                 <Image src={item.image} alt={item.name} className={imgStyles} width={500} height={500}/>
@@ -264,39 +293,20 @@ export const Product = ({ item }: ProductProps) => {
             data={item.attributes || []}
           />
         </section>
+        {
+          item.weight && item.height && item.width && item.length && 
+          <section className={infoSections}>
+            <h4 className={subTitleStyles}>Dimensiones del producto</h4>
+            <AttributeTable 
+              data={dimensionAttributes || []}
+            />
+          </section>
+        }
         <section className={infoSections}>
-          <h4 className={subTitleStyles}>Dimensiones del producto</h4>
-          <AttributeTable 
-            data={dimensionAttributes || []}
+        <BoxCategoryProductsApp 
+            
+            category={item.category}
           />
-        </section>
-        <section className={infoSections}>
-        {/* <BoxCategoryApp 
-            title = 'También te puede interesar'
-            items = {[
-              {
-                title: 'Aires 110 V',
-                img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector3.png',
-                href: '#'
-              },
-              {
-                title: 'Aires 220v',
-                img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector4.png',
-                href: '#'
-              },
-              {
-                title: 'Supervisores',
-                img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector5.png',
-                href: '#'
-              },
-              {
-                title: 'Enchufe',
-                img: 'https://categorygafpri.s3.us-east-2.amazonaws.com/protector6.png',
-                href: '#'
-              }
-            ]}
-            buttonProps={false}
-          /> */}
         </section>
 
 

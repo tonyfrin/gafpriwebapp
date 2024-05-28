@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { css } from '@emotion/css';
 import { AiOutlineCloseCircle } from 'react-icons/ai';
 import { useTheme } from '../context/ThemeContext';
@@ -13,6 +13,7 @@ import { FadeIn } from '../Fade/FadeIn';
 import { StoreList } from '../CheckOut/StoreList';
 import { CartAttributesReturn } from '../states/cart/useGafpriApiCart';
 import { Final } from '../CheckOut/Final';
+import { OrderError } from '../CheckOut/OrderError';
 
 const containerModalStyle = css`
   background-color: #ececec;
@@ -43,15 +44,26 @@ export function CheckOut({
     cart,
     setCart
 }: CheckOutProps) {
-  const { useCheckOut, useUser, useSites } = useTheme();
+  const { useCheckOut, useUser, useSites, siteOptions } = useTheme();
   const user = useUser.api.states.user;
 
   const sites = useSites.api.states.sites;
+
+
 
   const returnItit = () => {
     setModal(false);
     useCheckOut.pages.actions.onInit();
   }
+
+  useEffect(() => {
+    if(sites && sites?.length > 0) {
+      const mainSite = useSites.api.actions.getSiteById(siteOptions.id.toString());
+      if(mainSite){
+        useCheckOut.attributes.actions.setSitesWalletAccount(mainSite.sitesEntity[0].entity.walletAccount[0]);
+      }
+    }
+  }, [sites]); // eslint-disable-line react-hooks/exhaustive-deps
 
 
   return (
@@ -121,6 +133,13 @@ export function CheckOut({
                         useCheckOut.pages.states.isFinal && user &&
                         <FadeIn keyName='isFinal' isVisible={useCheckOut.pages.states.isFinal}>
                           <Final />
+                        </FadeIn>
+                      }
+
+{
+                        useCheckOut.pages.states.isError && user &&
+                        <FadeIn keyName='isError' isVisible={useCheckOut.pages.states.isError}>
+                          <OrderError />
                         </FadeIn>
                       }
                   </div>

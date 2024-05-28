@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IoCartOutline } from 'react-icons/io5';
 import Link from 'next/link';
-import { LayoutApp } from './LayoutApp';
+import { LayoutAppProfile } from './LayoutAppProfile';
 import { css } from '@emotion/css';
 import { BoxCart } from '../Box/BoxCart';
 import { ButtonAppMobile } from '../Button/ButtonAppMobile';
@@ -60,7 +60,7 @@ export function Cart() {
 
   return (
     <>
-      <LayoutApp>
+      <LayoutAppProfile>
         <>
           <main className={mainStyles}>
             {fetching ? ( <Loading /> ) : !item ?
@@ -83,7 +83,7 @@ export function Cart() {
                   }}>
                       <h1 className={title1AppStyles}>El Carrito esta vacío</h1>
                   </div>
-                    <Link href="/tienda" style={{
+                    <Link href="/inicio" style={{
                       textDecoration: 'none',
                       color: 'inherit',
                       display: 'flex',
@@ -115,7 +115,7 @@ export function Cart() {
             )}
           </main>
         </>
-      </LayoutApp>
+      </LayoutAppProfile>
     
         <Modal open={modal}>
           <CheckOut setModal={setModal} modal={modal} cart={item} setCart={setItem}/>

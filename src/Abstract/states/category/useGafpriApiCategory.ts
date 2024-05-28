@@ -4,6 +4,7 @@ import {
 } from '../../constants';
 import { UseGafpriErrorReturn, ErrorResponseProps, CustomErrorResponseProps } from '../useGafpriError';
 import { UseGafpriLoginReturn } from '../login/useGafpriLogin';
+import { ProductsAttributesReturn } from '../products/useGafpriApiProducts';
 
 export type CategoryAttributesReturn = {
     id: string,
@@ -16,6 +17,7 @@ export type CategoryAttributesReturn = {
     createdAt: string,
     modifiedAt: string,
     children: CategoryAttributesReturn[],
+    products: ProductsAttributesReturn[],
 };
 
 type dataGetById = {

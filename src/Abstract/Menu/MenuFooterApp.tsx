@@ -21,7 +21,6 @@ const contentStyle = css`
 export type Items = {
     icon: IconType;
     title: string;
-    onClick?: () => void;
     href: string;
 }
 
@@ -38,5 +37,5 @@ export const MenuFooterApp = ({ items }: MenuFooterAppProps) => {
                 <ButtonFooterApp items={items}/>
             </div>
         </div>
-    )
+    ) 
 }

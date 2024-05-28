@@ -51,6 +51,10 @@ export const InitProfile = () => {
             action: () => useProfile.pages.actions.onPassword(),
         },
         {
+            name: 'Pedidos',
+            action: () => useProfile.pages.actions.onOrderList(),
+        },
+        {
             name: 'Cerrar sesion',
             action: () => useLogin.data.actions.logout(),
         }

@@ -119,7 +119,11 @@ export function BoxCart({
     const response = await (await useCartItems.api).actions.updateItemToCart(qty, id);
     if(response && response.success){
       setCart(response.item);
-      useCheckOut.attributes.actions.setTotal(response.item.total);
+      if(response.item && response.item.cartItems && response.item.cartItems.length > 0){
+        useCheckOut.attributes.actions.setTotal(response.item.total);
+      } else{
+        useCheckOut.attributes.actions.setTotal(0);
+      }
       setFetching(false);
     }
   }

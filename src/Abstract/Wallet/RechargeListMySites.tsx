@@ -169,7 +169,7 @@ export const RechargeListMySites = ({id}: {id: string | string[] | undefined}) =
                                     <h1 style={{textAlign: 'left', padding: '0.3em', width: '95%', margin: 'auto', fontSize: '0.7em'}} className={title1AppStyles}>Recargas</h1>
                                         
                                         {rechargePending.length > 0 ? rechargePending.map((payment, index) => { 
-                                            console.log(payment);
+                                            
                                             const titleStatus = payment.posts.status === 'pending' ? 'Pendiente' : 
                                                                 payment.posts.status === 'canceled' ? 'Rechazado' : 
                                                                 payment.posts.status === 'complete' ? 'Procesado' : '';
