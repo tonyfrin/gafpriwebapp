@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { UseGafpriLoginReturn } from '../../states/login/useGafpriLogin';
+import Link from 'next/link';
 
 
 const buttonAppMobileContentStyles = css`
@@ -78,6 +79,30 @@ export const LoginStep = ({
                         onChange: (e) => useLogin.attributes.actions.changePassword(e.target.value)
                     }}
                 />
+            </div>
+            <div className={containerInput}>
+                <Link href="/login/recuperar-contrasena"
+                    style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        flexDirection: 'column',
+                        width: '90%',
+                        margin: 'auto',
+                        textDecoration: 'none',
+                        color: 'inherit',
+                    }}
+                >
+                <span
+                    style={{
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '0.75em',
+                        color: 'rgb(157 155 155)',
+                        fontWeight: 600,
+                        cursor: 'pointer'
+                    }}
+                >¿Olvidaste tu contraseña?</span>
+                </Link>
             </div>
         <div className={loginContainerStyles}>
             <div className={loginContentStyles}>

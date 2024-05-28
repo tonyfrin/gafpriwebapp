@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generalValidationButtonNext } from '../../helpers';
+import { generalValidationButtonNext, validationInput } from '../../helpers';
 
 type state = {
     roleName: string;
@@ -7,6 +7,8 @@ type state = {
     entityId: string;
     currentPassword: string;
     newPassword: string;
+    email: string;
+    emailValid: boolean;
 }
 
 type actions = {
@@ -15,6 +17,9 @@ type actions = {
     setCurrentPassword: (value: string) => void;
     setNewPassword: (value: string) => void;
     validationPasswordBotton: () => boolean;
+    validationPasswordResetBotton: () => boolean;
+    validationEmail: (value: string) => boolean;
+    changeEmail: (value: string) => void;
 }
 
 export type UseGafpriAttributesUserReturn = {
@@ -33,6 +38,9 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
     ];
     const [currentPassword, setCurrentPassword] = useState<string>('');
     const [newPassword, setNewPassword] = useState<string>('');
+    const [email, setEmail] = useState<string>('');
+    const [emailValid, setEmailValid] = useState<boolean>(false);
+
 
     const validationPasswordBotton = (): boolean => {
         const valid = generalValidationButtonNext({
@@ -46,6 +54,34 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
         return valid;
     }
 
+    const validationPasswordResetBotton = (): boolean => {
+        const valid = generalValidationButtonNext({
+            validations: [
+                emailValid
+            ],
+            inputId: 'password-reset',
+        });
+        return valid;
+    }
+
+    const validationEmail = (value: string) => {
+        const valid = validationInput(
+            value,
+            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+            true
+        );
+        if (valid !== emailValid) {
+            setEmailValid(valid);
+        }
+        return valid;
+    }
+
+    const changeEmail = (value: string) => {
+        const newValue = value.toLowerCase();
+        validationEmail(newValue);
+        setEmail(value);
+    }
+
     return {
         states: {
             roleName,
@@ -53,13 +89,18 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
             entityId,
             currentPassword,
             newPassword,
+            email,
+            emailValid
         },
         actions: {
             setRoleName,
             setEntityId,
             setCurrentPassword,
             setNewPassword,
-            validationPasswordBotton
+            validationPasswordBotton,
+            validationPasswordResetBotton,
+            validationEmail,
+            changeEmail
         }
     }
 

@@ -214,7 +214,7 @@ export const Product = ({ item }: ProductProps) => {
                         onClick={() => router.back()}
                     />
                   </div>
-              </div>
+          </div>
         <div className={producto}>
             <div className={contentProductStyles}>
                 <Image src={item.image} alt={item.name} className={imgStyles} width={500} height={500}/>
