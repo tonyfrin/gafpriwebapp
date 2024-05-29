@@ -4,6 +4,7 @@ import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { useTheme } from '../../context/ThemeContext';
 import { Error } from '../../Error';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 
 
@@ -79,6 +80,7 @@ export const EmailStep = ({
                 }}
                 description="Te enviaremos un codigo de verificación"
             />
+            <WhatsApp />
         <div className={loginContainerStyles}>
             <div className={loginContentStyles}>
                 <ButtonAppMobile title="Continuar" 

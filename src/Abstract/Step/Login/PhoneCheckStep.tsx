@@ -3,8 +3,11 @@ import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { ButtonEditInfo } from '../../Button/ButtonEditInfo';
-import { UseGafpriAttributesSingUpReturn } from '../../states/singUp/useGafpriAttributesSingUp';
-import { UseGafpriPagesSingUpReturn } from '../../states/singUp/useGafpriPagesSingUp';
+import { formatPhoneNumberVzla } from '../../helpers';
+import { Loading } from '../../Loading';
+import { useTheme } from '../../context/ThemeContext';
+import { Error } from '../../Error';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -28,66 +31,79 @@ const loginContentStyles = css`
 `;
 
 
-export type PhoneCheckStepProps = {
-    pages: UseGafpriPagesSingUpReturn;
-    attributes: UseGafpriAttributesSingUpReturn;
-}
-
-
-export const PhoneCheckStep = ({
-    pages,
-    attributes
-}: PhoneCheckStepProps) => {
+export const PhoneCheckStep = () => {
+    const { useSingUp, useError } = useTheme();
+    const [fetching, setFetching] = React.useState(false);
 
     const returnPhone = () => {
-        attributes.actions.changePhone('');
-        pages.actions.onPhone();
+        useSingUp.attributes.actions.changePhone('');
+        useSingUp.pages.actions.onPhone();
     }
 
     useEffect(() => {
-        attributes.actions.validationCheckPhone(attributes.states.checkPhone, '0000');
-    }, [attributes.states.checkPhone]); // eslint-disable-line
+        useSingUp.attributes.actions.validationCheckPhone(useSingUp.attributes.states.checkPhone);
+    }, [useSingUp.attributes.states.checkPhone]); // eslint-disable-line
 
     useEffect(() => {
-        attributes.actions.validationButtonStep4();
-    }, [ attributes.states.checkPhone, attributes.states.checkPhoneValid ]); // eslint-disable-line
+        useSingUp.attributes.actions.validationButtonStep4();
+    }, [ useSingUp.attributes.states.checkPhone, useSingUp.attributes.states.checkPhoneValid ]); // eslint-disable-line
 
-    const next = () => {
-        if (attributes.actions.validationButtonStep4()) {
-            pages.actions.onName();
+    const next = async () => {
+        if (useSingUp.attributes.actions.validationButtonStep4()) {
+            try{
+                setFetching(true);
+                const data = await useSingUp.api.actions.checkPhoneCode();
+                if(data && data.success){
+                    useSingUp.pages.actions.onName();
+                } else {
+                    useError.actions.changeError(['Código incorrecto, vuelva a intentarlo.']);
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                setFetching(false);
+            }
         }
     }
 
   return (
     <>
-        <div>
-            <h1 className={buttonAppMobileContentStyles}>Revisa tu bandeja de texto en tu teléfono</h1>
-        </div>
-        <ButtonEditInfo 
-            content={attributes.states.phone}
-            buttonProps={{
-                buttonTitle: 'Editar',
-                onClick: () => returnPhone()
-            }}
-        />
-        <InputAppContainer 
-            inputProps={{
-                type: 'number',
-                placeholder: 'Código de verificación',
-                onChange: (e) => attributes.actions.changeCheckPhone(e.target.value)
-            }}
-            description="Te enviamos un código de verificación"
-        />
-        <div className={loginContainerStyles}>
-            <div className={loginContentStyles}>
-                <ButtonAppMobile title="Continuar" 
-                    containerProps={{
-                        onClick: () => next(),
-                        id: 'btn-step-4'
+        {fetching ? <Loading /> :
+            <>
+                <Error 
+                    error={useError.states.error}
+                />
+                <div>
+                    <h1 className={buttonAppMobileContentStyles}>Revisa la bandeja de texto en tu teléfono</h1>
+                </div>
+                <ButtonEditInfo 
+                    content={formatPhoneNumberVzla(useSingUp.attributes.states.phone) || 'Número invalido'}
+                    buttonProps={{
+                        buttonTitle: 'Editar',
+                        onClick: () => returnPhone()
                     }}
                 />
-            </div>
-        </div>
+                <InputAppContainer 
+                    inputProps={{
+                        type: 'number',
+                        placeholder: 'Código de verificación',
+                        onChange: (e) => useSingUp.attributes.actions.changeCheckPhone(e.target.value)
+                    }}
+                    description="Te enviamos un código de verificación"
+                />
+                <WhatsApp />
+                <div className={loginContainerStyles}>
+                    <div className={loginContentStyles}>
+                        <ButtonAppMobile title="Continuar" 
+                            containerProps={{
+                                onClick: () => next(),
+                                id: 'btn-step-4'
+                            }}
+                        />
+                    </div>
+                </div>
+            </>
+        }
      </>
   );
 }

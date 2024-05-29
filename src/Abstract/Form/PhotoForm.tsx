@@ -28,6 +28,7 @@ const defaultImageFormConatinerStyle = css`
   display: flex;
   flex-direction: column-reverse;
   width: 100%;
+  margin-top: 2em; 
 `;
 
 const defaultLoadingContainerStyle = css`
@@ -106,11 +107,13 @@ export const PhotoForm = ({
             id="file-input"
             ref={fileInputRef}
             hidden
+            accept="image/*"
+            capture="user"
             onChange={changePhoto}
           />
           {!photo ?
             <ButtonAppMobile 
-              title="Cambiar Foto"
+              title="Subir Foto"
               containerProps={{
                 onClick: handleButtonClick,
               }}

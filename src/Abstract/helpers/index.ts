@@ -255,3 +255,19 @@ export const formatDateVzla = (date: string): string => {
 
   return dateFormat;
 }
+
+export function formatPhoneNumberVzla(phoneNumber: string): string | null {
+  // Asegurarse de que el número tiene exactamente 12 dígitos
+  if (phoneNumber.length !== 12) {
+      return null;
+  }
+
+  // Extraer las partes del número de teléfono
+  const countryCode = phoneNumber.slice(0, 2);
+  const areaCode = phoneNumber.slice(2, 5);
+  const firstPart = phoneNumber.slice(5, 8);
+  const secondPart = phoneNumber.slice(8, 12);
+
+  // Formatear el número de teléfono
+  return `+${countryCode} (${areaCode}) ${firstPart}-${secondPart}`;
+}

@@ -5,6 +5,7 @@ import { InputAppContainer } from '../../Input/InputAppContainer';
 import { useTheme } from '../../context/ThemeContext';
 import { SelectApp } from '../../Select/SelectApp';
 import { Loading } from '../../Loading';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 
 const buttonAppMobileContentStyles = css`
@@ -32,6 +33,15 @@ const containerInput = css`
     margin: 20px auto;
 `
 
+const inputAppTitleStyles = css`
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: #a0a0a0;
+    font-family: 'Poppins', sans-serif;
+    margin: 2px 0px;
+    text-align: center;
+`
+
 
 export const LegalStep = () => {
     const { useSingUp, useUser } = useTheme();
@@ -48,7 +58,6 @@ export const LegalStep = () => {
 
         setInputIndex(() => (
             <SelectApp 
-                
                 options={useSingUp.attributes.states.indexOptions}
                 value={useSingUp.attributes.states.index}
                 onChange={(e) => useSingUp.attributes.actions.changeIndex({ value: e, label: e })}
@@ -90,9 +99,11 @@ export const LegalStep = () => {
             <div>
                 <h1 className={buttonAppMobileContentStyles}>Tu documento Legal</h1>
             </div>
+            <p style={{width: '75%', margin: 'auto'}}className={inputAppTitleStyles}>{`Se requiere número de cédula de identidad`} </p>    
                 <div className={containerInput}style={{
                     display: 'flex',
                 }}>
+                    
                     {InputTypeDocumentIdId}
                 </div>
                 <div className={containerInput} style={{
@@ -108,6 +119,7 @@ export const LegalStep = () => {
                             defaultValue: useSingUp.attributes.states.digit
                         }}
                     />
+                    <WhatsApp />
                 
             <div className={loginContainerStyles}>
                 <div className={loginContentStyles}>

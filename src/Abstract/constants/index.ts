@@ -17,6 +17,7 @@ export const WALLET_ACCOUNT_ROUTE = '/wallet-account';
 export const PAYMENT_WALLET = '/payment-wallet';
 export const WALLET_TRANSACTIONS = '/wallet-transactions';
 export const EMAIL_CHECK_ROUTE = '/email-check';
+export const PHONE_CHECK_ROUTE = '/phone-check';
 export const UPLOAD_PHOTO_ROUTE = `${getApiUrl()}//upload-file`;
 export const TYPE_DOCUMENT_ID_ROUTE = '/type-document-id';
 export const PAYMENT_METHODS_ROUTE = '/payment-methods';

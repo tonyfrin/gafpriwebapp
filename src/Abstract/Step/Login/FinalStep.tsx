@@ -37,7 +37,7 @@ export const FinalStep = () => {
   return (
     <>
         <div>
-            <h1 className={buttonAppMobileContentStyles}>¡Listo! Revisaremos tu información para activar tu cuenta.</h1>
+            <h1 className={buttonAppMobileContentStyles}>¡Listo! Revisaremos tu información para activar tu cuenta, y te enviaremos un correo con la aprobación.</h1>
         </div>
         <div>
             <h1 className={buttonAppMobileContentStyles}>¡Muchas Gracias!</h1>

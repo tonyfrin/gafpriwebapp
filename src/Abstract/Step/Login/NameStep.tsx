@@ -3,6 +3,7 @@ import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { useTheme } from '../../context/ThemeContext';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -70,6 +71,7 @@ export const NameStep = () => {
                     }}
                 />
             </div>
+            <WhatsApp />
         <div className={loginContainerStyles}>
             <div className={loginContentStyles}>
                 <ButtonAppMobile title="Continuar" 

@@ -4,6 +4,8 @@ import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { PhotoForm } from '../../Form/PhotoForm';
 import { useTheme } from '../../context/ThemeContext';
 import { Error } from '../../Error';
+import Image from 'next/image';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -29,6 +31,26 @@ const loginContentStyles = css`
 const containerInput = css`
     margin: 20px auto;
     display: flex;
+`
+const inputAppTitleStyles = css`
+    font-size: 0.6rem;
+    font-weight: 500;
+    color: #a0a0a0;
+    font-family: 'Poppins', sans-serif;
+    margin: 2px 0px 1em 0px;
+    text-align: center;
+`
+
+const imageStyle = css`
+    color: transparent;
+    width: 10%;
+    height: 10%;
+    border-radius: 15px;
+
+    @media (max-width: 768px) {
+        width: 30%;
+        height: 30%;
+    }
 `
 
 export const SelfieStep = () => {
@@ -63,9 +85,29 @@ export const SelfieStep = () => {
         }
     }
   return (
-    <>
-        <div>
-            <h1 className={buttonAppMobileContentStyles}>Tomate una Selfie</h1>
+    <div
+        style={{
+            marginBottom: '300px'
+        }}
+    >
+        <div
+            style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                flexDirection: 'column',
+                margin: '20px 0'
+            }}
+        >
+            <h1 className={buttonAppMobileContentStyles}>Tómate una foto de frente</h1>
+            <p className={inputAppTitleStyles}>{`Se requiere una selfie o una foto retrato`} </p>
+            <Image 
+                className={imageStyle}
+                src="https://categorygafpri.s3.us-east-2.amazonaws.com/Captura+de+pantalla+2024-05-28+a+la(s)+7.42.37%E2%80%AFp.m..png"
+                alt="step 7"
+                width={375}
+                height={375}
+            />
         </div>
             <Error 
                 error={useError.states.error}
@@ -80,6 +122,7 @@ export const SelfieStep = () => {
                     formId='userPhoto'
                 />
             </div>
+            <WhatsApp />
             
         <div className={loginContainerStyles}>
             <div className={loginContentStyles}>
@@ -91,6 +134,6 @@ export const SelfieStep = () => {
                 />
             </div>
         </div>
-     </>
+     </div>
   );
 }

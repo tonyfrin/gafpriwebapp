@@ -3,6 +3,7 @@ import { css } from '@emotion/css';
 import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { useTheme } from '../../context/ThemeContext';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -39,9 +40,15 @@ export const PhoneStep = () => {
         useSingUp.attributes.actions.validationButtonStep3();
     }, [ useSingUp.attributes.states.phone, useSingUp.attributes.states.phoneValid ]); // eslint-disable-line
 
-    const next = () => {
+    const next = async () => {
         if (useSingUp.attributes.actions.validationButtonStep3()) {
-            useSingUp.pages.actions.onName();
+            try{
+                await useSingUp.api.actions.requestPhoneCode();
+            } catch (error) {
+                console.error(error);
+            } finally {
+                useSingUp.pages.actions.onPhoneCheck();
+            }
         }
     }
 
@@ -59,6 +66,7 @@ export const PhoneStep = () => {
             }}
             description="Sin el 0 por delante. (Solo télefonos de Venezuela) Ejemplo: 4141234567"
         />
+        <WhatsApp />
         <div className={loginContainerStyles}>
             <div className={loginContentStyles}>
                 <ButtonAppMobile title="Continuar" 

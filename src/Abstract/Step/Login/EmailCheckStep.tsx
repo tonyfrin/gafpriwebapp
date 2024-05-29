@@ -6,6 +6,7 @@ import { ButtonEditInfo } from '../../Button/ButtonEditInfo';
 import { useTheme } from '../../context/ThemeContext';
 import { Loading } from '../../Loading';
 import { Error } from '../../Error';
+import { WhatsApp } from '@/Abstract/Notification/WhatsApp';
 
 const buttonAppMobileContentStyles = css`
     font-size: 1.5em;
@@ -91,6 +92,7 @@ export const EmailCheckStep = () => {
                 }}
                 description="Te enviamos un código de verificación"
             />
+            <WhatsApp />
             <div className={loginContainerStyles}>
                 <div className={loginContentStyles}>
                     <ButtonAppMobile title="Continuar" 

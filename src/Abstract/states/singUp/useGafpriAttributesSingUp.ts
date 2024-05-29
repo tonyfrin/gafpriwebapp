@@ -1,12 +1,8 @@
 'use client'
-import React from 'react';
 import { useState, ChangeEvent } from 'react';
 import { SingleValue } from 'react-select';
 import { generalValidationButtonNext, validationInput } from '../../helpers';
-import { generalChangePhoto } from '../../change/generalChangePhoto';
 import { UseGafpriErrorReturn } from '../useGafpriError';
-import { connectToWebSocket } from '../../helpers';
-import { API_URL } from '../../constants';
 import { generalChangePhotoWebSockets } from '@/Abstract/change/generalChangePhotoWebSockets';
 
 type State = {
@@ -43,7 +39,7 @@ type Actions = {
     validationEmail: (value: string) => boolean;
     validationCheckEmail: (value: string) => boolean;
     validationPhone: (value: string) => boolean;
-    validationCheckPhone: (value: string, codeApi: string) => boolean;
+    validationCheckPhone: (value: string) => boolean;
     validationName: (value: string) => boolean;
     validationLastName: (value: string) => boolean;
     validationTypeDocumentIdId: (value: string) => boolean;
@@ -123,7 +119,6 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
     },
     { label: 'V', value: 'V' },
     { label: 'E', value: 'E' },
-    { label: 'No Aplica', value: 'null' },
   ];
 
   const [digit, setDigit] = useState('');
@@ -198,7 +193,7 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   const validationPhone = (value: string) => {
     const valid = validationInput(
       value,
-      /^[0-9]{10}/,
+      /^[0-9]{12}$/,
       true
     );
     if (valid !== phoneValid) {
@@ -207,8 +202,8 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
     return valid;
   }
 
-  const validationCheckPhone = (value: string, codeApi: string) => {
-    const valid = `${value}` === `${codeApi}`;
+  const validationCheckPhone = (value: string) => {
+    const valid = value.length === 4;
     if (valid !== checkPhoneValid) {
       setCheckPhoneValid(valid);
     }
@@ -299,12 +294,16 @@ export function useGafpriAttributesSingUp({useError}: UseGafpriAttributesSingUpP
   }
 
   const changePhone = (value: string) => {
-    validationPhone(value);
-    setPhone(value);
+    let newValue = value;
+    if(value !== ''){
+      newValue = `58${value}`;
+    }
+    validationPhone(newValue);
+    setPhone(newValue);
   }
 
   const changeCheckPhone = (value: string) => {
-    validationCheckPhone(value, '0000');
+    validationCheckPhone(value);
     setCheckPhone(value);
   }
 

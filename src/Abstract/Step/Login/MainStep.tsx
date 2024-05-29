@@ -15,6 +15,7 @@ import { ProgressBar } from '../../Bar/ProgressBar';
 import { useTheme } from '../../context/ThemeContext';
 import { Loading } from '../../Loading';
 import { LayoutLogin } from '../../Component/LayoutLogin';
+import { PhoneCheckStep } from './PhoneCheckStep';
 
 const progressBarContainerStyles = css`
     display: flex;
@@ -119,6 +120,12 @@ export const MainStep = () => {
           <PhoneStep 
             
           />
+        </FadeIn>
+      }
+
+      {useSingUp.pages.states.isPhoneCheck && 
+        <FadeIn keyName="isPhoneCheck" isVisible={useSingUp.pages.states.isPhoneCheck}>
+          <PhoneCheckStep />
         </FadeIn>
       }
 

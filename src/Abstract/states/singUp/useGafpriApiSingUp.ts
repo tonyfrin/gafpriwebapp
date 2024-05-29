@@ -1,4 +1,4 @@
-import { EMAIL_CHECK_ROUTE, USER_ROUTE } from '../../constants';
+import { EMAIL_CHECK_ROUTE, PHONE_CHECK_ROUTE, USER_ROUTE } from '../../constants';
 import { gafpriFetch } from '../../helpers';
 import { UseGafpriAttributesSingUpReturn } from './useGafpriAttributesSingUp';
 
@@ -11,6 +11,8 @@ type actions = {
     requestEmailCode: () => Promise<any>;
     checkEmailCode: () => Promise<any>;
     addUser: () => Promise<any>;
+    requestPhoneCode: () => Promise<any>;
+    checkPhoneCode: () => Promise<any>;
 }
 
 export type UseGafpriApiSingUpReturn = {
@@ -32,12 +34,38 @@ export const useGafpriApiSingUp = ({attributes}: UseGafpriApiSingUpProps)  => {
         }
     }
 
+    const requestPhoneCode = async (): Promise<any> => {
+        try {
+            const data = await gafpriFetch({
+                initMethod: 'POST',
+                initRoute: PHONE_CHECK_ROUTE,
+                initCredentials: { phone: attributes.states.phone }
+            });
+            return data;
+        } catch (error) {
+            return error;
+        }
+    }
+
     const checkEmailCode = async (): Promise<any> => {
         try {
             const data = await gafpriFetch({
                 initMethod: 'POST',
                 initRoute: `${EMAIL_CHECK_ROUTE}/check`,
                 initCredentials: { email: attributes.states.email, code: attributes.states.checkEmail }
+            });
+            return data;
+        } catch (error) {
+            return error;
+        }
+    }
+
+    const checkPhoneCode = async (): Promise<any> => {
+        try {
+            const data = await gafpriFetch({
+                initMethod: 'POST',
+                initRoute: `${PHONE_CHECK_ROUTE}/check`,
+                initCredentials: { phone: attributes.states.phone, code: attributes.states.checkPhone }
             });
             return data;
         } catch (error) {
@@ -54,6 +82,7 @@ export const useGafpriApiSingUp = ({attributes}: UseGafpriApiSingUpProps)  => {
                 email: attributes.states.email,
                 code: attributes.states.checkEmail,
                 phone: attributes.states.phone,
+                phoneCode: attributes.states.checkPhone,
                 name: attributes.states.name,
                 lastName: attributes.states.lastName,
                 photo: attributes.states.userPhoto,
@@ -75,7 +104,9 @@ export const useGafpriApiSingUp = ({attributes}: UseGafpriApiSingUpProps)  => {
         actions: {
             requestEmailCode,
             checkEmailCode,
-            addUser
+            addUser,
+            requestPhoneCode,
+            checkPhoneCode
         }
     }
 
