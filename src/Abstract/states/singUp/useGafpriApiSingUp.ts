@@ -11,7 +11,7 @@ type actions = {
     requestEmailCode: () => Promise<any>;
     checkEmailCode: () => Promise<any>;
     addUser: () => Promise<any>;
-    requestPhoneCode: () => Promise<any>;
+    requestPhoneCode: (phone: string) => Promise<any>;
     checkPhoneCode: () => Promise<any>;
 }
 
@@ -34,12 +34,12 @@ export const useGafpriApiSingUp = ({attributes}: UseGafpriApiSingUpProps)  => {
         }
     }
 
-    const requestPhoneCode = async (): Promise<any> => {
+    const requestPhoneCode = async (phone: string): Promise<any> => {
         try {
             const data = await gafpriFetch({
                 initMethod: 'POST',
                 initRoute: PHONE_CHECK_ROUTE,
-                initCredentials: { phone: attributes.states.phone }
+                initCredentials: { phone }
             });
             return data;
         } catch (error) {

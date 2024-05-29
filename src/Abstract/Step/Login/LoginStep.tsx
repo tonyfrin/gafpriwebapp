@@ -5,6 +5,7 @@ import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { InputAppContainer } from '../../Input/InputAppContainer';
 import { UseGafpriLoginReturn } from '../../states/login/useGafpriLogin';
 import Link from 'next/link';
+import { WhatsApp } from '../../Notification/WhatsApp';
 
 
 const buttonAppMobileContentStyles = css`
@@ -103,6 +104,7 @@ export const LoginStep = ({
                     }}
                 >¿Olvidaste tu contraseña?</span>
                 </Link>
+                <WhatsApp />
             </div>
         <div className={loginContainerStyles}>
             <div className={loginContentStyles}>

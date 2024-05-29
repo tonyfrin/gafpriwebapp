@@ -9,6 +9,10 @@ type state = {
     newPassword: string;
     email: string;
     emailValid: boolean;
+    phone: string;
+    phoneValid: boolean;
+    phoneCode: string;
+    phoneCodeValid: boolean;
 }
 
 type actions = {
@@ -20,6 +24,12 @@ type actions = {
     validationPasswordResetBotton: () => boolean;
     validationEmail: (value: string) => boolean;
     changeEmail: (value: string) => void;
+    validationPhone: (value: string) => boolean;
+    changePhone: (value: string) => void;
+    validationCheckPhone: (value: string) => boolean;
+    changePhoneCode: (value: string) => void;
+    validationPhoneBotton1: () => boolean;
+    validationPhoneBotton2: () => boolean;
 }
 
 export type UseGafpriAttributesUserReturn = {
@@ -40,6 +50,10 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
     const [newPassword, setNewPassword] = useState<string>('');
     const [email, setEmail] = useState<string>('');
     const [emailValid, setEmailValid] = useState<boolean>(false);
+    const [phone, setPhone] = useState<string>('');
+    const [phoneValid, setPhoneValid] = useState<boolean>(false);
+    const [phoneCode, setPhoneCode] = useState<string>('');
+    const [phoneCodeValid, setPhoneCodeValid] = useState<boolean>(false);
 
 
     const validationPasswordBotton = (): boolean => {
@@ -64,6 +78,27 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
         return valid;
     }
 
+    const validationPhoneBotton1 = (): boolean => {
+        const valid = generalValidationButtonNext({
+            validations: [
+                phoneValid
+            ],
+            inputId: 'phone-1',
+        });
+        return valid;
+    }
+
+    const validationPhoneBotton2 = (): boolean => {
+        const valid = generalValidationButtonNext({
+            validations: [
+                phoneValid,
+                phoneCodeValid
+            ],
+            inputId: 'phone-2',
+        });
+        return valid;
+    }
+
     const validationEmail = (value: string) => {
         const valid = validationInput(
             value,
@@ -76,11 +111,45 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
         return valid;
     }
 
+    const validationPhone = (value: string) => {
+        const valid = validationInput(
+          value,
+          /^[0-9]{12}$/,
+          true
+        );
+        if (valid !== phoneValid) {
+          setPhoneValid(valid);
+        }
+        return valid;
+      }
+    
+      const validationCheckPhone = (value: string) => {
+        const valid = value.length === 4;
+        if (valid !== phoneCodeValid) {
+          setPhoneCodeValid(valid);
+        }
+        return valid;
+      }
+
     const changeEmail = (value: string) => {
         const newValue = value.toLowerCase();
         validationEmail(newValue);
         setEmail(value);
     }
+
+    const changePhone = (value: string) => {
+        let newValue = value;
+        if(value !== ''){
+          newValue = `58${value}`;
+        }
+        validationPhone(newValue);
+        setPhone(newValue);
+      }
+    
+      const changePhoneCode = (value: string) => {
+        validationCheckPhone(value);
+        setPhoneCode(value);
+      }
 
     return {
         states: {
@@ -90,7 +159,11 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
             currentPassword,
             newPassword,
             email,
-            emailValid
+            emailValid,
+            phone,
+            phoneValid,
+            phoneCode,
+            phoneCodeValid
         },
         actions: {
             setRoleName,
@@ -100,7 +173,13 @@ export const useGafpriAttributesUser = (): UseGafpriAttributesUserReturn => {
             validationPasswordBotton,
             validationPasswordResetBotton,
             validationEmail,
-            changeEmail
+            changeEmail,
+            validationPhone,
+            changePhone,
+            validationCheckPhone,
+            changePhoneCode,
+            validationPhoneBotton1,
+            validationPhoneBotton2
         }
     }
 

@@ -17,6 +17,8 @@ type CurrentUserAttributes = {
   name: string;
   lastName: string;
   photo: string;
+  phone: string;
+  phoneConfirmation: boolean;
 };
 
 interface LoginCredentials {
@@ -43,6 +45,11 @@ type Actions = {
   }) => void;
 
   onCheckLoginTokenLogin: (data: {
+    user?: CurrentUserAttributes | undefined;
+    token?: string | undefined;
+  }) => void;
+
+  onCheckLoginTokenRefresh: (data: {
     user?: CurrentUserAttributes | undefined;
     token?: string | undefined;
   }) => void;
@@ -111,6 +118,20 @@ export function useGafpriDataLogin({
       setIsFetchingGlobal(false);
       router.push('/inicio');
       attributes.actions.resetInfo();
+    }
+  };
+
+  const onCheckLoginTokenRefresh = (data: {
+    user?: CurrentUserAttributes | undefined;
+    token?: string | undefined;
+  }): void => {
+    if (data && data.user && data.token) {
+      changeCurrentUser(data.user);
+      setIsLogin(true);
+      setIsFetchingGlobal(false);
+      attributes.actions.resetInfo();
+    } else {
+      logout();
     }
   };
 
@@ -210,7 +231,9 @@ export function useGafpriDataLogin({
 
     onCheckLoginToken,
 
-    onCheckLoginTokenLogin
+    onCheckLoginTokenLogin,
+
+    onCheckLoginTokenRefresh
   };
 
   return {

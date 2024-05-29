@@ -51,6 +51,10 @@ export const InitProfile = () => {
             action: () => useProfile.pages.actions.onPassword(),
         },
         {
+            name: 'Teléfono',
+            href: '/perfil/telefono',
+        },
+        {
             name: 'Pedidos',
             action: () => useProfile.pages.actions.onOrderList(),
         },
