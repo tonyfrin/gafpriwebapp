@@ -35,6 +35,7 @@ const infoEditLinkStyles = css`
 type ButtonEditInfoProps = {
     content: string;
     buttonProps?: React.ButtonHTMLAttributes<HTMLButtonElement> & { buttonTitle: string };
+    generalOnclick?: () => void;
 }
 
 
@@ -42,11 +43,14 @@ type ButtonEditInfoProps = {
 export const ButtonEditInfo = ({
     content,
     buttonProps,
+    generalOnclick
 }: ButtonEditInfoProps) => {
   return (
     <>
         <div className={buttonInfoEditContainerStyles}>
-            <div className={buttonInfoEditContentStyles}>
+            <div className={buttonInfoEditContentStyles}
+                onClick={generalOnclick}
+            >
                 <span className={infoEditContentStyles}>
                     {content}
                 </span>

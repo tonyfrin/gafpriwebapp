@@ -9,16 +9,6 @@ import { ButtonAppMobile } from '../../Button/ButtonAppMobile';
 import { decimalFormatPriceConverter } from '../../helpers';
 import { Loading } from '../../Loading';
 import { Error } from '../../Error/Error';
-import { ButtonEditInfo } from '../../Button/ButtonEditInfo';
-import Image from 'next/image';
-import LogoZelle from '../../assets/img/logo-zelle.png';
-import LogoPaypal from '../../assets/img/logo-pay-pal.png';
-import LogoBofa from '../../assets/img/logo-bofa-blanco.png';
-import LogoChase from '../../assets/img/logo-chase-blanco.png';
-import LogoPagoMovil from '../../assets/img/logo-pago-movil.png';
-import LogoPagoMovil2 from '../../assets/img/logo-pago-movil2.png';
-import LogoBnc from '../../assets/img/logo-bnc-blano.png';
-import { PaymentMethodsList } from '@/Abstract/List/PaymentMethodsList';
 
 const title1AppStyles = css`
   font-size: 1.2em;
@@ -59,64 +49,8 @@ const arrowStyle = css`
     margin: auto 0px;
 `
 
-const fila3 = css`
-  display: flex;
-  width: 90%;
-  margin: auto;
-  border-bottom: 1px solid #e1e1e1;
-  padding: 1em 0px;
-`
-
-const checkboxStyles = css`
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 16px;
-  height: 16px;
-  border: 2px solid #aaa;
-  border-radius: 50%;
-  outline: none;
-  cursor: pointer;
-  transition: border-color 0.3s ease;
-
-  &:checked {
-    border-color: #000;
-    background-color: #000;
-  }
-
-  &:checked::after {
-    content: '';
-    display: block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background-color: #fff;
-    margin: 2px;
-  }
-`;
-
-const containerColumnCenterStyles = css`
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  text-align: left;
-`
-
-const priceStyles = css`
-  font-size: 1em;
-  font-weight: 600;
-  margin: 0;
-  font-family: 'Poppins', sans-serif;
-`
-
-const imageStyles = css`
-  width: 80%;
-  height: auto;
-`
-
 export function AmountRecharge() {
   const { useWallet, siteOptions, useError } = useTheme();
-  const [modalPm, setModalPm] = React.useState(false);
 
   const next = () => {
     if(useWallet.attributesRecharge.actions.validationAmountButton()){
@@ -141,56 +75,7 @@ export function AmountRecharge() {
 
   const walletAccountLabel = walletAccount.find((account) => account.postsId === useWallet.attributesRecharge.states.walletAccountPostsId)?.name || 'Selecciona una cuenta';
 
-  const changePM = (pm: string) => {
-    useWallet.attributesRecharge.actions.setPaymentType(pm);
-    setModalPm(false);
-  }
 
-  const itemsPmList = [
-    {
-      id: 'pm1',
-      name: 'Zelle',
-      image: LogoZelle.src,
-      backgroundColor: 'rgb(107 29 207)',
-      checked: useWallet.attributesRecharge.states.paymentType === 'zelle',
-      onClick: () => changePM('zelle')
-    },
-    {
-      id: 'pm2',
-      name: 'PayPal',
-      image: LogoPaypal.src,
-      backgroundColor: '#003086',
-      checked: useWallet.attributesRecharge.states.paymentType === 'paypal',
-      onClick: () => changePM('paypal')
-    },
-    // {
-    //   id: 'pm4',
-    //   name: 'Pago Movil (Bs)',
-    //   image: LogoBnc.src,
-    //   backgroundColor: '#24407c',
-    //   checked: useWallet.attributesRecharge.states.paymentType === 'pagomovil',
-    //   onClick: () => changePM('pagomovil')
-    // },
-    // {
-    //   id: 'pm3',
-    //   name: 'Bofa a Bofa',
-    //   image: LogoBofa.src,
-    //   backgroundColor: '#c31e39',
-    //   checked: false,
-    //   onClick: () => console.log('Zelle')
-    // },
-    // {
-    //   id: 'pm3',
-    //   name: 'Chase a Chase',
-    //   image: LogoChase.src,
-    //   backgroundColor: '#3f6bc1',
-    //   checked: false,
-    //   onClick: () => console.log('Zelle')
-    // },
-    
-  ]
-  
-  
 
   return (
     
@@ -243,27 +128,24 @@ export function AmountRecharge() {
                     onChange={(e) => useWallet.attributesRecharge.actions.setWalletAccountPostsId(e)}
                   />
               </div>
-              <ButtonEditInfo 
-                    content={
-                      useWallet.attributesRecharge.states.paymentType === 'zelle' ? 'Zelle' 
-                      : useWallet.attributesRecharge.states.paymentType === 'paypal' ? 'PayPal' : 'Elejir metodo de pago'}
-                    buttonProps={{
-                        buttonTitle: modalPm ? '▲' : '▼' ,
-                    }}
-                    generalOnclick={() => setModalPm(!modalPm)}
-                />
-              
-              {
-                modalPm && 
-                <PaymentMethodsList 
-                  items={itemsPmList}
-                  /> 
-
-              }
-              
-              
-              
-              
+              <div style={{
+                  margin: 'auto',
+                  padding: '0px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}>
+                  <div style={{
+                    width: '85%',
+                    margin: 'auto',
+                  }}>
+                    <span className={textInfoTitleStyles}>Tipo de recarga</span>
+                  </div>
+                  <SelectApp
+                    options={useWallet.attributesRecharge.states.paymentTypeOptions}
+                    value={useWallet.attributesRecharge.states.paymentType}
+                    onChange={(e) => useWallet.attributesRecharge.actions.setPaymentType(e)}
+                  />
+              </div>
               {useWallet.attributesRecharge.states.paymentType === 'zelle' &&
                 <div
                   style={{
@@ -308,28 +190,7 @@ export function AmountRecharge() {
                 </div>
               }
 
-              {useWallet.attributesRecharge.states.paymentType === 'pagomovil' &&
-                <div
-                  style={{
-                    border: '1px solid #ebebeb',
-                    width: '90%',
-                    margin: '1em auto',
-                    borderRadius: '15px',
-                    backgroundColor: '#fff',
-                  }}
-                >
-                  <div style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      padding: '1em',
-                  }}>
-                    <span className={textInfoStyles}>{'Los datos para Pago Movil (Bs) son:'}</span>
-                    <span className={textInfoStyles}>Banco: <span style={{fontWeight: 600}}>{'Banco Nacional de Crédito (BNC)'}</span></span>
-                    <span className={textInfoStyles}>Identificación: <span style={{fontWeight: 600}}>7.693.205</span></span>
-                    <span className={textInfoStyles}>Teléfono: <span style={{fontWeight: 600}}>0414-6375128</span></span>
-                  </div>
-                </div>
-              }
+              
 
               {useWallet.attributesRecharge.states.paymentType !== '' && 
                 <>  
